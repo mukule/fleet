@@ -1,0 +1,99 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="{% static 'main/images/icon.ico' %}">
+  <title>Fleet Management system || Login</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="{% static 'main/css/style.css' %}">
+  <style>
+    /* Custom styles for centering the form */
+    .card {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 50%;
+    }
+
+    /* Custom styles for centering the logo */
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div class="card border-0 shadow-sm">
+    <div class="card-body">
+        <div class="container mt-2">
+            {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == 'success' %}
+                    <div class="alert alert-success alert-dismissible" role="alert">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        {{ message|safe|escape }}
+                    </div>
+                {% elif message.tags == 'error' %}
+                    <div class="alert alert-danger alert-dismissible" role="alert">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        {{ message|safe }}
+                    </div>
+                {% elif message.tags == 'info' %}
+                    <div class="alert alert-info alert-dismissible" role="alert">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        {{ message|safe|escape }}
+                    </div>
+                {% elif message.tags == 'warning' %}
+                    <div class="alert alert-warning alert-dismissible" role="alert">
+                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                        {{ message|safe|escape }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+             <h4 class="text-center">User Account Creation</h4>
+             <h4 class="text-center">Fleet Management System</h4>
+           
+            </div>
+         </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <!-- Logo goes here -->
+          <div class="logo-container">
+            <img src="{% static 'main/images/logo2.png' %}" alt="Logo" width="100%" style="max-width: 150px;">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <!-- Login form goes here -->
+          <!-- Example form -->
+          <form>
+            <div class="form-group">
+              <label for="username">Username</label>
+              <input type="text" class="form-control" id="username">
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" class="form-control" id="password">
+            </div>
+            <button type="submit" class="btn btn-primary">Login</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

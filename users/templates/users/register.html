@@ -1,0 +1,120 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" href="{% static 'main/images/icon.ico' %}">
+  <title>Fleet Management system || Create Account</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="{% static 'main/css/style.css' %}">
+  <style>
+    /* Custom styles for centering the form */
+    .card {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 50%;
+    }
+
+    /* Custom styles for centering the logo */
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+    }
+
+    /* Custom styles for centering form text */
+    .form-text-center {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <div class="card border-0 shadow-sm">
+    <div class="card-body">
+      <div class="container mt-2">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            {{ message|safe }}
+          </div>
+        {% endfor %}
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <!-- Logo goes here -->
+          <div class="logo-container">
+            <img src="{% static 'main/images/logo2.png' %}" alt="Logo" width="100%" style="max-width: 300px;">
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="content-section">
+            <form method="POST">
+              {% csrf_token %}
+              <fieldset class="form-group">
+                <div class="form-row">
+                  <div class="form-group col-md-12 mb-2">
+                    {{ form.username }}
+                  </div>
+                </div>
+              </fieldset>
+              <fieldset class="form-group">
+                <div class="form-row">
+                  <div class="form-group col-md-12 mb-2">
+                    {{ form.email }}
+                  </div>
+                </div>
+              </fieldset>
+              <fieldset class="form-group">
+                <div class="form-row">
+                  <div class="form-group col-md-12 mb-2">
+                    {{ form.first_name }}
+                  </div>
+                </div>
+              </fieldset>
+              <fieldset class="form-group">
+                <div class="form-row">
+                  <div class="form-group col-md-12 mb-2">
+                    {{ form.last_name }}
+                  </div>
+                </div>
+              </fieldset>
+              <fieldset class="form-group">
+                <div class="form-row">
+                  <div class="form-group col-md-12 mb-2">
+                    {{ form.password1 }}
+                  </div>
+                </div>
+              </fieldset>
+              <fieldset class="form-group">
+                <div class="form-row">
+                  <div class="form-group col-md-12 mb-2">
+                    {{ form.password2 }}
+                  </div>
+                </div>
+              </fieldset>
+              <div class="border-top pt-3">
+                <small class="text-muted form-text-center">
+                  Already Have An Account? <a class="ml-2" href="/login">Sign In</a>
+                </small>
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12 mb-2 form-text-center">
+                  <button type="submit" class="btn btn-primary">Register</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
