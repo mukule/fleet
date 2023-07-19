@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,66 +26,53 @@
       align-items: center;
       height: 100%;
     }
+
+    /* Add spacing between input fields */
+    .form-group input:not(:last-child) {
+      margin-bottom: 1rem;
+    }
+
+    /* Center the "Log In" legend */
+    .form-group legend {
+      text-align: center;
+    }
+
   </style>
 </head>
 <body>
-  <div class="card border-0 shadow-sm">
+  <div class="container mt-2">
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert alert-{{ message.tags }} alert-dismissible" role="alert">
+          <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+          {{ message|safe|escape }}
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+
+  <div class="container card border-0 shadow-sm">
     <div class="card-body">
-        <div class="container mt-2">
-            {% if messages %}
-            {% for message in messages %}
-                {% if message.tags == 'success' %}
-                    <div class="alert alert-success alert-dismissible" role="alert">
-                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        {{ message|safe|escape }}
-                    </div>
-                {% elif message.tags == 'error' %}
-                    <div class="alert alert-danger alert-dismissible" role="alert">
-                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        {{ message|safe }}
-                    </div>
-                {% elif message.tags == 'info' %}
-                    <div class="alert alert-info alert-dismissible" role="alert">
-                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        {{ message|safe|escape }}
-                    </div>
-                {% elif message.tags == 'warning' %}
-                    <div class="alert alert-warning alert-dismissible" role="alert">
-                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-                        {{ message|safe|escape }}
-                    </div>
-                {% endif %}
-            {% endfor %}
-        {% endif %}
-        </div>
-        <div class="row">
-           <div class="col-md-12">
-            <h4 class="text-center">User login</h4>
-            <h4 class="text-center">Fleet Management System</h4>
-          
-           </div>
-        </div>
       <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-12">
           <!-- Logo goes here -->
           <div class="logo-container">
             <img src="{% static 'main/images/logo2.png' %}" alt="Logo" width="100%" style="max-width: 150px;">
           </div>
         </div>
-        <div class="col-md-6">
-          <!-- Login form goes here -->
-          <!-- Example form -->
+      </div>
+      <div class="row mt-3">
+        <div class="col-md-6 offset-md-3 d-flex justify-content-center">
           <form method="POST">
             {% csrf_token %}
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Log In</legend>
-                    {{ form }}
-                </div>
+              <legend class="border-bottom mb-4 text-center">Log In</legend>
+              {{ form }}
             </fieldset>
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Login</button>
+            <div class="form-group text-center">
+              <button class="btn btn-outline-info" type="submit">Login</button>
             </div>
-        </form>
+          </form>
         </div>
       </div>
     </div>

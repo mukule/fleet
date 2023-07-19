@@ -11,13 +11,13 @@ a {
 
 .navbar {
   background-color: #fff;
-  padding: 60px 120px;
-  height: 80px;
+  padding: 60px 100px;
+  height: 60px;
   border-bottom: 2px solid var(--secondary-color);
 }
 
 .navbar-nav .nav-link {
-  font-size: 14px;
+  font-size: 18px;
   padding: 8px 12px;
   border-radius: 40px;
 }
