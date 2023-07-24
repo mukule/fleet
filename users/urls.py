@@ -9,7 +9,7 @@ app_name = 'users'
 urlpatterns = [
     # path('', views.index, name='index'),
     path('register/', views.register, name='register'),
-    path('', views.custom_login, name='index'),
+    path('index', views.custom_login, name='index'),
     path('logout', views.custom_logout, name='logout'),
    
 ]

@@ -1,0 +1,194 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+        {% block content %}
+                <!-- Begin page -->
+                <div id="layout-wrapper">
+
+                  <div class="main-content">
+      
+                      <div class="page-content">
+                          <div class="container-fluid">
+                              <!-- start page title -->
+                              <div class="row">
+                                  <div class="col-12">
+                                      <div class="page-title-box d-flex align-items-center justify-content-between">
+                                          <h4 class="mb-0 font-size-18">Dashboard</h4>
+      
+                                          <div class="page-title-right">
+                                              <ol class="breadcrumb m-0">
+                                                  <li class="breadcrumb-item"><a href="javascript: void(0);">Vehicles</a></li>
+                                                  <li class="breadcrumb-item active"><a href="{% url 'car:create_model' %}">Add Car Model</a></li>
+                                              </ol>
+                                          </div>
+                                          
+                                      </div>
+                                  </div>
+                              </div>     
+                              <!-- end page title -->
+      
+                              <div class="row">
+                                  <div class="col-md-6 col-xl-3">
+                                      <div class="card bg-primary border-primary">
+                                          <div class="card-body">
+                                              <div class="mb-4">
+                                                  <span class="badge badge-soft-light float-right">Daily</span>
+                                                  <h5 class="card-title mb-0 text-white">Cost per Unit</h5>
+                                              </div>
+                                              <div class="row d-flex align-items-center mb-4">
+                                                  <div class="col-8">
+                                                      <h2 class="d-flex align-items-center mb-0 text-white">
+                                                          $17.21
+                                                      </h2>
+                                                  </div>
+                                                  <div class="col-4 text-right">
+                                                      <span class="text-white-50">12.5% <i class="mdi mdi-arrow-up"></i></span>
+                                                  </div>
+                                              </div>
+      
+                                              <div class="progress badge-soft-light shadow-sm" style="height: 5px;">
+                                                  <div class="progress-bar bg-light" role="progressbar" style="width: 38%;"></div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div> <!-- end col-->
+      
+                                  <div class="col-md-6 col-xl-3">
+                                      <div class="card bg-success border-success">
+                                          <div class="card-body">
+                                              <div class="mb-4">
+                                                  <span class="badge badge-soft-light float-right">Per Week</span>
+                                                  <h5 class="card-title mb-0 text-white">Market Revenue</h5>
+                                              </div>
+                                              <div class="row d-flex align-items-center mb-4">
+                                                  <div class="col-8">
+                                                      <h2 class="d-flex align-items-center text-white mb-0">
+                                                          $1875.54
+                                                      </h2>
+                                                  </div>
+                                                  <div class="col-4 text-right">
+                                                      <span class="text-white-50">18.71% <i class="mdi mdi-arrow-down"></i></span>
+                                                  </div>
+                                              </div>
+      
+                                              <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
+                                                  <div class="progress-bar bg-light" role="progressbar" style="width: 38%;"></div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div> <!-- end col-->
+      
+                                  <div class="col-md-6 col-xl-3">
+                                      <div class="card bg-warning border-warning">
+                                          <div class="card-body">
+                                              <div class="mb-4">
+                                                  <span class="badge badge-soft-light float-right">Per Month</span>
+                                                  <h5 class="card-title mb-0 text-white">Expenses</h5>
+                                              </div>
+                                              <div class="row d-flex align-items-center mb-4">
+                                                  <div class="col-8">
+                                                      <h2 class="d-flex align-items-center text-white mb-0">
+                                                          $784.62
+                                                      </h2>
+                                                  </div>
+                                                  <div class="col-4 text-right">
+                                                      <span class="text-white-50">57% <i class="mdi mdi-arrow-up"></i></span>
+                                                  </div>
+                                              </div>
+      
+                                              <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
+                                                  <div class="progress-bar bg-light" role="progressbar" style="width: 68%;"></div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div> <!-- end col-->
+      
+                                  <div class="col-md-6 col-xl-3">
+                                      <div class="card bg-info border-info">
+                                          <div class="card-body">
+                                              <div class="mb-4">
+                                                  <span class="badge badge-soft-light float-right">All Time</span>
+                                                  <h5 class="card-title mb-0 text-white">Daily Visits</h5>
+                                              </div>
+                                              <div class="row d-flex align-items-center mb-4">
+                                                  <div class="col-8">
+                                                      <h2 class="d-flex align-items-center text-white mb-0">
+                                                          1,15,187
+                                                      </h2>
+                                                  </div>
+                                                  <div class="col-4 text-right">
+                                                      <span class="text-white-50">17.8% <i class="mdi mdi-arrow-down"></i></span>
+                                                  </div>
+                                              </div>
+      
+                                              <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
+                                                  <div class="progress-bar bg-light" role="progressbar" style="width: 57%;"></div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div> <!-- end col-->
+                              </div>
+                              <!-- end row -->
+                              <div class="row">
+                                  <div class="col-xl-12">
+                                      <div class="card">
+                                          <div class="card-body">
+      
+                                              <h4 class="card-title">Recent Buyers</h4>
+                                              <p class="card-subtitle mb-4 font-size-13">Transaction period from 21 July to 25 Aug
+                                              </p>
+      
+                                              
+                                        <form method="post" enctype="multipart/form-data" class="form-horizontal">
+                                            {% csrf_token %}
+                                            <fieldset class="form-group">
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        {{ form.name|as_crispy_field }}
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        {{ form.number_plate|as_crispy_field }}
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        {{ form.model|as_crispy_field }}
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        {{ form.year|as_crispy_field }}
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        {{ form.color|as_crispy_field }}
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        {{ form.daily_rate|as_crispy_field }}
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        {{ form.seating_capacity|as_crispy_field }}
+                                                    </div>
+                                                    <div class="form-group col-md-4 mb-0">
+                                                        {{ form.image|as_crispy_field }}
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                            <div class="form-row text-center">
+                                                <div class="form-group col-md-12 mb-2">
+                                                    <button style="background-color: #3d4255; border: #3d4255;" class="btn btn-success" type="submit">Add Car</button>
+                                                </div>
+                                            </div>
+                                        </form>
+      
+                                          </div> <!-- end card-body-->
+                                      </div> <!-- end card-->
+                                  </div> <!-- end col -->
+                              </div>
+                          </div> <!-- container-fluid -->
+                      </div>
+      
+                  </div>
+                  <!-- end main content-->
+      
+              </div>
+        {% endblock content %}
+   
