@@ -147,28 +147,23 @@
                                                             <th class="border-top-0">Color</th>
                                                             <th class="border-top-0">Seating Capacity</th>
                                                             <th class="border-top-0">Daily Rate</th>
-                                                          
-                                                            
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         {% for car in cars %}
-                                                          
                                                             <tr>
-
                                                                 <td class="text-truncate"><a href="{% url 'main:car_detail' car.id %}">{{ car.model.name }}</a></td>
-                                                                <td class="text-truncate">{{ car.name }}</td>
+                                                                <td class="text-truncate">{{ car.make.name }}</td>
                                                                 <td class="text-truncate">{{ car.year }}</td>
                                                                 <td class="text-truncate">{{ car.number_plate }}</td>
                                                                 <td class="text-truncate">{{ car.color }}</td>
                                                                 <td class="text-truncate">{{ car.seating_capacity }}</td>
                                                                 <td class="text-truncate">$ {{ car.daily_rate }}</td>
-                                                               
                                                             </tr>
-                                                          
                                                         {% endfor %}
                                                     </tbody>
                                                 </table>
+                                                
                                             </div>
       
                                           </div> <!-- end card-body-->
