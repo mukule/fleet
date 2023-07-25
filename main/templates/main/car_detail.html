@@ -1,4 +1,5 @@
 {% extends 'main/base.html' %}
+{% load static %}
         {% block content %}
                 <!-- Begin page -->
                 <div id="layout-wrapper">
@@ -16,7 +17,7 @@
                                           <div class="page-title-right">
                                               <ol class="breadcrumb m-0">
                                                   <li class="breadcrumb-item"><a href="javascript: void(0);">Vehicles</a></li>
-                                                  <li class="breadcrumb-item active"><a href="{% url 'car:create_car' %}">Add Car</a></li>
+                                                  <li class="breadcrumb-item active"><a href="">{{ car.make.name }} {{ car.model.name }}</a></li>
                                               </ol>
                                           </div>
                                           
@@ -28,39 +29,36 @@
                                   <div class="col-xl-6">
                                       <div class="card">
                                           <div class="card-body">
-      
-                                              <h4 class="card-title">Recent Buyers</h4>
-                                              <p class="card-subtitle mb-4 font-size-13">Transaction period from 21 July to 25 Aug
-                                              </p>
-      
                                               <div class="table-responsive">
                                                 <table class="table table-centered table-hover table-xl mb-0" id="recent-orders">
                                                     <thead>
                                                         <tr>
-                                                            <th class="border-top-0">Model</th>
+                                                            
                                                             <th class="border-top-0">Car Make</th>
-                                                            <th class="border-top-0">Year</th>
+                                                            <th class="border-top-0">Model</th>
                                                             <th class="border-top-0">Number Plate</th>
-                                                            <th class="border-top-0">Color</th>
                                                             <th class="border-top-0">Seating Capacity</th>
                                                             <th class="border-top-0">Daily Rate</th>
+                                                            <th class="border-top-0">Weekly Rate</th>
+                                                            <th class="border-top-0">Monthly Rate</th>
                                                             
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {% for car in cars %}
+                                                       
                                                             <tr>
 
+                                                                
+                                                                <td class="text-truncate">{{ car.make.name }}</td>
                                                                 <td class="text-truncate">{{ car.model.name }}</td>
-                                                                <td class="text-truncate">{{ car.name }}</td>
-                                                                <td class="text-truncate">{{ car.year }}</td>
                                                                 <td class="text-truncate">{{ car.number_plate }}</td>
-                                                                <td class="text-truncate">{{ car.color }}</td>
                                                                 <td class="text-truncate">{{ car.seating_capacity }}</td>
                                                                 <td class="text-truncate">$ {{ car.daily_rate }}</td>
+                                                                <td class="text-truncate">$ {{ car.weekly_rate }}</td>
+                                                                <td class="text-truncate">$ {{ car.monthly_rate }}</td>
                                                                
                                                             </tr>
-                                                        {% endfor %}
+                                                       
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -70,46 +68,10 @@
                                   </div> <!-- end col -->
                                   <div class="col-xl-6">
                                     <div class="card">
-                                        <div class="card-body">
-    
-                                            <h4 class="card-title">Recent Buyers</h4>
-                                            <p class="card-subtitle mb-4 font-size-13">Transaction period from 21 July to 25 Aug
-                                            </p>
-    
-                                            <div class="table-responsive">
-                                              <table class="table table-centered table-hover table-xl mb-0" id="recent-orders">
-                                                  <thead>
-                                                      <tr>
-                                                          <th class="border-top-0">Model</th>
-                                                          <th class="border-top-0">Car Make</th>
-                                                          <th class="border-top-0">Year</th>
-                                                          <th class="border-top-0">Number Plate</th>
-                                                          <th class="border-top-0">Color</th>
-                                                          <th class="border-top-0">Seating Capacity</th>
-                                                          <th class="border-top-0">Daily Rate</th>
-                                                          
-                                                      </tr>
-                                                  </thead>
-                                                  <tbody>
-                                                      {% for car in cars %}
-                                                          <tr>
-
-                                                              <td class="text-truncate">{{ car.model.name }}</td>
-                                                              <td class="text-truncate">{{ car.name }}</td>
-                                                              <td class="text-truncate">{{ car.year }}</td>
-                                                              <td class="text-truncate">{{ car.number_plate }}</td>
-                                                              <td class="text-truncate">{{ car.color }}</td>
-                                                              <td class="text-truncate">{{ car.seating_capacity }}</td>
-                                                              <td class="text-truncate">$ {{ car.daily_rate }}</td>
-                                                             
-                                                          </tr>
-                                                      {% endfor %}
-                                                  </tbody>
-                                              </table>
-                                          </div>
-    
-                                        </div> <!-- end card-body-->
-                                    </div> <!-- end card-->
+                                        <img class="card-img-top img-fluid" src="{{ car.image.url }}" alt="Car Image">
+                                        <a href="{% url 'reservations:create_reservation' car.id %}" class="btn btn-primary waves-effect waves-light">Reserve</a>
+                                    </div>
+                                    
                                 </div> <!-- end col -->
                               </div>
                             

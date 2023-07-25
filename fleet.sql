@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jul 24, 2023 at 10:27 PM
--- Server version: 10.4.27-MariaDB
--- PHP Version: 8.2.0
+-- Generation Time: Jul 25, 2023 at 04:43 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.0.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -97,7 +97,19 @@ INSERT INTO `auth_permission` (`id`, `name`, `content_type_id`, `codename`) VALU
 (33, 'Can add car make', 9, 'add_carmake'),
 (34, 'Can change car make', 9, 'change_carmake'),
 (35, 'Can delete car make', 9, 'delete_carmake'),
-(36, 'Can view car make', 9, 'view_carmake');
+(36, 'Can view car make', 9, 'view_carmake'),
+(37, 'Can add car class', 10, 'add_carclass'),
+(38, 'Can change car class', 10, 'change_carclass'),
+(39, 'Can delete car class', 10, 'delete_carclass'),
+(40, 'Can view car class', 10, 'view_carclass'),
+(41, 'Can add client', 11, 'add_client'),
+(42, 'Can change client', 11, 'change_client'),
+(43, 'Can delete client', 11, 'delete_client'),
+(44, 'Can view client', 11, 'view_client'),
+(45, 'Can add reservation', 12, 'add_reservation'),
+(46, 'Can change reservation', 12, 'change_reservation'),
+(47, 'Can delete reservation', 12, 'delete_reservation'),
+(48, 'Can view reservation', 12, 'view_reservation');
 
 -- --------------------------------------------------------
 
@@ -114,17 +126,45 @@ CREATE TABLE `car_car` (
   `daily_rate` decimal(8,2) NOT NULL,
   `seating_capacity` int(10) UNSIGNED NOT NULL CHECK (`seating_capacity` >= 0),
   `image` varchar(100) DEFAULT NULL,
-  `make_id` bigint(20) DEFAULT NULL
-) ;
+  `make_id` bigint(20) DEFAULT NULL,
+  `car_class_id` bigint(20) DEFAULT NULL,
+  `monthly_rate` decimal(8,2) DEFAULT NULL,
+  `weekly_rate` decimal(8,2) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `car_car`
 --
 
-INSERT INTO `car_car` (`id`, `number_plate`, `model_id`, `year`, `color`, `daily_rate`, `seating_capacity`, `image`, `make_id`) VALUES
-(1, 'ABC123', 1, 2022, 'white', '30.00', 4, 'car_images/3.png', 1),
-(2, 'GHI789', 2, 2020, 'white', '30.00', 4, 'car_images/2.png', 1),
-(3, 'YZA901', 9, 2022, 'Silver', '45.00', 4, 'car_images/3_baWcHAV.png', 13);
+INSERT INTO `car_car` (`id`, `number_plate`, `model_id`, `year`, `color`, `daily_rate`, `seating_capacity`, `image`, `make_id`, `car_class_id`, `monthly_rate`, `weekly_rate`) VALUES
+(1, 'ABC123', 1, 2022, 'white', 30.00, 4, 'car_images/1_YD45FLI.png', 1, 8, 20.00, 25.00),
+(2, 'GHI789', 2, 2020, 'white', 30.00, 4, 'car_images/2.png', 1, 8, 20.00, 25.00),
+(3, 'YZA901', 9, 2022, 'Silver', 45.00, 4, 'car_images/3.png', 13, 4, 35.00, 40.00);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `car_carclass`
+--
+
+CREATE TABLE `car_carclass` (
+  `id` bigint(20) NOT NULL,
+  `name` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `car_carclass`
+--
+
+INSERT INTO `car_carclass` (`id`, `name`) VALUES
+(1, 'Buses'),
+(2, 'Double Cabin'),
+(3, 'Single Cabin'),
+(4, 'Large SUV'),
+(5, 'Minivan'),
+(6, 'Safari 4WD'),
+(7, 'Saloon'),
+(8, 'Small SUV');
 
 -- --------------------------------------------------------
 
@@ -201,6 +241,36 @@ CREATE TABLE `django_admin_log` (
   `user_id` bigint(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `django_admin_log`
+--
+
+INSERT INTO `django_admin_log` (`id`, `action_time`, `object_id`, `object_repr`, `action_flag`, `change_message`, `content_type_id`, `user_id`) VALUES
+(1, '2023-07-25 07:01:56.301763', '1', 'Buses', 1, '[{\"added\": {}}]', 10, 1),
+(2, '2023-07-25 07:02:03.095182', '2', 'Double Cabin', 1, '[{\"added\": {}}]', 10, 1),
+(3, '2023-07-25 07:02:10.327736', '3', 'Single Cabin', 1, '[{\"added\": {}}]', 10, 1),
+(4, '2023-07-25 07:02:18.592552', '4', 'Large SUV', 1, '[{\"added\": {}}]', 10, 1),
+(5, '2023-07-25 07:02:40.235585', '5', 'Minivan', 1, '[{\"added\": {}}]', 10, 1),
+(6, '2023-07-25 07:03:01.254923', '6', 'Safari 4WD', 1, '[{\"added\": {}}]', 10, 1),
+(7, '2023-07-25 07:03:18.798241', '7', 'Saloon', 1, '[{\"added\": {}}]', 10, 1),
+(8, '2023-07-25 07:03:27.489751', '8', 'Small SUV', 1, '[{\"added\": {}}]', 10, 1),
+(9, '2023-07-25 07:04:42.006091', '3', 'Mazda - CX-5 (2022, Silver, Seats: 4) - YZA901', 2, '[{\"changed\": {\"fields\": [\"Car class\"]}}]', 7, 1),
+(10, '2023-07-25 07:05:02.836544', '2', 'Toyota - Fielder (2020, white, Seats: 4) - GHI789', 2, '[{\"changed\": {\"fields\": [\"Car class\"]}}]', 7, 1),
+(11, '2023-07-25 07:05:14.877432', '1', 'Toyota - RAV4 (2022, white, Seats: 4) - ABC123', 2, '[{\"changed\": {\"fields\": [\"Car class\"]}}]', 7, 1),
+(12, '2023-07-25 10:02:06.126681', '1', 'Toyota - RAV4 (2022, white, Seats: 4) - ABC123', 2, '[{\"changed\": {\"fields\": [\"Image\"]}}]', 7, 1),
+(13, '2023-07-25 10:02:18.651496', '1', 'Toyota - RAV4 (2022, white, Seats: 4) - ABC123', 2, '[{\"changed\": {\"fields\": [\"Image\"]}}]', 7, 1),
+(14, '2023-07-25 10:06:22.101108', '1', 'Toyota - RAV4 (2022, white, Seats: 4) - ABC123', 2, '[{\"changed\": {\"fields\": [\"Image\"]}}]', 7, 1),
+(15, '2023-07-25 10:06:31.899026', '1', 'Toyota - RAV4 (2022, white, Seats: 4) - ABC123', 2, '[{\"changed\": {\"fields\": [\"Image\"]}}]', 7, 1),
+(16, '2023-07-25 10:08:56.737461', '1', 'Toyota - RAV4 (2022, white, Seats: 4) - ABC123', 2, '[{\"changed\": {\"fields\": [\"Image\"]}}]', 7, 1),
+(17, '2023-07-25 10:09:04.894101', '1', 'Toyota - RAV4 (2022, white, Seats: 4) - ABC123', 2, '[{\"changed\": {\"fields\": [\"Image\"]}}]', 7, 1),
+(18, '2023-07-25 10:10:38.170469', '2', 'Toyota - Fielder (2020, white, Seats: 4) - GHI789', 2, '[{\"changed\": {\"fields\": [\"Image\"]}}]', 7, 1),
+(19, '2023-07-25 10:10:46.865092', '2', 'Toyota - Fielder (2020, white, Seats: 4) - GHI789', 2, '[{\"changed\": {\"fields\": [\"Image\"]}}]', 7, 1),
+(20, '2023-07-25 10:12:47.263827', '3', 'Mazda - CX-5 (2022, Silver, Seats: 4) - YZA901', 2, '[{\"changed\": {\"fields\": [\"Image\"]}}]', 7, 1),
+(21, '2023-07-25 10:12:55.466206', '3', 'Mazda - CX-5 (2022, Silver, Seats: 4) - YZA901', 2, '[{\"changed\": {\"fields\": [\"Image\"]}}]', 7, 1),
+(22, '2023-07-25 10:41:27.514910', '3', 'Mazda - CX-5 (2022, Silver, Seats: 4) - YZA901', 2, '[{\"changed\": {\"fields\": [\"Weekly rate\", \"Monthly rate\"]}}]', 7, 1),
+(23, '2023-07-25 10:41:42.109534', '2', 'Toyota - Fielder (2020, white, Seats: 4) - GHI789', 2, '[{\"changed\": {\"fields\": [\"Weekly rate\", \"Monthly rate\"]}}]', 7, 1),
+(24, '2023-07-25 10:41:53.160196', '1', 'Toyota - RAV4 (2022, white, Seats: 4) - ABC123', 2, '[{\"changed\": {\"fields\": [\"Weekly rate\", \"Monthly rate\"]}}]', 7, 1);
+
 -- --------------------------------------------------------
 
 --
@@ -222,10 +292,13 @@ INSERT INTO `django_content_type` (`id`, `app_label`, `model`) VALUES
 (3, 'auth', 'group'),
 (2, 'auth', 'permission'),
 (7, 'car', 'car'),
+(10, 'car', 'carclass'),
 (9, 'car', 'carmake'),
 (8, 'car', 'carmodel'),
 (4, 'contenttypes', 'contenttype'),
+(12, 'reservations', 'reservation'),
 (5, 'sessions', 'session'),
+(11, 'users', 'client'),
 (6, 'users', 'customuser');
 
 -- --------------------------------------------------------
@@ -272,7 +345,13 @@ INSERT INTO `django_migrations` (`id`, `app`, `name`, `applied`) VALUES
 (24, 'car', '0006_remove_car_available_units', '2023-07-24 17:50:18.955360'),
 (25, 'sessions', '0001_initial', '2023-07-24 17:50:19.013382'),
 (26, 'car', '0007_carmake_remove_car_name_carmodel_make', '2023-07-24 18:10:36.137992'),
-(27, 'car', '0008_car_make', '2023-07-24 18:54:50.017179');
+(27, 'car', '0008_car_make', '2023-07-24 18:54:50.017179'),
+(28, 'car', '0009_carclass_car_car_class', '2023-07-25 06:49:03.492149'),
+(29, 'users', '0002_client', '2023-07-25 07:27:01.196607'),
+(30, 'users', '0003_alter_client_phone_number', '2023-07-25 08:25:14.080994'),
+(31, 'car', '0010_car_monthly_rate_car_weekly_rate', '2023-07-25 10:37:02.704328'),
+(32, 'reservations', '0001_initial', '2023-07-25 11:07:08.204295'),
+(33, 'reservations', '0002_alter_reservation_discount', '2023-07-25 13:22:14.746894');
 
 -- --------------------------------------------------------
 
@@ -285,6 +364,63 @@ CREATE TABLE `django_session` (
   `session_data` longtext NOT NULL,
   `expire_date` datetime(6) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `django_session`
+--
+
+INSERT INTO `django_session` (`session_key`, `session_data`, `expire_date`) VALUES
+('dgwwixmj0syxe6l8n7i6wtbz1sqglxvs', '.eJxVizsOwjAQBe_iGkXY3l1sSiTOYT3HazniU2BSIe6eREoB5byZ9zEJ87uluesrTcWcjTWH3y1jvOlzExv2Yec-XB-Y7pfd_l0aelt7BJbIxEXFU60nH4QhhNGWDKZcmaDsIMHGowqQQTlwLCJO2TvzXQCMwDKS:1qOIcU:t3YqGkabJVmz9H_CJgPoU83TK6HI-h49ub6zTElraj4', '2023-08-08 14:02:34.215784'),
+('xi5uei6q84cari81ynvlips29akh9pqv', '.eJxVizsOwjAQBe_iGkXY3l1sSiTOYT3HazniU2BSIe6eREoB5byZ9zEJ87uluesrTcWcjTWH3y1jvOlzExv2Yec-XB-Y7pfd_l0aelt7BJbIxEXFU60nH4QhhNGWDKZcmaDsIMHGowqQQTlwLCJO2TvzXQCMwDKS:1qOC03:Shwzr5M1nipzfmYASjP2nV4DHiphu72vnoA3BLyyNvU', '2023-08-08 06:58:27.189679');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reservations_reservation`
+--
+
+CREATE TABLE `reservations_reservation` (
+  `id` bigint(20) NOT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL,
+  `rate` decimal(8,2) NOT NULL,
+  `discount` decimal(8,2) DEFAULT NULL,
+  `car_id` bigint(20) NOT NULL,
+  `client_id` bigint(20) NOT NULL,
+  `staff_id` bigint(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `reservations_reservation`
+--
+
+INSERT INTO `reservations_reservation` (`id`, `start_date`, `end_date`, `rate`, `discount`, `car_id`, `client_id`, `staff_id`) VALUES
+(1, '2023-07-26', '2023-07-27', 60.00, 0.00, 2, 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users_client`
+--
+
+CREATE TABLE `users_client` (
+  `id` bigint(20) NOT NULL,
+  `first_name` varchar(100) NOT NULL,
+  `last_name` varchar(100) NOT NULL,
+  `email` varchar(254) NOT NULL,
+  `phone_number` varchar(15) NOT NULL,
+  `id_number` varchar(20) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users_client`
+--
+
+INSERT INTO `users_client` (`id`, `first_name`, `last_name`, `email`, `phone_number`, `id_number`) VALUES
+(1, 'NELSON', 'MASIBO', 'nelsonmasibo6@gmail.com', '0704122212', '35100086'),
+(2, 'DAVID', 'KIAMA', 'david.kiamaa@gmail.com', '+254722921960', '35100087'),
+(3, 'Shynat', 'nganga', 'shynat@gmail.com', '0704122213', '35100088'),
+(4, 'kush', 'dinesh', 'kushdinesh98@gmail.com', '0704122214', '35100089');
 
 -- --------------------------------------------------------
 
@@ -305,6 +441,13 @@ CREATE TABLE `users_customuser` (
   `date_joined` datetime(6) NOT NULL,
   `email` varchar(254) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users_customuser`
+--
+
+INSERT INTO `users_customuser` (`id`, `password`, `last_login`, `is_superuser`, `username`, `first_name`, `last_name`, `is_staff`, `is_active`, `date_joined`, `email`) VALUES
+(1, 'pbkdf2_sha256$600000$frBFQjr3Sua0MF4HmyFBAg$We/sB3ciIves35JgonQkAwae0QEDXPb//ddpCOrdRbo=', '2023-07-25 14:02:34.176653', 1, 'admin', '', '', 1, 1, '2023-07-25 06:58:10.579920', 'admin@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -363,7 +506,14 @@ ALTER TABLE `car_car`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `number_plate` (`number_plate`),
   ADD KEY `car_car_model_id_c6a3329e` (`model_id`),
-  ADD KEY `car_car_make_id_e53f461c_fk_car_carmake_id` (`make_id`);
+  ADD KEY `car_car_make_id_e53f461c_fk_car_carmake_id` (`make_id`),
+  ADD KEY `car_car_car_class_id_b7eb688e_fk_car_carclass_id` (`car_class_id`);
+
+--
+-- Indexes for table `car_carclass`
+--
+ALTER TABLE `car_carclass`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `car_carmake`
@@ -405,6 +555,24 @@ ALTER TABLE `django_migrations`
 ALTER TABLE `django_session`
   ADD PRIMARY KEY (`session_key`),
   ADD KEY `django_session_expire_date_a5c62663` (`expire_date`);
+
+--
+-- Indexes for table `reservations_reservation`
+--
+ALTER TABLE `reservations_reservation`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `reservations_reservation_car_id_e6fbb4a0_fk_car_car_id` (`car_id`),
+  ADD KEY `reservations_reservation_client_id_696a60bf_fk_users_client_id` (`client_id`),
+  ADD KEY `reservations_reserva_staff_id_98b1a89b_fk_users_cus` (`staff_id`);
+
+--
+-- Indexes for table `users_client`
+--
+ALTER TABLE `users_client`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`),
+  ADD UNIQUE KEY `id_number` (`id_number`),
+  ADD UNIQUE KEY `users_client_phone_number_53d3743a_uniq` (`phone_number`);
 
 --
 -- Indexes for table `users_customuser`
@@ -450,13 +618,19 @@ ALTER TABLE `auth_group_permissions`
 -- AUTO_INCREMENT for table `auth_permission`
 --
 ALTER TABLE `auth_permission`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `car_car`
 --
 ALTER TABLE `car_car`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `car_carclass`
+--
+ALTER TABLE `car_carclass`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `car_carmake`
@@ -474,25 +648,37 @@ ALTER TABLE `car_carmodel`
 -- AUTO_INCREMENT for table `django_admin_log`
 --
 ALTER TABLE `django_admin_log`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `django_content_type`
 --
 ALTER TABLE `django_content_type`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `django_migrations`
 --
 ALTER TABLE `django_migrations`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+
+--
+-- AUTO_INCREMENT for table `reservations_reservation`
+--
+ALTER TABLE `reservations_reservation`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `users_client`
+--
+ALTER TABLE `users_client`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `users_customuser`
 --
 ALTER TABLE `users_customuser`
-  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users_customuser_groups`
@@ -527,6 +713,7 @@ ALTER TABLE `auth_permission`
 -- Constraints for table `car_car`
 --
 ALTER TABLE `car_car`
+  ADD CONSTRAINT `car_car_car_class_id_b7eb688e_fk_car_carclass_id` FOREIGN KEY (`car_class_id`) REFERENCES `car_carclass` (`id`),
   ADD CONSTRAINT `car_car_make_id_e53f461c_fk_car_carmake_id` FOREIGN KEY (`make_id`) REFERENCES `car_carmake` (`id`),
   ADD CONSTRAINT `car_car_model_id_c6a3329e_fk_car_carmodel_id` FOREIGN KEY (`model_id`) REFERENCES `car_carmodel` (`id`);
 
@@ -542,6 +729,14 @@ ALTER TABLE `car_carmodel`
 ALTER TABLE `django_admin_log`
   ADD CONSTRAINT `django_admin_log_content_type_id_c4bce8eb_fk_django_co` FOREIGN KEY (`content_type_id`) REFERENCES `django_content_type` (`id`),
   ADD CONSTRAINT `django_admin_log_user_id_c564eba6_fk_users_customuser_id` FOREIGN KEY (`user_id`) REFERENCES `users_customuser` (`id`);
+
+--
+-- Constraints for table `reservations_reservation`
+--
+ALTER TABLE `reservations_reservation`
+  ADD CONSTRAINT `reservations_reserva_staff_id_98b1a89b_fk_users_cus` FOREIGN KEY (`staff_id`) REFERENCES `users_customuser` (`id`),
+  ADD CONSTRAINT `reservations_reservation_car_id_e6fbb4a0_fk_car_car_id` FOREIGN KEY (`car_id`) REFERENCES `car_car` (`id`),
+  ADD CONSTRAINT `reservations_reservation_client_id_696a60bf_fk_users_client_id` FOREIGN KEY (`client_id`) REFERENCES `users_client` (`id`);
 
 --
 -- Constraints for table `users_customuser_groups`

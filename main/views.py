@@ -1,9 +1,13 @@
 from django.shortcuts import render,get_object_or_404
 from car.models import Car
+from django.contrib.auth.decorators import login_required
+
 
 # Create your views here.
+@login_required
 def dashboard(request):
     return render(request, 'main/dashboard.html')
+
 
 def inventory(request):
     cars = Car.objects.all()

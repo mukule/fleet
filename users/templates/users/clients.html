@@ -1,5 +1,4 @@
 {% extends 'main/base.html' %}
-{% load crispy_forms_tags %}
         {% block content %}
                 <!-- Begin page -->
                 <div id="layout-wrapper">
@@ -17,7 +16,7 @@
                                           <div class="page-title-right">
                                               <ol class="breadcrumb m-0">
                                                   <li class="breadcrumb-item"><a href="javascript: void(0);">Vehicles</a></li>
-                                                  <li class="breadcrumb-item active"><a href="{% url 'car:create_model' %}">Add Car Model</a></li>
+                                                  <li class="breadcrumb-item active"><a href="{% url 'users:add_client' %}">Add Client</a></li>
                                               </ol>
                                           </div>
                                           
@@ -132,80 +131,44 @@
                                   <div class="col-xl-12">
                                       <div class="card">
                                           <div class="card-body">
-      
-                                              <h4 class="card-title">Recent Buyers</h4>
-                                              <p class="card-subtitle mb-4 font-size-13">Transaction period from 21 July to 25 Aug
                                               </p>
       
-                                              <form method="post" enctype="multipart/form-data" class="form-horizontal">
-                                                {% csrf_token %}
-                                                <fieldset class="form-group">
-                                                  <div class="form-row">
-                                                    <div class="form-group col-md-4 mb-0">
-                                                      {{ form.number_plate|as_crispy_field }}
-                                                     
-                                                    </div>
-                                                    <div class="form-group col-md-4 mb-0">
-                                                      {{ form.make|as_crispy_field }}
-                                                      
-                                                    </div>
-                                                    <div class="form-group col-md-4 mb-0">
-                                                      {{ form.model|as_crispy_field }}
-                                                    
-                                                    </div>
-                                                  </div>
-                                                  <div class="form-row">
-                                                    <div class="form-group col-md-4 mb-0">
-                                                      {{ form.year|as_crispy_field }}
-                                                     
-                                                    </div>
-                                                    <div class="form-group col-md-4 mb-0">
-                                                      {{ form.car_class|as_crispy_field }}
-                                                      
-                                                    </div>
-                                                    <div class="form-group col-md-4 mb-0">
-                                                        {{ form.color|as_crispy_field }}
-                                                        
-                                                      </div>
-                                                  </div>
-                                                  <div class="form-row">
-                                                    <div class="form-group col-md-4 mb-0">
-                                                      {{ form.daily_rate|as_crispy_field }}
-                                                      
-                                                    </div>
-                                                    <div class="form-group col-md-4 mb-0">
-                                                        {{ form.weekly_rate|as_crispy_field }}
-                                                        
-                                                      </div>
-                                                    <div class="form-group col-md-4 mb-0">
-                                                      {{ form.monthly_rate|as_crispy_field }}
-                                                     
-                                                    </div>
-                                                  </div>
-                                                  <div class="form-row">
-                                                    
-                                                    <div class="form-group col-md-4 mb-0">
-                                                      {{ form.seating_capacity|as_crispy_field }}
-                                                      
-                                                    </div>
-                                                    <div class="form-group col-md-4 mb-0">
-                                                      {{ form.image|as_crispy_field }}
-                                                     
-                                                    </div>
-                                                  </div>
-                                                </fieldset>
-                                                <div class="form-row text-center">
-                                                  <div class="form-group col-md-12 mb-2">
-                                                    <button style="background-color: #3d4255; border: #3d4255;" class="btn btn-success" type="submit">Add Car</button>
-                                                  </div>
-                                                </div>
-                                              </form>
-                                              
+                                              <div class="table-responsive">
+                                                <table class="table table-centered table-hover table-xl mb-0" id="recent-orders">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="border-top-0">First Name</th>
+                                                            <th class="border-top-0">Last Name</th>
+                                                            <th class="border-top-0">Email</th>
+                                                            <th class="border-top-0">Phone Number</th>
+                                                            <th class="border-top-0">ID Number</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for client in clients_list %}
+                                                            <tr>
+                                                                <td class="text-truncate">{{ client.first_name }}</td>
+                                                                <td class="text-truncate">{{ client.last_name }}</td>
+                                                                <td class="text-truncate">{{ client.email }}</td>
+                                                                <td class="text-truncate">{{ client.phone_number }}</td>
+                                                                <td class="text-truncate">{{ client.id_number }}</td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                                
+                                            </div>
       
                                           </div> <!-- end card-body-->
                                       </div> <!-- end card-->
                                   </div> <!-- end col -->
                               </div>
+                            
+                              
+          
+          
+      
+                              
                           </div> <!-- container-fluid -->
                       </div>
       
@@ -214,5 +177,4 @@
       
               </div>
         {% endblock content %}
-       
    

@@ -1,0 +1,263 @@
+{% extends 'main/base.html' %}
+        {% block content %}
+                <!-- Begin page -->
+                <div id="layout-wrapper">
+
+                  <div class="main-content">
+      
+                      <div class="page-content">
+                          <div class="container-fluid">
+                              <!-- start page title -->
+                              <div class="row">
+                                  <div class="col-12">
+                                      <div class="page-title-box d-flex align-items-center justify-content-between">
+                                          <h4 class="mb-0 font-size-18">Dashboard</h4>
+      
+                                          <div class="page-title-right">
+                                              <ol class="breadcrumb m-0">
+                                                  <li class="breadcrumb-item"><a href="javascript: void(0);">Vehicles</a></li>
+                                                  <li class="breadcrumb-item active"><a href="">Reservations</a></li>
+                                              </ol>
+                                          </div>
+                                          
+                                      </div>
+                                  </div>
+                              </div>     
+    
+    
+                              <div class="row">
+                                <div class="col-md-6 col-xl-3">
+                                    <div class="card bg-primary border-primary">
+                                        <div class="card-body">
+                                            <div class="mb-4">
+                                                <span class="badge badge-soft-light float-right">Daily</span>
+                                                <h5 class="card-title mb-0 text-white">Cost per Unit</h5>
+                                            </div>
+                                            <div class="row d-flex align-items-center mb-4">
+                                                <div class="col-8">
+                                                    <h2 class="d-flex align-items-center mb-0 text-white">
+                                                        $17.21
+                                                    </h2>
+                                                </div>
+                                                <div class="col-4 text-right">
+                                                    <span class="text-white-50">12.5% <i class="mdi mdi-arrow-up"></i></span>
+                                                </div>
+                                            </div>
+    
+                                            <div class="progress badge-soft-light shadow-sm" style="height: 5px;">
+                                                <div class="progress-bar bg-light" role="progressbar" style="width: 38%;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> <!-- end col-->
+    
+                                <div class="col-md-6 col-xl-3">
+                                    <div class="card bg-success border-success">
+                                        <div class="card-body">
+                                            <div class="mb-4">
+                                                <span class="badge badge-soft-light float-right">Per Week</span>
+                                                <h5 class="card-title mb-0 text-white">Market Revenue</h5>
+                                            </div>
+                                            <div class="row d-flex align-items-center mb-4">
+                                                <div class="col-8">
+                                                    <h2 class="d-flex align-items-center text-white mb-0">
+                                                        $1875.54
+                                                    </h2>
+                                                </div>
+                                                <div class="col-4 text-right">
+                                                    <span class="text-white-50">18.71% <i class="mdi mdi-arrow-down"></i></span>
+                                                </div>
+                                            </div>
+    
+                                            <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
+                                                <div class="progress-bar bg-light" role="progressbar" style="width: 38%;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> <!-- end col-->
+    
+                                <div class="col-md-6 col-xl-3">
+                                    <div class="card bg-warning border-warning">
+                                        <div class="card-body">
+                                            <div class="mb-4">
+                                                <span class="badge badge-soft-light float-right">Per Month</span>
+                                                <h5 class="card-title mb-0 text-white">Expenses</h5>
+                                            </div>
+                                            <div class="row d-flex align-items-center mb-4">
+                                                <div class="col-8">
+                                                    <h2 class="d-flex align-items-center text-white mb-0">
+                                                        $784.62
+                                                    </h2>
+                                                </div>
+                                                <div class="col-4 text-right">
+                                                    <span class="text-white-50">57% <i class="mdi mdi-arrow-up"></i></span>
+                                                </div>
+                                            </div>
+    
+                                            <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
+                                                <div class="progress-bar bg-light" role="progressbar" style="width: 68%;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> <!-- end col-->
+    
+                                <div class="col-md-6 col-xl-3">
+                                    <div class="card bg-info border-info">
+                                        <div class="card-body">
+                                            <div class="mb-4">
+                                                <span class="badge badge-soft-light float-right">All Time</span>
+                                                <h5 class="card-title mb-0 text-white">Daily Visits</h5>
+                                            </div>
+                                            <div class="row d-flex align-items-center mb-4">
+                                                <div class="col-8">
+                                                    <h2 class="d-flex align-items-center text-white mb-0">
+                                                        1,15,187
+                                                    </h2>
+                                                </div>
+                                                <div class="col-4 text-right">
+                                                    <span class="text-white-50">17.8% <i class="mdi mdi-arrow-down"></i></span>
+                                                </div>
+                                            </div>
+    
+                                            <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
+                                                <div class="progress-bar bg-light" role="progressbar" style="width: 57%;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> <!-- end col-->
+                            </div>
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="card">
+                                    <div class="card-body">
+    
+                                        <ul class="nav nav-tabs mb-3">
+                                            <li class="nav-item">
+                                                <a href="#fleet" data-toggle="tab" aria-expanded="false" class="nav-link active">
+                                                    <i class="mdi mdi-home-variant d-lg-none d-block"></i>
+                                                    <span class="d-none d-lg-block">Vehicles in fleet( {{ total_cars }} )</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#upcoming_rentals" data-toggle="tab" aria-expanded="true" class="nav-link">
+                                                    <i class="mdi mdi-account-circle d-lg-none d-block"></i>
+                                                    <span class="d-none d-lg-block">Upcoming Rentals( {{ future_reservations_count }} )</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#settings" data-toggle="tab" aria-expanded="false" class="nav-link">
+                                                    <i class="mdi mdi-settings-outline d-lg-none d-block"></i>
+                                                    <span class="d-none d-lg-block">Settings</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+    
+                                        <div class="tab-content">
+                                            <div class="tab-pane show active" id="fleet">
+                                                <form method="GET" action="{% url 'reservations:reservations' %}" class="text-center mt-3 mb-3">
+                                                    <label for="number_plate_filter">Search by Number Plate:</label>
+                                                    <input type="text" id="number_plate_filter" name="number_plate" class="form-control-sm" value="{{ request.GET.number_plate }}">
+                                            
+                                                    <label for="car_class_filter">Search by Car Class:</label>
+                                                    <select id="car_class_filter" class="form-control-sm" name="car_class">
+                                                        <option value="">All</option>
+                                                        {% for car_class in car_classes %}
+                                                            <option value="{{ car_class.id }}" {% if request.GET.car_class == car_class.id %}selected{% endif %}>{{ car_class.name }}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                            
+                                                    <button type="submit" class="btn btn-primary">Apply</button>
+                                                </form>
+                                                <table class="table table-centered table-hover table-xl mb-0" id="car-reservations">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="border-top-0">Car Class</th>
+                                                            <th class="border-top-0">Model</th>
+                                                            <th class="border-top-0">Car Make</th>
+                                                            <th class="border-top-0">Year</th>
+                                                            <th class="border-top-0">Number Plate</th>
+                                                            <th class="border-top-0">Color</th>
+                                                            <th class="border-top-0">Seating Capacity</th>
+                                                            <th class="border-top-0">Daily Rate</th>
+                                                            <th class="border-top-0">Weekly Rate</th>
+                                                            <th class="border-top-0">Monthly Rate</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for car in cars_list %}
+                                                            <tr>
+                                                                <td class="text-truncate">{{ car.car_class.name }}</td>
+                                                                <td class="text-truncate"><a href="{% url 'main:car_detail' car.id %}">{{ car.model.name }}</a></td>
+                                                                <td class="text-truncate">{{ car.make.name }}</td>
+                                                                <td class="text-truncate">{{ car.year }}</td>
+                                                                <td class="text-truncate">{{ car.number_plate }}</td>
+                                                                <td class="text-truncate">{{ car.color }}</td>
+                                                                <td class="text-truncate">{{ car.seating_capacity }}</td>
+                                                                <td class="text-truncate">$ {{ car.daily_rate }}</td>
+                                                                <td class="text-truncate">$ {{ car.weekly_rate }}</td>
+                                                                <td class="text-truncate">$ {{ car.monthly_rate }}</td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="tab-pane" id="upcoming_rentals">
+                                                <table class="table table-centered table-hover table-xl mb-0" id="car-reservations">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="border-top-0">Car Class</th>
+                                                            <th class="border-top-0">Model</th>
+                                                            <th class="border-top-0">Car Make</th>
+                                                            <th class="border-top-0">Number Plate</th>
+                                                            <th class="border-top-0">Seating Capacity</th>
+                                                            <th class="border-top-0">Client Name</th>
+                                                            <th class="border-top-0">client Email</th>
+                                                            <th class="border-top-0">Client Phone</th>
+                                                            <th class="border-top-0">Client ID</th>
+                                                            <th class="border-top-0">Start Date</th>
+                                                            <th class="border-top-0">End Date</th>
+                                                            <th class="border-top-0">Amount</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for reservation in future_reservations %}
+                                                            <tr>
+                                                                <td class="text-truncate">{{ reservation.car.car_class.name }}</td>
+                                                                <td class="text-truncate">
+                                                                    <a href="{% url 'main:car_detail' reservation.car.id %}">{{ reservation.car.model.name }}</a>
+                                                                </td>
+                                                                <td class="text-truncate">{{ reservation.car.make.name }}</td>
+                                                                <td class="text-truncate">{{ reservation.car.number_plate }}</td>
+                                                                <td class="text-truncate">{{ reservation.car.seating_capacity }}</td>
+                                                                <td class="text-truncate">{{ reservation.client.first_name }} {{ reservation.client.last_name }}</td>
+                                                                <td class="text-truncate">{{ reservation.client.email }}</td>
+                                                                <td class="text-truncate">{{ reservation.client.phone_number }}</td>
+                                                                <td class="text-truncate">{{ reservation.client.id_number }}</td>
+                                                                <td class="text-truncate">{{ reservation.start_date }}</td>
+                                                                <td class="text-truncate">{{ reservation.end_date }}</td>
+                                                                <td class="text-truncate">$ {{ reservation.rate }}</td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                                
+                                            </div>
+                                            <div class="tab-pane" id="settings">
+                                                <p>Food truck quinoa dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
+                                                <p class="mb-0">Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p>
+                                            </div>
+                                        </div>
+    
+                                    </div> <!-- end card-body-->
+                                </div> <!-- end card-->
+                            </div> <!-- end col -->
+                        </div>
+                        <!-- end row-->
+    
+                        
+                        
+                    </div> <!-- container-fluid -->
+                </div>
+                <!-- End Page-content -->
+
+                {% endblock content %}

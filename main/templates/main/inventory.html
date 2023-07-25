@@ -131,15 +131,13 @@
                                   <div class="col-xl-12">
                                       <div class="card">
                                           <div class="card-body">
-      
-                                              <h4 class="card-title">Recent Buyers</h4>
-                                              <p class="card-subtitle mb-4 font-size-13">Transaction period from 21 July to 25 Aug
                                               </p>
       
                                               <div class="table-responsive">
                                                 <table class="table table-centered table-hover table-xl mb-0" id="recent-orders">
                                                     <thead>
                                                         <tr>
+                                                            <th class="border-top-0">class</th>
                                                             <th class="border-top-0">Model</th>
                                                             <th class="border-top-0">Car Make</th>
                                                             <th class="border-top-0">Year</th>
@@ -147,11 +145,14 @@
                                                             <th class="border-top-0">Color</th>
                                                             <th class="border-top-0">Seating Capacity</th>
                                                             <th class="border-top-0">Daily Rate</th>
+                                                            <th class="border-top-0">Weekly Rate</th>
+                                                            <th class="border-top-0">Monthly Rate</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                         {% for car in cars %}
                                                             <tr>
+                                                                <td class="text-truncate">{{ car.car_class.name }}</td>
                                                                 <td class="text-truncate"><a href="{% url 'main:car_detail' car.id %}">{{ car.model.name }}</a></td>
                                                                 <td class="text-truncate">{{ car.make.name }}</td>
                                                                 <td class="text-truncate">{{ car.year }}</td>
@@ -159,6 +160,8 @@
                                                                 <td class="text-truncate">{{ car.color }}</td>
                                                                 <td class="text-truncate">{{ car.seating_capacity }}</td>
                                                                 <td class="text-truncate">$ {{ car.daily_rate }}</td>
+                                                                <td class="text-truncate">$ {{ car.weekly_rate }}</td>
+                                                                <td class="text-truncate">$ {{ car.monthly_rate }}</td>
                                                             </tr>
                                                         {% endfor %}
                                                     </tbody>
