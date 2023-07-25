@@ -5,7 +5,12 @@ from .forms import *
 from django.contrib.auth.decorators import login_required
 from datetime import date
 from django.db.models import Q
+from django.contrib import messages
+from django.utils import timezone
 
+
+
+from datetime import date
 
 def reservations(request):
     # Retrieve all Car objects from the database
@@ -28,11 +33,26 @@ def reservations(request):
         cars_list = cars_list.filter(car_class_id=car_class_filter)
 
     # Retrieve reservations with a start date greater than the current date
-    current_date = date.today()
+    current_date = timezone.now().date()
     future_reservations = Reservation.objects.filter(start_date__gt=current_date)
 
     # Count the number of future reservations
     future_reservations_count = future_reservations.count()
+
+    # Retrieve reservations that are active on the current date
+    current_reservations = Reservation.objects.filter(start_date__lte=current_date, end_date__gte=current_date)
+
+    # Count the number of current reservations
+    current_reservations_count = current_reservations.count()
+
+    # Retrieve reservations made on the current date
+    reservations_made_today = Reservation.objects.filter(created_at__date=current_date)
+    print(reservations_made_today)
+    print("Current Date:", current_date)
+
+
+    # Count the number of reservations made today
+    reservations_made_today_count = reservations_made_today.count()
 
     return render(
         request,
@@ -43,8 +63,13 @@ def reservations(request):
             'car_classes': car_classes,
             'future_reservations': future_reservations,
             'future_reservations_count': future_reservations_count,
+            'current_reservations': current_reservations,
+            'current_reservations_count': current_reservations_count,
+            'reservations_made_today': reservations_made_today,
+            'reservations_made_today_count': reservations_made_today_count,
         }
     )
+
 
 @login_required  # This decorator ensures the user is logged in to access the view
 def create_reservation(request, car_id):
@@ -76,7 +101,11 @@ def create_reservation(request, car_id):
             reservation.staff = request.user  # Set the staff field to the logged-in user
             reservation.save()
 
-            return redirect('reservation_success')  # Replace 'reservation_success' with the URL name for the success page
+            messages.success(request, 'Reservation created successfully.')
+            return redirect('reservations:reservations')  # Replace 'reservation_success' with the URL name for the success page
+        else:
+            messages.error(request, 'Error creating reservation. Please check the form data.')
+
     else:
         form = ReservationForm(initial={'car': car})  # Pass the initial data for the 'car' field
 

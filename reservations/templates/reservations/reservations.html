@@ -145,9 +145,15 @@
                                                 </a>
                                             </li>
                                             <li class="nav-item">
-                                                <a href="#settings" data-toggle="tab" aria-expanded="false" class="nav-link">
+                                                <a href="#current_rentals" data-toggle="tab" aria-expanded="false" class="nav-link">
                                                     <i class="mdi mdi-settings-outline d-lg-none d-block"></i>
-                                                    <span class="d-none d-lg-block">Settings</span>
+                                                    <span class="d-none d-lg-block">Cars on rent( {{current_reservations_count}} )</span>
+                                                </a>
+                                            </li>
+                                            <li class="nav-item">
+                                                <a href="#today_reservations" data-toggle="tab" aria-expanded="false" class="nav-link">
+                                                    <i class="mdi mdi-settings-outline d-lg-none d-block"></i>
+                                                    <span class="d-none d-lg-block">Todays Reservations( {{reservations_made_today_count}} )</span>
                                                 </a>
                                             </li>
                                         </ul>
@@ -205,9 +211,7 @@
                                                 <table class="table table-centered table-hover table-xl mb-0" id="car-reservations">
                                                     <thead>
                                                         <tr>
-                                                            <th class="border-top-0">Car Class</th>
-                                                            <th class="border-top-0">Model</th>
-                                                            <th class="border-top-0">Car Make</th>
+                                                            <th class="border-top-0">Car</th>
                                                             <th class="border-top-0">Number Plate</th>
                                                             <th class="border-top-0">Seating Capacity</th>
                                                             <th class="border-top-0">Client Name</th>
@@ -222,11 +226,9 @@
                                                     <tbody>
                                                         {% for reservation in future_reservations %}
                                                             <tr>
-                                                                <td class="text-truncate">{{ reservation.car.car_class.name }}</td>
                                                                 <td class="text-truncate">
-                                                                    <a href="{% url 'main:car_detail' reservation.car.id %}">{{ reservation.car.model.name }}</a>
+                                                                    <a href="{% url 'main:car_detail' reservation.car.id %}">{{ reservation.car.make.name }} {{ reservation.car.model.name }}</a>
                                                                 </td>
-                                                                <td class="text-truncate">{{ reservation.car.make.name }}</td>
                                                                 <td class="text-truncate">{{ reservation.car.number_plate }}</td>
                                                                 <td class="text-truncate">{{ reservation.car.seating_capacity }}</td>
                                                                 <td class="text-truncate">{{ reservation.client.first_name }} {{ reservation.client.last_name }}</td>
@@ -242,9 +244,77 @@
                                                 </table>
                                                 
                                             </div>
-                                            <div class="tab-pane" id="settings">
-                                                <p>Food truck quinoa dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim.</p>
-                                                <p class="mb-0">Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo. Nullam dictum felis eu pede mollis pretium. Integer tincidunt.Cras dapibus. Vivamus elementum semper nisi. Aenean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim.</p>
+                                            <div class="tab-pane" id="current_rentals">
+                                                <table class="table table-centered table-hover table-xl mb-0" id="car-reservations">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="border-top-0">Car</th>
+                                                            <th class="border-top-0">Number Plate</th>
+                                                            <th class="border-top-0">Seating Capacity</th>
+                                                            <th class="border-top-0">Client Name</th>
+                                                            <th class="border-top-0">client Email</th>
+                                                            <th class="border-top-0">Client Phone</th>
+                                                            <th class="border-top-0">Client ID</th>
+                                                            <th class="border-top-0">Start Date</th>
+                                                            <th class="border-top-0">End Date</th>
+                                                            <th class="border-top-0">Amount</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for reservation in current_reservations %}
+                                                            <tr>
+                                                                <td class="text-truncate">
+                                                                    <a href="{% url 'main:car_detail' reservation.car.id %}">{{ reservation.car.make.name }} {{ reservation.car.model.name }}</a>
+                                                                </td>
+                                                                <td class="text-truncate">{{ reservation.car.number_plate }}</td>
+                                                                <td class="text-truncate">{{ reservation.car.seating_capacity }}</td>
+                                                                <td class="text-truncate">{{ reservation.client.first_name }} {{ reservation.client.last_name }}</td>
+                                                                <td class="text-truncate">{{ reservation.client.email }}</td>
+                                                                <td class="text-truncate">{{ reservation.client.phone_number }}</td>
+                                                                <td class="text-truncate">{{ reservation.client.id_number }}</td>
+                                                                <td class="text-truncate">{{ reservation.start_date }}</td>
+                                                                <td class="text-truncate">{{ reservation.end_date }}</td>
+                                                                <td class="text-truncate">$ {{ reservation.rate }}</td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="tab-pane" id="today_reservations">
+                                                <table class="table table-centered table-hover table-xl mb-0" id="car-reservations">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="border-top-0">Car</th>
+                                                            <th class="border-top-0">Number Plate</th>
+                                                            <th class="border-top-0">Seating Capacity</th>
+                                                            <th class="border-top-0">Client Name</th>
+                                                            <th class="border-top-0">client Email</th>
+                                                            <th class="border-top-0">Client Phone</th>
+                                                            <th class="border-top-0">Client ID</th>
+                                                            <th class="border-top-0">Start Date</th>
+                                                            <th class="border-top-0">End Date</th>
+                                                            <th class="border-top-0">Amount</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for reservation in reservations_made_today %}
+                                                            <tr>
+                                                                <td class="text-truncate">
+                                                                    <a href="{% url 'main:car_detail' reservation.car.id %}">{{ reservation.car.make.name }} {{ reservation.car.model.name }}</a>
+                                                                </td>
+                                                                <td class="text-truncate">{{ reservation.car.number_plate }}</td>
+                                                                <td class="text-truncate">{{ reservation.car.seating_capacity }}</td>
+                                                                <td class="text-truncate">{{ reservation.client.first_name }} {{ reservation.client.last_name }}</td>
+                                                                <td class="text-truncate">{{ reservation.client.email }}</td>
+                                                                <td class="text-truncate">{{ reservation.client.phone_number }}</td>
+                                                                <td class="text-truncate">{{ reservation.client.id_number }}</td>
+                                                                <td class="text-truncate">{{ reservation.start_date }}</td>
+                                                                <td class="text-truncate">{{ reservation.end_date }}</td>
+                                                                <td class="text-truncate">$ {{ reservation.rate }}</td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
     
