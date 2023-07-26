@@ -39,16 +39,19 @@ def reservations(request):
     # Count the number of future reservations
     future_reservations_count = future_reservations.count()
 
+
     # Retrieve reservations that are active on the current date
     current_reservations = Reservation.objects.filter(start_date__lte=current_date, end_date__gte=current_date)
+    
 
     # Count the number of current reservations
     current_reservations_count = current_reservations.count()
 
     # Retrieve reservations made on the current date
-    reservations_made_today = Reservation.objects.filter(created_at__date=current_date)
+    print(current_date)
+    reservations_made_today = Reservation.objects.filter(created_at__gte=current_date, created_at__lt=current_date + timezone.timedelta(days=1))
     print(reservations_made_today)
-    print("Current Date:", current_date)
+   
 
 
     # Count the number of reservations made today
