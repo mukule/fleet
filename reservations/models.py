@@ -18,6 +18,8 @@ class Reservation(models.Model):
     rate = models.DecimalField(max_digits=8, decimal_places=2)
     discount = models.DecimalField(max_digits=8, decimal_places=2, default=0, null=True)
     created_at = models.DateTimeField(default=timezone.now)  # Use timezone.now as the default value
+    days = models.PositiveIntegerField(default=0, null=True)  # Number of days for the reservation
+    rates_applied = models.DecimalField(max_digits=8, decimal_places=2, default=0, null=True)  # Total rates after applying discount
 
     def __str__(self):
         return f"Reservation for {self.car} by {self.client} (Staff: {self.staff})"

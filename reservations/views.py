@@ -7,16 +7,15 @@ from datetime import date
 from django.db.models import Q
 from django.contrib import messages
 from django.utils import timezone
+from django.utils.timezone import now
+import json 
 
-
-
-from datetime import date
 
 def reservations(request):
     # Retrieve all Car objects from the database
     cars_list = Car.objects.all()
 
-    # Get the total number of cars
+    # Get the total number of cars in the fleet
     total_cars = cars_list.count()
 
     # Retrieve all car classes for the car class filter dropdown
@@ -39,23 +38,46 @@ def reservations(request):
     # Count the number of future reservations
     future_reservations_count = future_reservations.count()
 
-
     # Retrieve reservations that are active on the current date
     current_reservations = Reservation.objects.filter(start_date__lte=current_date, end_date__gte=current_date)
-    
 
     # Count the number of current reservations
     current_reservations_count = current_reservations.count()
 
     # Retrieve reservations made on the current date
-    print(current_date)
     reservations_made_today = Reservation.objects.filter(created_at__gte=current_date, created_at__lt=current_date + timezone.timedelta(days=1))
-    print(reservations_made_today)
-   
-
 
     # Count the number of reservations made today
     reservations_made_today_count = reservations_made_today.count()
+
+    # Get the list of car IDs from current reservations and reservations made today
+    reserved_car_ids = current_reservations.values_list('car_id', flat=True)
+    reserved_today_car_ids = reservations_made_today.values_list('car_id', flat=True)
+
+    # Get the list of available car IDs (cars not on rent)
+    available_car_ids = cars_list.exclude(id__in=reserved_car_ids).exclude(id__in=reserved_today_car_ids)
+
+    # Filter the cars_list to get only the available cars
+    available_cars_list = cars_list.filter(id__in=available_car_ids)
+
+    # Calculate the available cars in the fleet (total fleet minus the cars that are currently on rent)
+    available_cars_count = available_cars_list.count()
+
+    # Get the total number of car classes
+    total_car_classes = car_classes.count()
+
+    # Create lists to store car class names and corresponding car counts and available car counts
+    car_class_names = []
+    car_counts = []
+    available_cars_class_counts = []
+
+    for car_class in car_classes:
+        car_class_names.append(car_class.name)
+        car_count = Car.objects.filter(car_class=car_class).count()
+        car_counts.append(car_count)
+        available_cars_class_count = Car.objects.filter(car_class=car_class, id__in=available_car_ids).count()
+        available_cars_class_counts.append(available_cars_class_count)
+        print(f"Car Class: {car_class.name}, Total Cars: {car_count}, Available Cars: {available_cars_class_count}")
 
     return render(
         request,
@@ -63,6 +85,8 @@ def reservations(request):
         {
             'cars_list': cars_list,
             'total_cars': total_cars,
+            'available_cars_list': available_cars_list,
+            'available_cars_count': available_cars_count,
             'car_classes': car_classes,
             'future_reservations': future_reservations,
             'future_reservations_count': future_reservations_count,
@@ -70,8 +94,12 @@ def reservations(request):
             'current_reservations_count': current_reservations_count,
             'reservations_made_today': reservations_made_today,
             'reservations_made_today_count': reservations_made_today_count,
+           'car_class_names': json.dumps(car_class_names),
+           'car_counts': json.dumps(car_counts),
+           'available_cars_class_counts': json.dumps(available_cars_class_counts),
         }
     )
+
 
 
 @login_required  # This decorator ensures the user is logged in to access the view
@@ -81,31 +109,63 @@ def create_reservation(request, car_id):
     if request.method == 'POST':
         form = ReservationForm(request.POST)
         if form.is_valid():
-            reservation = form.save(commit=False)
-
-            # Calculate the duration in days
             start_date = form.cleaned_data['start_date']
             end_date = form.cleaned_data['end_date']
-            duration_days = (end_date - start_date).days + 1
 
-            # Set the rates based on the duration
-            if duration_days < 7:
-                reservation.rate = car.daily_rate * duration_days
-            elif duration_days >= 7 and duration_days < 30:
-                reservation.rate = car.weekly_rate * (duration_days // 7)
+            # Check if the start date is less than the current date
+            if start_date < now().date():
+                messages.error(request, "Start date cannot be in the past.")
+            # Check if the end date is less than the start date
+            elif end_date < start_date:
+                messages.error(request, "End date cannot be before the start date.")
             else:
-                reservation.rate = car.monthly_rate * (duration_days // 30)
+                # Check if the car is already reserved for any overlapping period
+                overlapping_reservations = Reservation.objects.filter(
+                    car=car,
+                    start_date__lte=end_date,
+                    end_date__gte=start_date,
+                )
 
-            # Apply the discount
-            reservation.rate -= reservation.rate * (reservation.discount / 100)
+                if overlapping_reservations.exists():
+                    reserved_dates = [
+                        f"{reservation.start_date.strftime('%Y-%m-%d')} to {reservation.end_date.strftime('%Y-%m-%d')}"
+                        for reservation in overlapping_reservations
+                    ]
+                    reserved_dates_str = ', '.join(reserved_dates)
+                    messages.error(request, f"Car is already reserved for the following dates: {reserved_dates_str}.")
+                else:
+                    reservation = form.save(commit=False)
 
-            # Assign the car and staff, then save the reservation
-            reservation.car = car
-            reservation.staff = request.user  # Set the staff field to the logged-in user
-            reservation.save()
+                    # Calculate the duration in days
+                    duration_days = (end_date - start_date).days + 1
 
-            messages.success(request, 'Reservation created successfully.')
-            return redirect('reservations:reservations')  # Replace 'reservation_success' with the URL name for the success page
+                    # Set the rates based on the duration
+                    if duration_days < 7:
+                        rate_before_discount = car.daily_rate
+                        reservation.rate = rate_before_discount * duration_days
+                    elif duration_days >= 7 and duration_days < 30:
+                        rate_before_discount = car.weekly_rate
+                        reservation.rate = rate_before_discount * (duration_days // 7)
+                    else:
+                        rate_before_discount = car.monthly_rate
+                        reservation.rate = rate_before_discount * (duration_days // 30)
+
+                    # Save the rates before applying the discount
+                    reservation.rates_applied = rate_before_discount
+
+                    # Apply the discount
+                    reservation.rate -= reservation.rate * (reservation.discount / 100)
+
+                    # Assign the car and staff, then save the reservation
+                    reservation.car = car
+                    reservation.staff = request.user  # Set the staff field to the logged-in user
+                    reservation.days = duration_days  # Save the duration in days
+                    reservation.save()
+
+                    messages.success(request, 'Reservation created successfully.')
+                    return redirect('reservations:reservations')  # Replace 'reservation_success' with the URL name for the success page
+
+        # If the form is not valid, render the form again
         else:
             messages.error(request, 'Error creating reservation. Please check the form data.')
 
