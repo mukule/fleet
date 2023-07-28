@@ -1,0 +1,88 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Invoice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            border: 1px solid #000;
+            text-align: left;
+        }
+
+        th {
+            background-color: #154545;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .logo {
+            width: 100px;
+            height: 100px;
+        }
+
+        /* Center the content vertically */
+        .vertical-center {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th style="border: 0; background-color: #154545;">
+                    <div class="vertical-center">
+                        <!-- Logo -->
+                        <img src="https://topstarcarhire.co.ke/img/topstar.png" alt="Your Logo" class="logo">
+                        <!-- Add company info here if needed -->
+                        <div style="font-size: 24px; font-weight: bold; text-align: right; flex: 1;">Invoice</div>
+                    </div>
+                </th>
+                <th style="border: 0; background-color: #154545;">
+                    <div class="vertical-center">
+                        <!-- Logo -->
+                        <img src="https://topstarcarhire.co.ke/img/topstar.png" alt="Your Logo" class="logo">
+                        <!-- Add company info here if needed -->
+                        <div style="font-size: 24px; font-weight: bold; text-align: right; flex: 1;">Invoice</div>
+                    </div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td colspan="2" style="border: 0; font-size: 24px; font-weight: bold; text-align: center;">
+                    Invoice for Reservation #{{ reservation.reservation_number }}
+                </td>
+            </tr>
+            <tr>
+                <td>Customer Name:</td>
+                <td>{{ reservation.client.first_name }} {{ reservation.client.last_name }}</td>
+            </tr>
+            <tr>
+                <td>Car:</td>
+                <td>{{ reservation.car }}</td>
+            </tr>
+            <tr>
+                <td>Start Date:</td>
+                <td>{{ reservation.start_date }}</td>
+            </tr>
+            <tr>
+                <td>End Date:</td>
+                <td>{{ reservation.end_date }}</td>
+            </tr>
+            <!-- Add other details to the table as needed -->
+        </tbody>
+    </table>
+</body>
+</html>

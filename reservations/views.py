@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.utils import timezone
 from django.utils.timezone import now
 import json 
+from django.utils.crypto import get_random_string
 
 
 def reservations(request):
@@ -100,7 +101,9 @@ def reservations(request):
         }
     )
 
-
+def generate_unique_reservation_number():
+    # Generate a 4-digit random string
+    return get_random_string(length=4, allowed_chars='0123456789')
 
 @login_required  # This decorator ensures the user is logged in to access the view
 def create_reservation(request, car_id):
@@ -136,6 +139,14 @@ def create_reservation(request, car_id):
                 else:
                     reservation = form.save(commit=False)
 
+                    # Generate a unique 4-digit reservation number
+                    unique_number = generate_unique_reservation_number()
+                    while Reservation.objects.filter(reservation_number=unique_number).exists():
+                        unique_number = generate_unique_reservation_number()
+
+                    # Save the unique reservation number
+                    reservation.reservation_number = unique_number
+
                     # Calculate the duration in days
                     duration_days = (end_date - start_date).days + 1
 
@@ -163,7 +174,7 @@ def create_reservation(request, car_id):
                     reservation.save()
 
                     messages.success(request, 'Reservation created successfully.')
-                    return redirect('reservations:reservations')  # Replace 'reservation_success' with the URL name for the success page
+                    return redirect('reservations:reservations')  # Replace 'reservations' with the URL name for the reservations list page
 
         # If the form is not valid, render the form again
         else:
