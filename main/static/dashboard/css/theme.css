@@ -1,9 +1,4 @@
-/*
-Template Name: Xacton - Admin & Dashboard Template
-Author: Myra Studio
-Version: 1.0.0
-File: App Css
-*/
+
 /*
 1. Topbar
 2. Header
@@ -150,7 +145,7 @@ File: App Css
   right: 0;
   left: 0;
   z-index: 999;
-  background-color: #2f4050;
+  background-color: #154545;
   padding: 0 calc(24px / 2);
 }
 

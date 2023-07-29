@@ -19,8 +19,7 @@
         <link rel="stylesheet" href="{% static 'dashboard/css/theme.min.css' %}" type="text/css">
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-
-        
+  
 
     </head>
 
@@ -86,45 +85,24 @@
             }
         });
     </script>
+<script type="text/javascript">
+    function convertHTMLtoPDF() {
+        const { jsPDF } = window.jspdf;
+        const invoiceNumber = "{{ reservation.reservation_number }}"; // The invoice number passed from the view
+        const pdfFileName = `Invoice_${invoiceNumber}`;
 
+        let doc = new jsPDF('l', 'mm', [1500, 1400]);
+        let pdfjs = document.querySelector('#invoice');
 
-<script>
-
-    const options = {
-      margin: 0.5,
-      filename: 'invoice.pdf',
-      image: { 
-        type: 'jpeg', 
-        quality: 500
-      },
-      html2canvas: { 
-        scale: 1 
-      },
-      jsPDF: { 
-        unit: 'in', 
-        format: 'letter', 
-        orientation: 'portrait' 
-      }
+        doc.html(pdfjs, {
+            callback: function (doc) {
+                doc.save(pdfFileName + ".pdf");
+            },
+            x: 12,
+            y: 12
+        });
     }
-    
-    $('.btn-download').click(function(e){
-      e.preventDefault();
-      const element = document.getElementById('invoice');
-      html2pdf().from(element).set(options).save();
-    });
-
-
-    function printDiv(divName) {
-     var printContents = document.getElementById(divName).innerHTML;
-     var originalContents = document.body.innerHTML;
-
-     document.body.innerHTML = printContents;
-
-     window.print();
-
-     document.body.innerHTML = originalContents;
-}
-    </script>
+</script>
     <!-- ... -->
     <!-- ... -->
 </body>

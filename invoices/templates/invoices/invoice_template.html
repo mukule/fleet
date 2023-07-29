@@ -1,88 +1,67 @@
-{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Invoice</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th, td {
-            padding: 10px;
-            border: 1px solid #000;
-            text-align: left;
-        }
-
-        th {
-            background-color: #154545;
-            color: #fff;
-            font-weight: bold;
-        }
-
-        .logo {
-            width: 100px;
-            height: 100px;
-        }
-
-        /* Center the content vertically */
-        .vertical-center {
-            display: flex;
-            align-items: center;
-        }
-    </style>
+	<meta charset="utf-8">
+	<title>
+		jsPDF - Create PDFs with HTML5 JavaScript Library
+	</title>
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<script src=
+"https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js">
+	</script>
+	<script src=
+"https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">
+	</script>
+	<script src=
+"https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js">
+	</script>
 </head>
+
 <body>
-    <table>
-        <thead>
-            <tr>
-                <th style="border: 0; background-color: #154545;">
-                    <div class="vertical-center">
-                        <!-- Logo -->
-                        <img src="https://topstarcarhire.co.ke/img/topstar.png" alt="Your Logo" class="logo">
-                        <!-- Add company info here if needed -->
-                        <div style="font-size: 24px; font-weight: bold; text-align: right; flex: 1;">Invoice</div>
-                    </div>
-                </th>
-                <th style="border: 0; background-color: #154545;">
-                    <div class="vertical-center">
-                        <!-- Logo -->
-                        <img src="https://topstarcarhire.co.ke/img/topstar.png" alt="Your Logo" class="logo">
-                        <!-- Add company info here if needed -->
-                        <div style="font-size: 24px; font-weight: bold; text-align: right; flex: 1;">Invoice</div>
-                    </div>
-                </th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td colspan="2" style="border: 0; font-size: 24px; font-weight: bold; text-align: center;">
-                    Invoice for Reservation #{{ reservation.reservation_number }}
-                </td>
-            </tr>
-            <tr>
-                <td>Customer Name:</td>
-                <td>{{ reservation.client.first_name }} {{ reservation.client.last_name }}</td>
-            </tr>
-            <tr>
-                <td>Car:</td>
-                <td>{{ reservation.car }}</td>
-            </tr>
-            <tr>
-                <td>Start Date:</td>
-                <td>{{ reservation.start_date }}</td>
-            </tr>
-            <tr>
-                <td>End Date:</td>
-                <td>{{ reservation.end_date }}</td>
-            </tr>
-            <!-- Add other details to the table as needed -->
-        </tbody>
-    </table>
+	<h2 style="color:green">GeeksforGeeks</h2>
+	<h3>HTML to canvas using jsPDF library</h3>
+	<div class="container">
+					
+		<input type="button" value="Convert HTML to PDF"			
+				onclick="convertHTMLtoPDF()">
+		<div id="divID">
+			<div class="">
+				<h1>Learning Computer Science</h1>
+				
+				<p class="">
+					CPP:<br />My first implementation was in this
+				</p>
+				<p class="">
+					ALGO:<br />Algorithms are fun
+				</p>
+				<p class="">
+					TYPESCRIPT:<br />New technology
+				</p>
+				<p class="">
+					JAVASCRIPT:<br />Client side programming
+				</p>		
+			</div>
+		</div>
+	</div> <!-- /container -->
+
+	<script type="text/javascript">
+		function convertHTMLtoPDF() {
+			const { jsPDF } = window.jspdf;
+
+			let doc = new jsPDF('l', 'mm', [1500, 1400]);
+			let pdfjs = document.querySelector('#divID');
+
+			doc.html(pdfjs, {
+				callback: function(doc) {
+					doc.save("newpdf.pdf");
+				},
+				x: 12,
+				y: 12
+			});			
+		}		
+	</script>	
 </body>
 </html>
