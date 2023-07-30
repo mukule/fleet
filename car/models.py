@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MaxValueValidator
 
 class CarClass(models.Model):
     name = models.CharField(max_length=100)
@@ -18,7 +19,7 @@ class CarModel(models.Model):
 
     def __str__(self):
         return self.name
-
+    
 
 class Car(models.Model):
     number_plate = models.CharField(max_length=20, unique=True)
@@ -32,6 +33,7 @@ class Car(models.Model):
     seating_capacity = models.PositiveIntegerField()
     image = models.ImageField(upload_to='car_images/', blank=True, null=True)
     car_class = models.ForeignKey(CarClass, on_delete=models.SET_NULL, null=True)
+    mileage = models.PositiveIntegerField(default=0, validators=[MaxValueValidator(999999)], null=True)  # 6-digit mileage
 
     def __str__(self):
-        return f"{self.make.name} - {self.model.name} ({self.year}, {self.color}, Seats: {self.seating_capacity}) - {self.number_plate}"
+        return f"{self.make.name} {self.model.name} - {self.number_plate}"

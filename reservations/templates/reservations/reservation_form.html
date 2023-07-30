@@ -17,7 +17,7 @@
                                           <div class="page-title-right">
                                               <ol class="breadcrumb m-0">
                                                   <li class="breadcrumb-item"><a href="javascript: void(0);">Vehicles</a></li>
-                                                  <li class="breadcrumb-item active"><a href="">Reservations</a></li>
+                                                  <li class="breadcrumb-item active"><a href="">{{ car.make.name }} {{ car.model.name }}</a></li>
                                               </ol>
                                           </div>
                                           
@@ -128,7 +128,7 @@
                                 </div> <!-- end col-->
                             </div>
                         <div class="row">
-                            <div class="col-xl-12">
+                            <div class="col-xl-8">
                                 <div class="card">
                                     <div class="card-body">
 
@@ -136,22 +136,35 @@
                                             {% csrf_token %}
                                             <fieldset class="form-group">
                                               <div class="form-row">
-                                                <div class="form-group col-md-4 mb-0">
+                                                <div class="form-group col-md-6 mb-0">
                                                   {{ form.car|as_crispy_field }}
                                                 </div>
-                                                <div class="form-group col-md-4 mb-0">
+                                                <div class="form-group col-md-6 mb-0">
                                                   {{ form.client|as_crispy_field }}
+                                                </div>
+                                                <div class="form-group col-md-6 mb-0">
+                                                    
+                                                  </div>
+                                              </div>
+                                              <div class="form-row">
+                                                <div class="form-group col-md-6 mb-0">
+                                                  {{ form.start_date|as_crispy_field }}
+                                                </div>
+                                                <div class="form-group col-md-6 mb-0">
+                                                  {{ form.end_date|as_crispy_field }}
                                                 </div>
                                               </div>
                                               <div class="form-row">
-                                                <div class="form-group col-md-4 mb-0">
-                                                  {{ form.start_date|as_crispy_field }}
+                                                <div class="form-group col-md-6 mb-0">
+                                                    {{ form.daily_rates|as_crispy_field }}
+                                                  </div>
+                                              </div>
+                                              <div class="form-row">
+                                                <div class="form-group col-md-6 mb-0">
+                                                  {{ form.apply_normal_rates|as_crispy_field }}
                                                 </div>
-                                                <div class="form-group col-md-4 mb-0">
-                                                  {{ form.end_date|as_crispy_field }}
-                                                </div>
-                                                <div class="form-group col-md-4 mb-0">
-                                                  {{ form.discount|as_crispy_field }}
+                                                <div class="form-group col-md-6 mb-0">
+                                                  {{ form.add_VAT|as_crispy_field }}
                                                 </div>
                                               </div>
                                             </fieldset>
@@ -165,6 +178,39 @@
     
                                     </div> <!-- end card-body-->
                                 </div> <!-- end card-->
+                            </div> <!-- end col -->
+                            <div class="col-xl-4">
+                                <div class="card text-center">
+                                    <div class="card-body">
+                                        <div class="card-body">
+
+                                            <h4 class="card-title">{{ car.make.name }} {{ car.model.name }} <br> {{ car.number_plate }}</h4>
+                                            <p class="card-subtitle mb-4 font-size-13">Hire Rates
+                                            </p>
+    
+                                            <div class="table-responsive">
+                                                <table class="table table-centered table-hover table-xl mb-0" id="recent-orders">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="border-top-0">Daily</th>
+                                                            <th class="border-top-0">Weekly</th>
+                                                            <th class="border-top-0">Monthly</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="text-truncate">{{ car.daily_rate }}</td>
+                                                            <td class="text-truncate">{{ car.weekly_rate }}</td>
+                                                            <td class="text-truncate">{{ car.monthly_rate }}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+    
+                                        </div> <!-- end card-body-->
+                                        
+                                    </div>
+                                </div>
                             </div> <!-- end col -->
                         </div>
                         <!-- end row-->

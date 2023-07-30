@@ -7,9 +7,11 @@ from datetime import date
 from django.db.models import Q
 from django.contrib import messages
 from django.utils import timezone
-from django.utils.timezone import now
+from django.utils.timezone import now, make_aware
 import json 
 from django.utils.crypto import get_random_string
+from datetime import datetime, time
+from decimal import Decimal
 
 
 def reservations(request):
@@ -116,7 +118,7 @@ def create_reservation(request, car_id):
             end_date = form.cleaned_data['end_date']
 
             # Check if the start date is less than the current date
-            if start_date < now().date():
+            if start_date < timezone.now():
                 messages.error(request, "Start date cannot be in the past.")
             # Check if the end date is less than the start date
             elif end_date < start_date:
@@ -150,33 +152,54 @@ def create_reservation(request, car_id):
                     # Calculate the duration in days
                     duration_days = (end_date - start_date).days + 1
 
-                    # Set the rates based on the duration
-                    if duration_days < 7:
-                        rate_before_discount = car.daily_rate
-                        reservation.rate = rate_before_discount * duration_days
-                    elif duration_days >= 7 and duration_days < 30:
-                        rate_before_discount = car.weekly_rate
-                        reservation.rate = rate_before_discount * (duration_days // 7)
+                    if form.cleaned_data['apply_normal_rates']:
+                        # Using normal rates
+                        if duration_days < 7:
+                            rate_before_discount = car.daily_rate
+                        elif duration_days >= 7 and duration_days < 30:
+                            rate_before_discount = car.weekly_rate
+                        else:
+                            rate_before_discount = car.monthly_rate
+
+                        # Save the rates before applying the discount in the daily_rates field
+                        reservation.daily_rates = rate_before_discount
                     else:
-                        rate_before_discount = car.monthly_rate
-                        reservation.rate = rate_before_discount * (duration_days // 30)
+                        # Using custom rates
+                        rate_before_discount = form.cleaned_data['daily_rates']
 
-                    # Save the rates before applying the discount
-                    reservation.rates_applied = rate_before_discount
+                        # Check if daily rates are provided when normal rates are not used
+                        if not rate_before_discount:
+                            messages.error(request, "Please enter the daily rates.")
+                            return render(request, 'reservations/reservation_form.html', {'form': form, 'car': car})
 
-                    # Apply the discount
-                    reservation.rate -= reservation.rate * (reservation.discount / 100)
+                    # Convert the rate_before_discount to Decimal before performing calculations
+                    rate_before_discount = Decimal(str(rate_before_discount))
 
-                    # Assign the car and staff, then save the reservation
+                    # Calculate the total amount before VAT
+                    reservation.rate = rate_before_discount * duration_days
+
+                    # Apply VAT if selected
+                    if form.cleaned_data['add_VAT']:
+                        vat_rate = 0.16  # You can adjust this rate accordingly
+                        reservation.vat = reservation.rate * Decimal(str(vat_rate))
+
+                    # Calculate the total amount (excluding VAT) and assign to total_amount field
+                    reservation.total_amount = reservation.rate
+
+                    # Calculate the total amount including VAT (if applicable) and assign to total_amount_vat field
+                    reservation.total_amount_vat = reservation.rate + reservation.vat
+
+                    # Assign the car, client, and staff, then save the reservation
                     reservation.car = car
                     reservation.staff = request.user  # Set the staff field to the logged-in user
+                    reservation.client = form.cleaned_data['client']
                     reservation.days = duration_days  # Save the duration in days
                     reservation.save()
 
                     messages.success(request, 'Reservation created successfully.')
                     return redirect('reservations:reservations')  # Replace 'reservations' with the URL name for the reservations list page
 
-        # If the form is not valid, render the form again
+        # If the form is not valid or there are errors, render the form again
         else:
             messages.error(request, 'Error creating reservation. Please check the form data.')
 
