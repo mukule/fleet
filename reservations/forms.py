@@ -1,5 +1,5 @@
 from django import forms
-from .models import Reservation
+from .models import *
 
 class ReservationForm(forms.ModelForm):
     apply_normal_rates = forms.BooleanField(required=False, initial=False)
@@ -20,3 +20,23 @@ class ReservationForm(forms.ModelForm):
             field.widget.attrs['class'] = 'form-control'
         self.fields['start_date'].widget.attrs['placeholder'] = 'YYYY-MM-DD HH:MM'
         self.fields['end_date'].widget.attrs['placeholder'] = 'YYYY-MM-DD HH:MM'
+
+
+class CarOutForm(forms.ModelForm):
+    class Meta:
+        model = CarOut
+        fields = ['number_plate', 'make', 'model', 'year', 'color', 'daily_rate', 'seating_capacity', 'car_class', 'mileage']
+
+    def __init__(self, *args, **kwargs):
+        initial_data = kwargs.get('initial', {})
+        if initial_data.get('make'):
+            # Convert make name to the corresponding CarMake object
+            initial_data['make'] = CarMake.objects.get(name=initial_data['make'])
+        if initial_data.get('model'):
+            # Convert model name to the corresponding CarModel object
+            initial_data['model'] = CarModel.objects.get(name=initial_data['model'])
+
+        super().__init__(*args, **kwargs)
+
+        # Set initial data
+        self.initial = initial_data

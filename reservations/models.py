@@ -4,6 +4,8 @@ from car.models import *
 from users.models import *
 from datetime import date
 from django.utils import timezone
+from django.core.validators import MaxValueValidator
+
 
 
 User = get_user_model()
@@ -36,5 +38,17 @@ class Reservation(models.Model):
     def __str__(self):
         return f"Reservation #{self.reservation_number} for {self.car} by {self.client} (Staff: {self.staff})"
 
+class CarOut(models.Model):
+    # Car details
+    number_plate = models.CharField(max_length=20, unique=True)
+    make = models.CharField(max_length=100)  # Assuming CarMake is a CharField or related model not used
+    model = models.CharField(max_length=100)  # Assuming CarModel is a CharField or related model not used
+    year = models.PositiveIntegerField()
+    color = models.CharField(max_length=50)
+    daily_rate = models.DecimalField(max_digits=8, decimal_places=2)
+    seating_capacity = models.PositiveIntegerField()
+    car_class = models.CharField(max_length=100)  # Assuming CarClass is a CharField or related model not used
+    mileage = models.PositiveIntegerField(default=0, validators=[MaxValueValidator(999999)])  # 6-digit mileage
 
-    
+    def __str__(self):
+        return f"{self.make} {self.model} - {self.number_plate}"

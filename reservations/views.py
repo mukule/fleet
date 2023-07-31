@@ -196,8 +196,8 @@ def create_reservation(request, car_id):
                     reservation.days = duration_days  # Save the duration in days
                     reservation.save()
 
-                    messages.success(request, 'Reservation created successfully.')
-                    return redirect('reservations:reservations')  # Replace 'reservations' with the URL name for the reservations list page
+                    # messages.success(request, 'Reservation created successfully.')
+                    return redirect('reservations:confirm_make_contract', reservation_id=reservation.id)  # Replace 'reservations' with the URL name for the reservations list page
 
         # If the form is not valid or there are errors, render the form again
         else:
@@ -207,3 +207,46 @@ def create_reservation(request, car_id):
         form = ReservationForm(initial={'car': car})  # Pass the initial data for the 'car' field
 
     return render(request, 'reservations/reservation_form.html', {'form': form, 'car': car})
+
+def confirm_make_contract(request, reservation_id):
+    # Retrieve the reservation object using the reservation_id
+    reservation = get_object_or_404(Reservation, id=reservation_id)
+
+    # Any additional code to process the reservation data or prepare data for the contract template
+
+    # Pass the reservation object to the template context
+    return render(request, 'reservations/confirm_contract.html', {'reservation': reservation})
+
+def make_contract(request, reservation_id):
+    reservation = get_object_or_404(Reservation, id=reservation_id)
+    car = reservation.car
+
+    if request.method == 'POST':
+        form = CarOutForm(request.POST)
+        if form.is_valid():
+            car_out_instance = form.save(commit=False)
+            car_out_instance.save()
+
+            # Display success message
+            messages.success(request, 'Car Details updated succesfully')
+
+            # Reload the same page with the form
+            form = CarOutForm(initial=form.cleaned_data)
+
+    else:
+        initial_data = {
+            'number_plate': car.number_plate,
+            'make': car.make.name if car.make else None,
+            'model': car.model.name if car.model else None,
+            'year': car.year,
+            'color': car.color,
+            'daily_rate': car.daily_rate,
+            'weekly_rate': car.weekly_rate,
+            'monthly_rate': car.monthly_rate,
+            'seating_capacity': car.seating_capacity,
+            'car_class': car.car_class.name if car.car_class else None,
+            'mileage': car.mileage,
+        }
+        form = CarOutForm(initial=initial_data)
+
+    return render(request, 'reservations/contract_details.html', {'form': form, 'reservation': reservation})

@@ -24,7 +24,7 @@ class CarModel(models.Model):
 class Car(models.Model):
     number_plate = models.CharField(max_length=20, unique=True)
     make = models.ForeignKey(CarMake, on_delete=models.CASCADE, null=True)
-    model = models.ForeignKey(CarModel, on_delete=models.CASCADE)
+    model = models.ForeignKey(CarModel, on_delete=models.CASCADE, null=True)
     year = models.PositiveIntegerField()
     color = models.CharField(max_length=50)
     daily_rate = models.DecimalField(max_digits=8, decimal_places=2)
@@ -36,4 +36,6 @@ class Car(models.Model):
     mileage = models.PositiveIntegerField(default=0, validators=[MaxValueValidator(999999)], null=True)  # 6-digit mileage
 
     def __str__(self):
-        return f"{self.make.name} {self.model.name} - {self.number_plate}"
+        make_name = self.make.name if self.make else "N/A"
+        model_name = self.model.name if self.model else "N/A"
+        return f"{make_name} {model_name} - {self.number_plate}"
