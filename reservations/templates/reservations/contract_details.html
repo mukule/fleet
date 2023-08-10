@@ -36,10 +36,10 @@
                                                 <i class="mdi mdi-home-variant d-lg-none d-block"></i>
                                                 <span class="d-none d-lg-block">Car Details</span>
                                             </a>
-                                            <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#v-pills-profile" role="tab" aria-controls="v-pills-profile"
+                                            <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#client-details" role="tab" aria-controls="v-pills-profile"
                                                 aria-selected="false">
                                                 <i class="mdi mdi-account-circle d-lg-none d-block"></i>
-                                                <span class="d-none d-lg-block">Profile</span>
+                                                <span class="d-none d-lg-block">Client Details</span>
                                             </a>
                                             <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings"
                                                 aria-selected="false">
@@ -52,62 +52,56 @@
                                     <div class="col-sm-10">
                                         <div class="tab-content" id="v-pills-tabContent">
                                             <div class="tab-pane fade active show" id="car-details" role="tabpanel" aria-labelledby="v-pills-home-tab">
+                                                <!-- car details form -->
                                                 <form method="post" enctype="multipart/form-data" class="form-horizontal">
                                                     {% csrf_token %}
                                                     <fieldset class="form-group">
                                                       <div class="form-row">
                                                         <div class="form-group col-md-4 mb-0">
-                                                          {{ form.number_plate|as_crispy_field }}
+                                                          {{ car_form.number_plate|as_crispy_field }}
                                                         </div>
                                                         <div class="form-group col-md-4 mb-0">
-                                                          {{ form.make|as_crispy_field }}
+                                                          {{ car_form.make|as_crispy_field }}
                                                         </div>
                                                         <div class="form-group col-md-4 mb-0">
-                                                            {{ form.model|as_crispy_field }}
+                                                            {{ car_form.model|as_crispy_field }}
                                                           </div>
                                                         
                                                       </div>
                                                       <div class="form-row">
                                                         <div class="form-group col-md-4 mb-0">
-                                                          {{ form.year|as_crispy_field }}
+                                                          {{ car_form.year|as_crispy_field }}
                                                         </div>
                                                         <div class="form-group col-md-4 mb-0">
-                                                          {{ form.car_class|as_crispy_field }}
+                                                          {{ car_form.car_class|as_crispy_field }}
                                                         </div>
                                                         <div class="form-group col-md-4 mb-0">
-                                                            {{ form.color|as_crispy_field }}
+                                                            {{ car_form.color|as_crispy_field }}
                                                           </div>
                                                         
                                                       </div>
                                                       <div class="form-row">
                                                         <div class="form-group col-md-4 mb-0">
-                                                          {{ form.mileage|as_crispy_field }}
+                                                          {{ car_form.mileage|as_crispy_field }}
                                                         </div>
                                                         <div class="form-group col-md-4 mb-0">
-                                                          {{ form.seating_capacity|as_crispy_field }}
+                                                          {{ car_form.seating_capacity|as_crispy_field }}
                                                         </div>
                                                         <div class="form-group col-md-4 mb-0">
-                                                            {{ form.daily_rate|as_crispy_field }}
+                                                            {{ car_form.daily_rate|as_crispy_field }}
                                                           </div>
-                                                        
                                                       </div>
-                                                      
-                                                     
-                                                      
                                                     </fieldset>
                                                     <div class="form-row text-center">
                                                       <div class="form-group col-md-12 mb-2">
-                                                        <button style="background-color: #3d4255; border: #3d4255;" class="btn btn-success" type="submit">submit</button>
+                                                        <button name="car_details_submit" style="background-color: #3d4255; border: #3d4255;" class="btn btn-success" type="submit">Submit Car Details</button>
+
                                                       </div>
                                                     </div>
                                                   </form>
                                             </div>
-                                            <div class="tab-pane fade" id="v-pills-profile" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                                                <p class="mb-0">Culpa dolor voluptate do laboris laboris irure reprehenderit id incididunt duis pariatur mollit aute magna
-                                                    pariatur consectetur. Eu veniam duis non ut dolor deserunt commodo et minim in quis laboris ipsum velit
-                                                    id veniam. Quis ut consectetur adipisicing officia excepteur non sit. Ut et elit aliquip labore Leggings
-                                                    enim eu. Ullamco mollit occaecat dolore ipsum id officia mollit qui esse anim eiusmod do sint minim consectetur
-                                                    qui.</p>
+                                            <div class="tab-pane fade" id="client-details" role="tabpanel" aria-labelledby="v-pills-profile-tab">
+                                               <!-- client-details form -->
                                             </div>
                                             <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
                                                 <p class="mb-0">Food truck quinoa dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis

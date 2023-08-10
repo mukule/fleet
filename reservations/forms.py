@@ -22,7 +22,7 @@ class ReservationForm(forms.ModelForm):
         self.fields['end_date'].widget.attrs['placeholder'] = 'YYYY-MM-DD HH:MM'
 
 
-class CarOutForm(forms.ModelForm):
+class CarDetailsForm(forms.ModelForm):
     class Meta:
         model = CarOut
         fields = ['number_plate', 'make', 'model', 'year', 'color', 'daily_rate', 'seating_capacity', 'car_class', 'mileage']
@@ -40,3 +40,17 @@ class CarOutForm(forms.ModelForm):
 
         # Set initial data
         self.initial = initial_data
+
+class RenterDetailsForm(forms.ModelForm):
+    class Meta:
+        model = CarOut
+        fields = [
+            'full_name', 'nationality', 'ld_appt_number', 'age', 'drivers_license_number', 'country_of_issue',
+            'license_expiry', 'credit_card', 'credit_card_number', 'card_expiry', 'physical_address', 'mobile_number',
+            'office_telephone', 'residence_address'
+        ]
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name, field in self.fields.items():
+            field.widget.attrs['class'] = 'form-control'

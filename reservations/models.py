@@ -41,14 +41,30 @@ class Reservation(models.Model):
 class CarOut(models.Model):
     # Car details
     number_plate = models.CharField(max_length=20, unique=True)
-    make = models.CharField(max_length=100)  # Assuming CarMake is a CharField or related model not used
-    model = models.CharField(max_length=100)  # Assuming CarModel is a CharField or related model not used
+    make = models.CharField(max_length=100)
+    model = models.CharField(max_length=100)
     year = models.PositiveIntegerField()
     color = models.CharField(max_length=50)
     daily_rate = models.DecimalField(max_digits=8, decimal_places=2)
     seating_capacity = models.PositiveIntegerField()
-    car_class = models.CharField(max_length=100)  # Assuming CarClass is a CharField or related model not used
-    mileage = models.PositiveIntegerField(default=0, validators=[MaxValueValidator(999999)])  # 6-digit mileage
+    car_class = models.CharField(max_length=100)
+    mileage = models.PositiveIntegerField(default=0, validators=[MaxValueValidator(999999)])
+
+    # Renter details
+    full_name = models.CharField(max_length=150, null=True, blank=True)
+    nationality = models.CharField(max_length=50, null=True, blank=True)
+    ld_appt_number = models.CharField(max_length=50, null=True, blank=True)
+    age = models.PositiveIntegerField(null=True, blank=True)
+    drivers_license_number = models.CharField(max_length=50, null=True, blank=True)
+    country_of_issue = models.CharField(max_length=50, null=True, blank=True)
+    license_expiry = models.DateField(null=True, blank=True)
+    credit_card = models.CharField(max_length=50, null=True, blank=True)
+    credit_card_number = models.CharField(max_length=16, null=True, blank=True)
+    card_expiry = models.DateField(null=True, blank=True)
+    physical_address = models.CharField(max_length=100, null=True, blank=True)
+    mobile_number = models.CharField(max_length=20, null=True, blank=True)
+    office_telephone = models.CharField(max_length=20, null=True, blank=True)
+    residence_address = models.CharField(max_length=100, null=True, blank=True)  # Updated field name
 
     def __str__(self):
         return f"{self.make} {self.model} - {self.number_plate}"
