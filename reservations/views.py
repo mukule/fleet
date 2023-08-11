@@ -1,4 +1,4 @@
-from django.shortcuts import render,redirect,get_object_or_404
+from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, redirect, reverse
 from car.models import * 
 from datetime import timedelta
 from .forms import *
@@ -222,70 +222,107 @@ def make_contract(request, reservation_id):
     car = reservation.car
     client = reservation.client
 
-    car_form = CarDetailsForm()
-    renter_form = RenterDetailsForm()
+    initial_data = {
+        # car details
+        'number_plate': car.number_plate,
+        'make': car.make.name if car.make else None,
+        'model': car.model.name if car.model else None,
+        'year': car.year,
+        'color': car.color,
+        'daily_rate': car.daily_rate,
+        'weekly_rate': car.weekly_rate,
+        'monthly_rate': car.monthly_rate,
+        'seating_capacity': car.seating_capacity,
+        'car_class': car.car_class.name if car.car_class else None,
+        'mileage': car.mileage,
+        'amount': reservation.total_amount_vat,
+
+        # renter details
+        'full_name': f"{client.first_name} {client.last_name}",
+        'email': client.email,
+        'id_number': client.id_number,
+        'nationality': client.nationality,
+        'age': client.age,
+        'drivers_license_number': client.drivers_license_number,
+        'country_of_issue': client.country_of_issue,
+        'license_expiry': client.license_expiry,
+        'credit_card': client.credit_card,
+        'credit_card_number': client.credit_card_number,
+        'card_expiry': client.card_expiry,
+        'physical_address': client.physical_address,
+        'mobile_number': client.phone_number,
+        'office_telephone': client.office_telephone,
+        'residence_address': client.residence_address,
+    }
 
     if request.method == 'POST':
-        if 'car_details_submit' in request.POST:
-            car_form = CarDetailsForm(request.POST)
-            if car_form.is_valid():
-                car_out_instance = car_form.save(commit=False)
-                car_out_instance.save()
-                messages.success(request, 'Car Details updated successfully')
-
-        elif 'renter_details_submit' in request.POST:
-            renter_form = RenterDetailsForm(request.POST)
-            if renter_form.is_valid():
-                car_out_instance = renter_form.save(commit=False)
-                # Update the renter-related fields in the CarOut instance from the Client model
-                car_out_instance.full_name = f"{client.first_name} {client.last_name}"
-                car_out_instance.nationality = client.nationality
-                car_out_instance.age = client.age
-                car_out_instance.drivers_license_number = client.drivers_license_number
-                car_out_instance.country_of_issue = client.country_of_issue
-                car_out_instance.license_expiry = client.license_expiry
-                car_out_instance.credit_card = client.credit_card
-                car_out_instance.credit_card_number = client.credit_card_number
-                car_out_instance.card_expiry = client.card_expiry
-                car_out_instance.physical_address = client.physical_address
-                car_out_instance.mobile_number = client.phone_number
-                car_out_instance.office_telephone = client.office_telephone
-                car_out_instance.residence_address = client.residence_address
-                car_out_instance.save()
-                messages.success(request, 'Renter Details updated successfully')
-
+        combined_form = CarOutForm(request.POST, initial=initial_data)
+        if combined_form.is_valid():
+            car_out_instance = combined_form.save(commit=False)
+            # Update the renter-related fields in the CarOut instance from the Client model
+            car_out_instance.full_name = f"{client.first_name} {client.last_name}"
+            car_out_instance.email = client.email
+            car_out_instance.id_number = client.id_number
+            car_out_instance.nationality = client.nationality
+            car_out_instance.age = client.age
+            car_out_instance.drivers_license_number = client.drivers_license_number
+            car_out_instance.country_of_issue = client.country_of_issue
+            car_out_instance.license_expiry = client.license_expiry
+            car_out_instance.credit_card = client.credit_card
+            car_out_instance.credit_card_number = client.credit_card_number
+            car_out_instance.card_expiry = client.card_expiry
+            car_out_instance.physical_address = client.physical_address
+            car_out_instance.mobile_number = client.phone_number
+            car_out_instance.office_telephone = client.office_telephone
+            car_out_instance.residence_address = client.residence_address
+            car_out_instance.residence_address = client.residence_address
+            car_out_instance.save()
+            messages.success(request, 'Form submitted successfully')
+            return redirect('reservations:car_inspection', car_out_id=car_out_instance.id)
     else:
-        initial_car_data = {
-            # car details
-            'number_plate': car.number_plate,
-            'make': car.make.name if car.make else None,
-            'model': car.model.name if car.model else None,
-            'year': car.year,
-            'color': car.color,
-            'daily_rate': car.daily_rate,
-            'weekly_rate': car.weekly_rate,
-            'monthly_rate': car.monthly_rate,
-            'seating_capacity': car.seating_capacity,
-            'car_class': car.car_class.name if car.car_class else None,
-            'mileage': car.mileage,
-        }
-        car_form = CarDetailsForm(initial=initial_car_data)
+        combined_form = CarOutForm(initial=initial_data)
 
-        initial_renter_data = {
-            'full_name': f"{client.first_name} {client.last_name}",
-            'nationality': client.nationality,
-            'age': client.age,
-            'drivers_license_number': client.drivers_license_number,
-            'country_of_issue': client.country_of_issue,
-            'license_expiry': client.license_expiry,
-            'credit_card': client.credit_card,
-            'credit_card_number': client.credit_card_number,
-            'card_expiry': client.card_expiry,
-            'physical_address': client.physical_address,
-            'mobile_number': client.phone_number,
-            'office_telephone': client.office_telephone,
-            'residence_address': client.residence_address,
-        }
-        renter_form = RenterDetailsForm(initial=initial_renter_data)
+    return render(request, 'reservations/contract_details.html', {'combined_form': combined_form, 'reservation': reservation})
 
-    return render(request, 'reservations/contract_details.html', {'car_form': car_form, 'renter_form': renter_form, 'reservation': reservation})
+def car_inspection(request, car_out_id):
+    car_out_instance = get_object_or_404(CarOut, id=car_out_id)
+    inspection_items = InspectionItem.objects.all()
+    inspection_item_statuses = InspectionItemStatus.objects.filter(car_inspection__car_out=car_out_instance)
+
+    if request.method == 'POST':
+        form = CarInspectionForm(inspection_items, request.POST)
+        if form.is_valid():
+            # Get or create the CarInspection instance associated with the car_out_instance
+            car_inspection_instance, created = CarInspection.objects.get_or_create(car_out=car_out_instance)
+            
+            # Loop through inspection items and update their statuses
+            for item in inspection_items:
+                checked_out = form.cleaned_data[f"checked_out_{item.id}"]
+                inspection_item_status, _ = InspectionItemStatus.objects.get_or_create(
+                    car_inspection=car_inspection_instance,
+                    inspection_item=item
+                )
+                inspection_item_status.checked_out = checked_out
+                inspection_item_status.save()
+            
+            # Update the fuel_out and kms_out values
+            fuel_out = form.cleaned_data['fuel_out']
+            kms_out = form.cleaned_data['kms_out']
+            car_inspection_instance.fuel_out = fuel_out
+            car_inspection_instance.kms_out = kms_out
+            car_inspection_instance.save()
+
+            # Redirect to a success page or perform other actions
+            return redirect('reservations:inspection_success')
+    else:
+        initial_data = {}
+        for item_status in inspection_item_statuses:
+            initial_data[f"checked_out_{item_status.inspection_item.id}"] = item_status.checked_out
+        form = CarInspectionForm(inspection_items, initial=initial_data)
+
+    return render(request, 'reservations/car_inspection.html', {
+        'car_out_instance': car_out_instance,
+        'inspection_items': inspection_items,
+        'inspection_item_statuses': inspection_item_statuses,
+        'form': form,
+    })

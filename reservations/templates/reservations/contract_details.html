@@ -18,110 +18,173 @@
                                     <li class="breadcrumb-item active"><a href="">{{ reservation.car.make.name }} {{ reservation.car.model.name }}</a></li>
                                 </ol>
                             </div>
-                            
                         </div>
                     </div>
-                </div>     
-
+                </div>
 
                 <div class="row">
                     <div class="col-xl-12">
                         <div class="card">
-                            <div class="card-body">  
+                            <div class="card-body">
+                                <h4 class="card-title">Contract Details</h4>
+                                <p class="card-subtitle mb-4 text-center">----------------------Car Details----------------------</p>
                                 <div class="row">
-                                    <div class="col-sm-2 mb-2 mb-sm-0">
-                                        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                            <a class="nav-link active show" id="v-pills-home-tab" data-toggle="pill" href="#car-details" role="tab" aria-controls="v-pills-home"
-                                                aria-selected="true">
-                                                <i class="mdi mdi-home-variant d-lg-none d-block"></i>
-                                                <span class="d-none d-lg-block">Car Details</span>
-                                            </a>
-                                            <a class="nav-link" id="v-pills-profile-tab" data-toggle="pill" href="#client-details" role="tab" aria-controls="v-pills-profile"
-                                                aria-selected="false">
-                                                <i class="mdi mdi-account-circle d-lg-none d-block"></i>
-                                                <span class="d-none d-lg-block">Client Details</span>
-                                            </a>
-                                            <a class="nav-link" id="v-pills-settings-tab" data-toggle="pill" href="#v-pills-settings" role="tab" aria-controls="v-pills-settings"
-                                                aria-selected="false">
-                                                <i class="mdi mdi-settings-outline d-lg-none d-block"></i>
-                                                <span class="d-none d-lg-block">Settings</span>
-                                            </a>
-                                        </div>
-                                    </div> <!-- end col-->
-
-                                    <div class="col-sm-10">
+                                    <div class="col-sm-12">
                                         <div class="tab-content" id="v-pills-tabContent">
                                             <div class="tab-pane fade active show" id="car-details" role="tabpanel" aria-labelledby="v-pills-home-tab">
-                                                <!-- car details form -->
+                                                <!-- car details and renter details form -->
                                                 <form method="post" enctype="multipart/form-data" class="form-horizontal">
                                                     {% csrf_token %}
-                                                    <fieldset class="form-group">
-                                                      <div class="form-row">
-                                                        <div class="form-group col-md-4 mb-0">
-                                                          {{ car_form.number_plate|as_crispy_field }}
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-4">
+                                                            {{ combined_form.number_plate|as_crispy_field }}
                                                         </div>
-                                                        <div class="form-group col-md-4 mb-0">
-                                                          {{ car_form.make|as_crispy_field }}
+                                                        <div class="form-group col-md-4">
+                                                            {{ combined_form.make|as_crispy_field }}
                                                         </div>
-                                                        <div class="form-group col-md-4 mb-0">
-                                                            {{ car_form.model|as_crispy_field }}
-                                                          </div>
-                                                        
-                                                      </div>
-                                                      <div class="form-row">
-                                                        <div class="form-group col-md-4 mb-0">
-                                                          {{ car_form.year|as_crispy_field }}
+                                                        <div class="form-group col-md-4">
+                                                            {{ combined_form.model|as_crispy_field }}
                                                         </div>
-                                                        <div class="form-group col-md-4 mb-0">
-                                                          {{ car_form.car_class|as_crispy_field }}
-                                                        </div>
-                                                        <div class="form-group col-md-4 mb-0">
-                                                            {{ car_form.color|as_crispy_field }}
-                                                          </div>
-                                                        
-                                                      </div>
-                                                      <div class="form-row">
-                                                        <div class="form-group col-md-4 mb-0">
-                                                          {{ car_form.mileage|as_crispy_field }}
-                                                        </div>
-                                                        <div class="form-group col-md-4 mb-0">
-                                                          {{ car_form.seating_capacity|as_crispy_field }}
-                                                        </div>
-                                                        <div class="form-group col-md-4 mb-0">
-                                                            {{ car_form.daily_rate|as_crispy_field }}
-                                                          </div>
-                                                      </div>
-                                                    </fieldset>
-                                                    <div class="form-row text-center">
-                                                      <div class="form-group col-md-12 mb-2">
-                                                        <button name="car_details_submit" style="background-color: #3d4255; border: #3d4255;" class="btn btn-success" type="submit">Submit Car Details</button>
-
-                                                      </div>
                                                     </div>
-                                                  </form>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-4">
+                                                            {{ combined_form.year|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            {{ combined_form.car_class|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            {{ combined_form.color|as_crispy_field }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-4">
+                                                            {{ combined_form.mileage|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            {{ combined_form.seating_capacity|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            {{ combined_form.daily_rate|as_crispy_field }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row text-center">
+                                                        <div class="form-group col-md-12">
+                                                            <p class="mb-4">----------------------Renters Details----------------------</p>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-4">
+                                                            {{ combined_form.full_name|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            {{ combined_form.id_number|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            {{ combined_form.email|as_crispy_field }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-4">
+                                                            {{ combined_form.age|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            {{ combined_form.nationality|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            {{ combined_form.ld_appt_number|as_crispy_field }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-4">
+                                                            {{ combined_form.drivers_license_number|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            {{ combined_form.country_of_issue|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            {{ combined_form.license_expiry|as_crispy_field }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-4">
+                                                            {{ combined_form.credit_card|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            {{ combined_form.credit_card_number|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            {{ combined_form.card_expiry|as_crispy_field }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-4">
+                                                            {{ combined_form.mobile_number|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            {{ combined_form.country_of_issue|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            {{ combined_form.office_telephone|as_crispy_field }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-4">
+                                                            {{ combined_form.mobile_number|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            {{ combined_form.office_telephone|as_crispy_field }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-4">
+                                                            {{ combined_form.physical_address|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            {{ combined_form.residence_address|as_crispy_field }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-6">
+                                                            {{ combined_form.where_the_car_will_be_used_or_parked|as_crispy_field }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row text-center">
+                                                        <div class="form-group col-md-12">
+                                                            <p class="mb-4">----------------------Payment----------------------</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-4">
+                                                            {{ combined_form.payment_method|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            {{ combined_form.amount|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            {{ combined_form.deposit|as_crispy_field }}
+                                                        </div>
+                                                    </div>
+                                                    <!-- More rows for other fields can be added here -->
+
+                                                    <div class="form-row text-center">
+                                                        <div class="form-group col-md-12 mb-2">
+                                                            <button name="car_details_submit" style="background-color: #3d4255; border: #3d4255;" class="btn btn-success" type="submit" {% if combined_form.instance.pk %} disabled {% endif %}>Submit Car and Renter Details</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
                                             </div>
-                                            <div class="tab-pane fade" id="client-details" role="tabpanel" aria-labelledby="v-pills-profile-tab">
-                                               <!-- client-details form -->
-                                            </div>
-                                            <div class="tab-pane fade" id="v-pills-settings" role="tabpanel" aria-labelledby="v-pills-settings-tab">
-                                                <p class="mb-0">Food truck quinoa dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis
-                                                    natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque
-                                                    eu, pretium quis, sem. Nulla consequat massa quis enim. Cillum ad ut irure tempor velit nostrud occaecat ullamco
-                                                    aliqua anim Leggings sint. Veniam sint duis incididunt do esse magna mollit excepteur laborum qui.</p>
-                                            </div>
-                                        </div> <!-- end tab-content-->
-                                    </div> <!-- end col-->
+                                        </div>
+                                    </div>
                                 </div>
-                                <!-- end row-->
-                            </div> <!-- end card-body-->
-                        </div> <!-- end card-->
-                    </div> <!-- end col -->  
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div> <!-- container-fluid -->
         </div>
         <!-- End Page-content -->
     </div>
 </div>
-
-
 {% endblock content %}

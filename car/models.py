@@ -39,3 +39,4 @@ class Car(models.Model):
         make_name = self.make.name if self.make else "N/A"
         model_name = self.model.name if self.model else "N/A"
         return f"{make_name} {model_name} - {self.number_plate}"
+   

@@ -18,6 +18,14 @@ class Taxes(models.Model):
 
     def __str__(self):
         return f"{self.name} - {self.rate}%"
+    
+class PaymentMethod(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
 
 class Reservation(models.Model):
     reservation_number = models.CharField(max_length=20, unique=True, null=True)
@@ -40,7 +48,7 @@ class Reservation(models.Model):
 
 class CarOut(models.Model):
     # Car details
-    number_plate = models.CharField(max_length=20, unique=True)
+    number_plate = models.CharField(max_length=20)
     make = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
     year = models.PositiveIntegerField()
@@ -52,6 +60,8 @@ class CarOut(models.Model):
 
     # Renter details
     full_name = models.CharField(max_length=150, null=True, blank=True)
+    email = models.EmailField(unique=True,null=True, blank=True)
+    id_number = models.CharField(max_length=20, unique=True, null=True, blank=True)
     nationality = models.CharField(max_length=50, null=True, blank=True)
     ld_appt_number = models.CharField(max_length=50, null=True, blank=True)
     age = models.PositiveIntegerField(null=True, blank=True)
@@ -65,6 +75,51 @@ class CarOut(models.Model):
     mobile_number = models.CharField(max_length=20, null=True, blank=True)
     office_telephone = models.CharField(max_length=20, null=True, blank=True)
     residence_address = models.CharField(max_length=100, null=True, blank=True)  # Updated field name
+    where_the_car_will_be_used_or_parked = models.CharField(max_length=100, null=True, blank=True)  # Updated field name
+    payment_method = models.ForeignKey(PaymentMethod, on_delete=models.SET_NULL, null=True, blank=True)
+    amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    deposit = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 
     def __str__(self):
         return f"{self.make} {self.model} - {self.number_plate}"
+    
+class Fuel(models.Model):
+    LEVEL_CHOICES = (
+        ('1/4', '1/4'),
+        ('1/2', '1/2'),
+        ('3/4', '3/4'),
+        ('Full', 'Full'),
+    )
+    
+    level = models.CharField(max_length=5, choices=LEVEL_CHOICES)
+    
+    def __str__(self):
+        return self.level
+
+     
+class CarInspection(models.Model):
+    car_out = models.ForeignKey(CarOut, on_delete=models.CASCADE)
+    inspection_date = models.DateTimeField(auto_now_add=True)
+    inspection_items = models.ManyToManyField('InspectionItem', through='InspectionItemStatus')
+
+class InspectionItem(models.Model):
+    name = models.CharField(max_length=100)
+    
+    def __str__(self):
+        return self.name
+
+class InspectionItemStatus(models.Model):
+    car_inspection = models.ForeignKey(CarInspection, on_delete=models.CASCADE)
+    inspection_item = models.ForeignKey(InspectionItem, on_delete=models.CASCADE)
+    checked_out = models.BooleanField(default=False)
+    checked_in = models.BooleanField(default=False)
+    fuel_out = models.ForeignKey(Fuel, related_name='fuel_out', on_delete=models.SET_NULL, null=True)
+    fuel_in = models.ForeignKey(Fuel, related_name='fuel_in', on_delete=models.SET_NULL, null=True)
+    kms_out = models.PositiveIntegerField(null=True, blank=True)
+    kms_in = models.PositiveIntegerField(null=True, blank=True)
+    kms_driven = models.PositiveIntegerField(null=True, blank=True)
+    kms_allowed = models.PositiveIntegerField(null=True, blank=True)
+    damages_noted = models.TextField(null=True, blank=True)
+    
+    def __str__(self):
+        return f"{self.car_inspection} - {self.inspection_item}"

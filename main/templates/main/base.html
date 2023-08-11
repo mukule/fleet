@@ -103,7 +103,11 @@
         });
     }
 </script>
-    <!-- ... -->
-    <!-- ... -->
+<script>
+    // Disable the submit button after a successful form submission
+    document.getElementById("car-details-form").addEventListener("submit", function () {
+        document.getElementById("submit-button").disabled = true;
+    });
+</script>
 </body>
 </html>
