@@ -1,6 +1,7 @@
 from django.shortcuts import render,get_object_or_404
 from car.models import Car
 from django.contrib.auth.decorators import login_required
+from reservations.models import *
 
 
 # Create your views here.
@@ -18,4 +19,9 @@ def inventory(request):
 
 def car_detail(request, car_id):
     car = get_object_or_404(Car, id=car_id)
-    return render(request, 'main/car_detail.html', {'car': car})
+    number_plate = car.number_plate
+
+    # Filter CarOut instances by the number plate of the current car
+    car_out_instances = CarOut.objects.filter(number_plate=number_plate)
+
+    return render(request, 'main/car_detail.html', {'car': car, 'car_out_instances': car_out_instances})

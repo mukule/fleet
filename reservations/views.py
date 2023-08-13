@@ -17,6 +17,7 @@ from decimal import Decimal
 def reservations(request):
     # Retrieve all Car objects from the database
     cars_list = Car.objects.all()
+    carsout = CarOut.objects.all()
 
     # Get the total number of cars in the fleet
     total_cars = cars_list.count()
@@ -36,13 +37,14 @@ def reservations(request):
 
     # Retrieve reservations with a start date greater than the current date
     current_date = timezone.now().date()
+    current_date_time = timezone.now()
     future_reservations = Reservation.objects.filter(start_date__gt=current_date)
 
     # Count the number of future reservations
     future_reservations_count = future_reservations.count()
 
     # Retrieve reservations that are active on the current date
-    current_reservations = Reservation.objects.filter(start_date__lte=current_date, end_date__gte=current_date)
+    current_reservations = Reservation.objects.filter(start_date__lte=current_date_time, end_date__gte=current_date_time)
 
     # Count the number of current reservations
     current_reservations_count = current_reservations.count()
@@ -57,18 +59,29 @@ def reservations(request):
     reserved_car_ids = current_reservations.values_list('car_id', flat=True)
     reserved_today_car_ids = reservations_made_today.values_list('car_id', flat=True)
 
+    fleet_available = total_cars - current_reservations_count
+
     # Get the list of available car IDs (cars not on rent)
-    available_car_ids = cars_list.exclude(id__in=reserved_car_ids).exclude(id__in=reserved_today_car_ids)
+    # available_car_ids = cars_list.exclude(id__in=reserved_car_ids).exclude(id__in=reserved_today_car_ids)
+    reserved_car_ids = current_reservations.values_list('car_id', flat=True)
+    available_car_ids = cars_list.exclude(id__in=reserved_car_ids).values_list('id', flat=True)
+
+    
 
     # Filter the cars_list to get only the available cars
-    available_cars_list = cars_list.filter(id__in=available_car_ids)
+    # available_cars_list = cars_list.filter(id__in=available_car_ids)
+    available_cars_list = cars_list.filter(
+    ~Q(id__in=reserved_car_ids)
+)[:fleet_available]
 
     # Calculate the available cars in the fleet (total fleet minus the cars that are currently on rent)
-    available_cars_count = available_cars_list.count()
+    # available_cars_count = available_cars_list.count()
+    # fleet_available = total_cars - current_reservations_count
 
-    # Get the total number of car classes
-    total_car_classes = car_classes.count()
+    pending_checkin = CarOut.objects.filter(end_date__lt=timezone.now(), checked_in=False)
+    pending_checkin_count = pending_checkin.count()
 
+    
     # Create lists to store car class names and corresponding car counts and available car counts
     car_class_names = []
     car_counts = []
@@ -80,7 +93,7 @@ def reservations(request):
         car_counts.append(car_count)
         available_cars_class_count = Car.objects.filter(car_class=car_class, id__in=available_car_ids).count()
         available_cars_class_counts.append(available_cars_class_count)
-        print(f"Car Class: {car_class.name}, Total Cars: {car_count}, Available Cars: {available_cars_class_count}")
+        
 
     return render(
         request,
@@ -89,7 +102,7 @@ def reservations(request):
             'cars_list': cars_list,
             'total_cars': total_cars,
             'available_cars_list': available_cars_list,
-            'available_cars_count': available_cars_count,
+            'available_cars_count': fleet_available,
             'car_classes': car_classes,
             'future_reservations': future_reservations,
             'future_reservations_count': future_reservations_count,
@@ -97,6 +110,8 @@ def reservations(request):
             'current_reservations_count': current_reservations_count,
             'reservations_made_today': reservations_made_today,
             'reservations_made_today_count': reservations_made_today_count,
+            'pending_checkin_count': pending_checkin_count,
+            'pending_checkin': pending_checkin,
            'car_class_names': json.dumps(car_class_names),
            'car_counts': json.dumps(car_counts),
            'available_cars_class_counts': json.dumps(available_cars_class_counts),
@@ -217,6 +232,15 @@ def confirm_make_contract(request, reservation_id):
     # Pass the reservation object to the template context
     return render(request, 'reservations/confirm_contract.html', {'reservation': reservation})
 
+def delete_reservation(request, reservation_id):
+    reservation = get_object_or_404(Reservation, id=reservation_id)
+    
+    # Perform the deletion
+    reservation.delete()
+    
+    # Redirect to a success page or reservations list
+    return redirect('reservations:reservations')
+
 def make_contract(request, reservation_id):
     reservation = get_object_or_404(Reservation, id=reservation_id)
     car = reservation.car
@@ -276,15 +300,18 @@ def make_contract(request, reservation_id):
             car_out_instance.office_telephone = client.office_telephone
             car_out_instance.residence_address = client.residence_address
             car_out_instance.residence_address = client.residence_address
+            car_out_instance.start_date = reservation.start_date
+            car_out_instance.end_date = reservation.end_date
+            car_out_instance.invoice_number = reservation.reservation_number
             car_out_instance.save()
             messages.success(request, 'Form submitted successfully')
-            return redirect('reservations:car_inspection', car_out_id=car_out_instance.id)
+            return redirect('reservations:car_inspection', car_out_id=car_out_instance.id, reservation_id=reservation_id)
     else:
         combined_form = CarOutForm(initial=initial_data)
 
     return render(request, 'reservations/contract_details.html', {'combined_form': combined_form, 'reservation': reservation})
 
-def car_inspection(request, car_out_id):
+def car_inspection(request, car_out_id, reservation_id):
     car_out_instance = get_object_or_404(CarOut, id=car_out_id)
     inspection_items = InspectionItem.objects.all()
     inspection_item_statuses = InspectionItemStatus.objects.filter(car_inspection__car_out=car_out_instance)
@@ -305,15 +332,10 @@ def car_inspection(request, car_out_id):
                 inspection_item_status.checked_out = checked_out
                 inspection_item_status.save()
             
-            # Update the fuel_out and kms_out values
-            fuel_out = form.cleaned_data['fuel_out']
-            kms_out = form.cleaned_data['kms_out']
-            car_inspection_instance.fuel_out = fuel_out
-            car_inspection_instance.kms_out = kms_out
             car_inspection_instance.save()
 
             # Redirect to a success page or perform other actions
-            return redirect('reservations:inspection_success')
+            return redirect('reservations:update_carout', carout_id=car_out_id, reservation_id=reservation_id)
     else:
         initial_data = {}
         for item_status in inspection_item_statuses:
@@ -326,3 +348,108 @@ def car_inspection(request, car_out_id):
         'inspection_item_statuses': inspection_item_statuses,
         'form': form,
     })
+
+def update_carout(request, carout_id, reservation_id):
+    carout = get_object_or_404(CarOut, pk=carout_id)
+    reservation = get_object_or_404(Reservation, id=reservation_id)
+    
+    if request.method == 'POST':
+        form = CarOutUpdateForm(request.POST, instance=carout)
+        if form.is_valid():
+            form.save()
+
+            # Create or update Income record
+            income, created = Income.objects.get_or_create(
+                invoice_number=carout.invoice_number,
+                defaults={
+                    'number_plate': carout.number_plate,
+                    'client': carout.full_name,
+                    'amount': carout.amount,
+                }
+            )
+            if not created:
+                income.number_plate = carout.number_plate
+                income.client = carout.full_name
+                income.amount = carout.amount
+                income.save()
+
+            # Redirect to a success page or perform other actions
+            messages.success(request, 'Reservation made successfully')
+            return redirect('reservations:reservations')
+    else:
+        # Set initial data for kms_out
+        initial_data = {'kms_out': reservation.car.mileage}
+        form = CarOutUpdateForm(instance=carout, initial=initial_data)
+    
+    return render(request, 'reservations/update_carout.html', {'form': form, 'carout': carout})
+
+def checkin(request):
+    # Retrieve CarOut instances that need to be checked in
+    cars_to_checkin = CarOut.objects.filter(checked_in=False, end_date__lt=timezone.now())
+    
+    return render(request, 'reservations/checkin.html', {'cars_to_checkin': cars_to_checkin})
+
+def carout_detail(request, carout_id):
+    carout = get_object_or_404(CarOut, id=carout_id)
+
+    if request.method == 'POST':
+        form = CarCheckInForm(request.POST, instance=carout)
+        if form.is_valid():
+            form.save()
+
+            # Add a success message
+            messages.success(request, 'fuel and mileage updated')
+
+            # Redirect to carin_inspection with the carout_id parameter
+            return redirect('reservations:carin_inspection', carout_id=carout_id)
+    else:
+        form = CarCheckInForm(instance=carout)
+
+    return render(request, 'reservations/carout_detail.html', {'carout': carout, 'form': form})
+
+
+def carin_inspection(request, carout_id):
+    car_out_instance = get_object_or_404(CarOut, id=carout_id)
+    inspection_items = InspectionItem.objects.all()
+    inspection_item_statuses = InspectionItemStatus.objects.filter(car_inspection__car_out=car_out_instance)
+
+    if request.method == 'POST':
+        form = CarInInspectionForm(inspection_items, request.POST)
+        if form.is_valid():
+            # Get or create the CarInspection instance associated with the car_out_instance
+            car_inspection_instance, created = CarInspection.objects.get_or_create(car_out=car_out_instance)
+            
+            # Loop through inspection items and update their statuses for checkin
+            for item in inspection_items:
+                checked_out = form.cleaned_data[f'checked_out_{item.id}']
+               
+                
+                inspection_item_status, _ = InspectionItemStatus.objects.get_or_create(
+                    car_inspection=car_inspection_instance,
+                    inspection_item=item
+                )
+                inspection_item_status.checked_out = checked_out
+                inspection_item_status.save()
+            
+            car_inspection_instance.save()
+            car_out_instance.checked_in = True
+            car_out_instance.check_in_date_time = timezone.now()
+            car_out_instance.save()
+
+            # Redirect to a success page or perform other actions
+            # You can pass the carout_id to the success message or redirect as needed
+            messages.success(request, 'car checked in succesfully !!')
+            return redirect('reservations:reservations')
+    else:
+        initial_data = {}
+        for item_status in inspection_item_statuses:
+            initial_data[f'checked_out_{item_status.inspection_item.id}'] = item_status.checked_out
+        form = CarInInspectionForm(inspection_items, initial=initial_data)
+
+    return render(request, 'reservations/carin_inspection.html', {
+        'car_out_instance': car_out_instance,
+        'inspection_items': inspection_items,
+        'inspection_item_statuses': inspection_item_statuses,
+        'form': form,
+    })
+

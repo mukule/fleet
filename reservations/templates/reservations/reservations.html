@@ -76,6 +76,12 @@
                                                     <span class="d-none d-lg-block">Fleet Available( {{available_cars_count}})</span>
                                                 </a>
                                             </li>
+                                            <li class="nav-item">
+                                                <a href="#checkin" data-toggle="tab" aria-expanded="false" class="nav-link">
+                                                    <i class="mdi mdi-settings-outline d-lg-none d-block"></i>
+                                                    <span class="d-none d-lg-block">Pending Checkin ( {{pending_checkin_count}} )</span>
+                                                </a>
+                                            </li>
                                         </ul>
     
                                         <div class="tab-content">
@@ -270,6 +276,40 @@
                                                     </tbody>
                                                 </table>
                                             </div>
+                                            <div class="tab-pane" id="checkin">
+                                                <table class="table table-centered table-hover table-xl mb-0" id="car-reservations">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="border-top-0">Car Class</th>
+                                                            <th class="border-top-0">Car</th>
+                                                            <th class="border-top-0">Number Plate</th>
+                                                            <th class="border-top-0">Client</th>
+                                                            <th class="border-top-0">Phone</th>
+                                                            <th class="border-top-0">Hire Date</th>
+                                                            <th class="border-top-0">checkin Date</th>
+                                                            <th class="border-top-0">Total Amount</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for reservation in pending_checkin %}
+                                                            <tr>
+                                                                <td class="text-truncate">
+                                                                    <a href="">{{ reservation.car_class }}</a>
+                                                                </td>
+                                                                <td class="text-truncate">{{ reservation.make }} {{ reservation.model }}</td>
+                                                                <td class="text-truncate">{{ reservation.number_plate }}</td>
+                                                                <td class="text-truncate">{{ reservation.full_name }}</td>
+                                                                <td class="text-truncate">{{ reservation.mobile_number }}</td>
+                                                                <td class="text-truncate">{{ reservation.start_date }}</td>
+                                                                <td class="text-truncate">{{ reservation.end_date }}</td>
+                                                                <td class="text-truncate">{{ reservation.amount }}</td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            
+                                            
                                             
                                         </div>
     

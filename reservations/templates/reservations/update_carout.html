@@ -1,0 +1,32 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<!-- Begin page -->
+<div id="layout-wrapper">
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+                <!-- start page title -->
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        {% for field in form %}
+                            <div class="col-md-3">
+                                <div class="form-check">
+                                    {{ field }}
+                                    <label for="{{ field.id_for_label }}" class="form-check-label">
+                                        {{ field.label_tag }}
+                                    </label>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div> <!-- container-fluid -->
+        </div>
+        <!-- End Page-content -->
+    </div>
+</div>
+{% endblock content %}

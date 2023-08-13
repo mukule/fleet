@@ -22,7 +22,7 @@
                                 <div class="modal-footer d-flex justify-content-center">
                                     <!-- Buttons will be centered -->
                                     <button type="button" class="btn btn-primary" onclick="redirectToContract()">Yes</button>
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="stayOnReservationPage()">Later</button>
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal" onclick="stayOnReservationPage()">No</button>
                                 </div>
                                 
                             </div>
@@ -48,7 +48,7 @@
 
     function stayOnReservationPage() {
         // Stay on the reservation page
-        window.location.href = "{% url 'reservations:reservations' %}";
+        window.location.href = "{% url 'reservations:delete_reservation' reservation.id %}";
     }
 </script>
 

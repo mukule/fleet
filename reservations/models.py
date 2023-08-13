@@ -45,9 +45,23 @@ class Reservation(models.Model):
 
     def __str__(self):
         return f"Reservation #{self.reservation_number} for {self.car} by {self.client} (Staff: {self.staff})"
-
+    
+class Fuel(models.Model):
+    LEVEL_CHOICES = (
+        ('1/4', '1/4'),
+        ('1/2', '1/2'),
+        ('3/4', '3/4'),
+        ('Full', 'Full'),
+    )
+    
+    level = models.CharField(max_length=5, choices=LEVEL_CHOICES)
+    
+    def __str__(self):
+        return self.level
+    
 class CarOut(models.Model):
     # Car details
+    invoice_number = models.CharField(max_length=20, null=True)
     number_plate = models.CharField(max_length=20)
     make = models.CharField(max_length=100)
     model = models.CharField(max_length=100)
@@ -57,11 +71,14 @@ class CarOut(models.Model):
     seating_capacity = models.PositiveIntegerField()
     car_class = models.CharField(max_length=100)
     mileage = models.PositiveIntegerField(default=0, validators=[MaxValueValidator(999999)])
+    start_date = models.DateTimeField(null=True, blank=True)  # Change to DateTimeField
+    end_date = models.DateTimeField(null=True, blank=True)    #
+    created_at = models.DateTimeField(default=timezone.now)
 
     # Renter details
     full_name = models.CharField(max_length=150, null=True, blank=True)
-    email = models.EmailField(unique=True,null=True, blank=True)
-    id_number = models.CharField(max_length=20, unique=True, null=True, blank=True)
+    email = models.EmailField(null=True, blank=True)
+    id_number = models.CharField(max_length=20, null=True, blank=True)
     nationality = models.CharField(max_length=50, null=True, blank=True)
     ld_appt_number = models.CharField(max_length=50, null=True, blank=True)
     age = models.PositiveIntegerField(null=True, blank=True)
@@ -79,28 +96,40 @@ class CarOut(models.Model):
     payment_method = models.ForeignKey(PaymentMethod, on_delete=models.SET_NULL, null=True, blank=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     deposit = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    
+    # Fuel and Kilometers
+    fuel_out = models.CharField(max_length=5, choices=Fuel.LEVEL_CHOICES, null=True)
+    fuel_in = models.CharField(max_length=5, choices=Fuel.LEVEL_CHOICES, null=True)
+    kms_out = models.PositiveIntegerField(null=True, blank=True)
+    kms_in = models.PositiveIntegerField(null=True, blank=True)
+    kms_driven = models.PositiveIntegerField(null=True, blank=True)
+    kms_allowed = models.PositiveIntegerField(null=True, blank=True)
+    damages_noted = models.TextField(null=True, blank=True)
+    checked_in = models.BooleanField(default=False)
+    check_in_date_time = models.DateTimeField(null=True, blank=True)  # Change to DateTimeField
 
     def __str__(self):
         return f"{self.make} {self.model} - {self.number_plate}"
     
-class Fuel(models.Model):
-    LEVEL_CHOICES = (
-        ('1/4', '1/4'),
-        ('1/2', '1/2'),
-        ('3/4', '3/4'),
-        ('Full', 'Full'),
-    )
-    
-    level = models.CharField(max_length=5, choices=LEVEL_CHOICES)
-    
+class Income(models.Model):
+    number_plate = models.CharField(max_length=20, null=True, blank=True)
+    invoice_number = models.CharField(max_length=20)
+    client = models.CharField(max_length=150)
+    date = models.DateTimeField(default=timezone.now)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+
     def __str__(self):
-        return self.level
+        return f"Income: {self.invoice_number}"
+    
+
 
      
 class CarInspection(models.Model):
     car_out = models.ForeignKey(CarOut, on_delete=models.CASCADE)
     inspection_date = models.DateTimeField(auto_now_add=True)
     inspection_items = models.ManyToManyField('InspectionItem', through='InspectionItemStatus')
+    
+    
 
 class InspectionItem(models.Model):
     name = models.CharField(max_length=100)
@@ -112,14 +141,7 @@ class InspectionItemStatus(models.Model):
     car_inspection = models.ForeignKey(CarInspection, on_delete=models.CASCADE)
     inspection_item = models.ForeignKey(InspectionItem, on_delete=models.CASCADE)
     checked_out = models.BooleanField(default=False)
-    checked_in = models.BooleanField(default=False)
-    fuel_out = models.ForeignKey(Fuel, related_name='fuel_out', on_delete=models.SET_NULL, null=True)
-    fuel_in = models.ForeignKey(Fuel, related_name='fuel_in', on_delete=models.SET_NULL, null=True)
-    kms_out = models.PositiveIntegerField(null=True, blank=True)
-    kms_in = models.PositiveIntegerField(null=True, blank=True)
-    kms_driven = models.PositiveIntegerField(null=True, blank=True)
-    kms_allowed = models.PositiveIntegerField(null=True, blank=True)
-    damages_noted = models.TextField(null=True, blank=True)
+    
     
     def __str__(self):
         return f"{self.car_inspection} - {self.inspection_item}"

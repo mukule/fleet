@@ -26,45 +26,185 @@
                               </div>     
                               <!-- end page title -->
                               <div class="row">
-                                  <div class="col-xl-6">
-                                      <div class="card">
-                                          <div class="card-body">
-                                              <div class="table-responsive">
-                                                <table class="table table-centered table-hover table-xl mb-0" id="recent-orders">
-                                                    <thead>
-                                                        <tr>
-                                                            
-                                                            <th class="border-top-0">Car Make</th>
-                                                            <th class="border-top-0">Model</th>
-                                                            <th class="border-top-0">Number Plate</th>
-                                                            <th class="border-top-0">Seating Capacity</th>
-                                                            <th class="border-top-0">Daily Rate</th>
-                                                            <th class="border-top-0">Weekly Rate</th>
-                                                            <th class="border-top-0">Monthly Rate</th>
-                                                            
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                       
-                                                            <tr>
-
-                                                                
-                                                                <td class="text-truncate">{{ car.make.name }}</td>
-                                                                <td class="text-truncate">{{ car.model.name }}</td>
-                                                                <td class="text-truncate">{{ car.number_plate }}</td>
-                                                                <td class="text-truncate">{{ car.seating_capacity }}</td>
-                                                                <td class="text-truncate">$ {{ car.daily_rate }}</td>
-                                                                <td class="text-truncate">$ {{ car.weekly_rate }}</td>
-                                                                <td class="text-truncate">$ {{ car.monthly_rate }}</td>
-                                                               
-                                                            </tr>
-                                                       
-                                                    </tbody>
-                                                </table>
+                                <div class="col-md-6 col-xl-3">
+                                    <div class="card bg-primary border-primary">
+                                        <div class="card-body">
+                                            <div class="mb-4">
+                                                
+                                                <h5 class="card-title mb-0 text-white">Mileage</h5>
                                             </div>
-      
-                                          </div> <!-- end card-body-->
-                                      </div> <!-- end card-->
+                                            <div class="row d-flex align-items-center mb-4">
+                                                <div class="col-8">
+                                                    <h2 class="d-flex align-items-center mb-0 text-white">
+                                                        {{ car.mileage }}
+                                                    </h2>
+                                                </div>
+                                                <div class="col-4 text-right">
+                                                    <span class="text-white-50"><i class="mdi mdi-arrow-up"></i></span>
+                                                </div>
+                                            </div>
+    
+                                            <div class="progress badge-soft-light shadow-sm" style="height: 5px;">
+                                                <div class="progress-bar bg-light" role="progressbar" style="width: 25%;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> <!-- end col-->
+    
+                                <div class="col-md-6 col-xl-3">
+                                    <div class="card bg-success border-success">
+                                        <div class="card-body">
+                                            <div class="mb-4">
+                                                <span class="badge badge-soft-light float-right">Hires</span>
+                                                <h5 class="card-title mb-0 text-white">Income Contributions</h5>
+                                            </div>
+                                            <div class="row d-flex align-items-center mb-4">
+                                                <div class="col-8">
+                                                    <h2 class="d-flex align-items-center text-white mb-0">
+                                                        $1875.54
+                                                    </h2>
+                                                </div>
+                                                <div class="col-4 text-right">
+                                                    <span class="text-white-50"><i class="mdi mdi-arrow-up"></i></span>
+                                                </div>
+                                            </div>
+    
+                                            <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
+                                                <div class="progress-bar bg-light" role="progressbar" style="width: 50%;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> <!-- end col-->
+    
+                                <div class="col-md-6 col-xl-3">
+                                    <div class="card bg-warning border-warning">
+                                        <div class="card-body">
+                                            <div class="mb-4">
+                                                <span class="badge badge-soft-light float-right">Garage</span>
+                                                <h5 class="card-title mb-0 text-white">Mechanical Expenses</h5>
+                                            </div>
+                                            <div class="row d-flex align-items-center mb-4">
+                                                <div class="col-8">
+                                                    <h2 class="d-flex align-items-center text-white mb-0">
+                                                        $784.62
+                                                    </h2>
+                                                </div>
+                                                <div class="col-4 text-right">
+                                                    <span class="text-white-50"><i class="mdi mdi-arrow-up"></i></span>
+                                                </div>
+                                            </div>
+    
+                                            <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
+                                                <div class="progress-bar bg-light" role="progressbar" style="width: 75%;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> <!-- end col-->
+    
+                                <div class="col-md-6 col-xl-3">
+                                    <div class="card bg-info border-info">
+                                        <div class="card-body">
+                                            <div class="mb-4">
+                                              
+                                                <h5 class="card-title mb-0 text-white">Insurance</h5>
+                                            </div>
+                                            <div class="row d-flex align-items-center mb-4">
+                                                <div class="col-8">
+                                                    <h2 class="d-flex align-items-center text-white mb-0">
+                                                        Due in
+                                                    </h2>
+                                                </div>
+                                               
+                                            </div>
+    
+                                            <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
+                                                <div class="progress-bar bg-light" role="progressbar" style="width: 100%;"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> <!-- end col-->
+                            </div>
+                            <!-- end row -->
+                              <div class="row">
+                                  <div class="col-xl-6">
+                                      <div class="row">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                  <table class="table table-centered table-hover table-xl mb-0" id="recent-orders">
+                                                      <thead>
+                                                          <tr>
+                                                              
+                                                              <th class="border-top-0">Car Make</th>
+                                                              <th class="border-top-0">Model</th>
+                                                              <th class="border-top-0">Number Plate</th>
+                                                              <th class="border-top-0">Seating Capacity</th>
+                                                              <th class="border-top-0">Daily Rate</th>
+                                                              <th class="border-top-0">Weekly Rate</th>
+                                                              <th class="border-top-0">Monthly Rate</th>
+                                                              
+                                                          </tr>
+                                                      </thead>
+                                                      <tbody>
+                                                         
+                                                              <tr>
+  
+                                                                  
+                                                                  <td class="text-truncate">{{ car.make.name }}</td>
+                                                                  <td class="text-truncate">{{ car.model.name }}</td>
+                                                                  <td class="text-truncate">{{ car.number_plate }}</td>
+                                                                  <td class="text-truncate">{{ car.seating_capacity }}</td>
+                                                                  <td class="text-truncate">$ {{ car.daily_rate }}</td>
+                                                                  <td class="text-truncate">$ {{ car.weekly_rate }}</td>
+                                                                  <td class="text-truncate">$ {{ car.monthly_rate }}</td>
+                                                                 
+                                                              </tr>
+                                                         
+                                                      </tbody>
+                                                  </table>
+                                              </div>
+                                            </div> <!-- end card-body-->
+                                        </div> <!-- end card-->
+                                      </div>
+                                      <div class="row">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                  <table class="table table-centered table-hover table-xl mb-0" id="recent-orders">
+                                                      <thead>
+                                                          <tr>
+                                                              
+                                                              <th class="border-top-0">Car Make</th>
+                                                              <th class="border-top-0">Model</th>
+                                                              <th class="border-top-0">Number Plate</th>
+                                                              <th class="border-top-0">Seating Capacity</th>
+                                                              <th class="border-top-0">Daily Rate</th>
+                                                              <th class="border-top-0">Weekly Rate</th>
+                                                              <th class="border-top-0">Monthly Rate</th>
+                                                              
+                                                          </tr>
+                                                      </thead>
+                                                      <tbody>
+                                                         
+                                                              <tr>
+  
+                                                                  
+                                                                  <td class="text-truncate">{{ car.make.name }}</td>
+                                                                  <td class="text-truncate">{{ car.model.name }}</td>
+                                                                  <td class="text-truncate">{{ car.number_plate }}</td>
+                                                                  <td class="text-truncate">{{ car.seating_capacity }}</td>
+                                                                  <td class="text-truncate">$ {{ car.daily_rate }}</td>
+                                                                  <td class="text-truncate">$ {{ car.weekly_rate }}</td>
+                                                                  <td class="text-truncate">$ {{ car.monthly_rate }}</td>
+                                                                 
+                                                              </tr>
+                                                         
+                                                      </tbody>
+                                                  </table>
+                                              </div>
+                                            </div> <!-- end card-body-->
+                                        </div> <!-- end card-->
+                                      </div>
                                   </div> <!-- end col -->
                                   <div class="col-xl-6">
                                     <div class="card">
@@ -74,12 +214,66 @@
                                     
                                 </div> <!-- end col -->
                               </div>
-                            
-                              
-          
-          
-      
-                              
+                              <div class="row">
+                                <div class="col-xl-12">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h4 class="card-title">{{ car.make }} {{ car.model }} {{ car.number_plate }}</h4>
+                                            <p class="card-subtitle mb-4">Explore the activities made by this car</p>
+        
+                                            <div class="table-responsive">
+                                                <table class="table table-hover mb-0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Car</th>
+                                                            <th>Class</th>
+                                                            <th>Client</th>
+                                                            <th>Phone</th>
+                                                            <th>Email</th>
+                                                            <th>Hire Date</th>
+                                                            <th>Last Date</th>
+                                                            <th>Daily Rate</th>
+                                                            <th>Kms Out</th>
+                                                            <th>Kms In</th>
+                                                            <th>Total Amount</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for car_out_instance in car_out_instances %}
+                                                            <tr>
+                                                                <td>{{ car_out_instance.make }} {{ car_out_instance.model }}</td>
+                                                                <td>{{ car_out_instance.car_class }}</td>
+                                                                <td>{{ car_out_instance.full_name }}</td>
+                                                                <td>{{ car_out_instance.mobile_number }}</td>
+                                                                <td>{{ car_out_instance.email }}</td>
+                                                                <td>{{ car_out_instance.start_date }}</td>
+                                                                <td>{{ car_out_instance.end_date }}</td>
+                                                                <td>{{ car_out_instance.daily_rate }}</td>
+                                                                <td>{{ car_out_instance.kms_out }}</td>
+                                                                <td>
+                                                                    {% if not car_out_instance.checked_in %}
+                                                                        Pending
+                                                                    {% else %}
+                                                                        {{ car_out_instance.kms_in }}
+                                                                    {% endif %}
+                                                                </td>
+                                                                
+                                                                <td>{{ car_out_instance.amount }}</td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                                
+                                            </div>
+                                        </div>
+                                        <!-- end card-body-->
+                                    </div>
+                                    <!-- end card -->
+        
+                                </div>
+                                <!-- end col -->
+                            </div>
+                            <!-- end row -->
                           </div> <!-- container-fluid -->
                       </div>
       

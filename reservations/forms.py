@@ -67,14 +67,25 @@ class CarInspectionForm(forms.Form):
                 required=False,
                 label=item.name  # Use the item name as the label
             )
+
+class CarInInspectionForm(CarInspectionForm):
+    def __init__(self, inspection_items, *args, **kwargs):
+        super().__init__(inspection_items, *args, **kwargs)
+        for item in inspection_items:
+            self.fields[f'checked_out_{item.id}'] = forms.BooleanField(
+                required=False,
+                label=f' {item.name}'  # Customize the label for check out
+            )
+
             
-        self.fields['fuel_out'] = forms.ChoiceField(
-            choices=Fuel.LEVEL_CHOICES,  # Use the choices from the Fuel model
-            required=False,
-            label='Fuel Out'
-        )
-        
-        self.fields['kms_out'] = forms.IntegerField(
-            required=False,
-            label='Kilometers Out'
-        )
+class CarOutUpdateForm(forms.ModelForm):
+    class Meta:
+        model = CarOut
+        fields = ['fuel_out', 'kms_out']
+
+class CarCheckInForm(forms.ModelForm):
+    class Meta:
+        model = CarOut
+        fields = ['fuel_in', 'kms_in', 'damages_noted']
+
+
