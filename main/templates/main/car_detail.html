@@ -80,13 +80,13 @@
                                     <div class="card bg-warning border-warning">
                                         <div class="card-body">
                                             <div class="mb-4">
-                                                <span class="badge badge-soft-light float-right">Garage</span>
-                                                <h5 class="card-title mb-0 text-white">Mechanical Expenses</h5>
+                                                <span class="badge badge-soft-light float-right">Garage ({{ car_service_count }})</span>
+                                                <h5 class="card-title mb-0 text-white">Service Expenses</h5>
                                             </div>
                                             <div class="row d-flex align-items-center mb-4">
                                                 <div class="col-8">
                                                     <h2 class="d-flex align-items-center text-white mb-0">
-                                                        $784.62
+                                                        {{ total_cost }}
                                                     </h2>
                                                 </div>
                                                 <div class="col-4 text-right">
@@ -169,42 +169,36 @@
                                       <div class="row">
                                         <div class="card">
                                             <div class="card-body">
-                                                <div class="table-responsive">
-                                                  <table class="table table-centered table-hover table-xl mb-0" id="recent-orders">
-                                                      <thead>
-                                                          <tr>
-                                                              
-                                                              <th class="border-top-0">Car Make</th>
-                                                              <th class="border-top-0">Model</th>
-                                                              <th class="border-top-0">Number Plate</th>
-                                                              <th class="border-top-0">Seating Capacity</th>
-                                                              <th class="border-top-0">Daily Rate</th>
-                                                              <th class="border-top-0">Weekly Rate</th>
-                                                              <th class="border-top-0">Monthly Rate</th>
-                                                              
-                                                          </tr>
-                                                      </thead>
-                                                      <tbody>
-                                                         
-                                                              <tr>
-  
-                                                                  
-                                                                  <td class="text-truncate">{{ car.make.name }}</td>
-                                                                  <td class="text-truncate">{{ car.model.name }}</td>
-                                                                  <td class="text-truncate">{{ car.number_plate }}</td>
-                                                                  <td class="text-truncate">{{ car.seating_capacity }}</td>
-                                                                  <td class="text-truncate">$ {{ car.daily_rate }}</td>
-                                                                  <td class="text-truncate">$ {{ car.weekly_rate }}</td>
-                                                                  <td class="text-truncate">$ {{ car.monthly_rate }}</td>
-                                                                 
-                                                              </tr>
-                                                         
-                                                      </tbody>
-                                                  </table>
-                                              </div>
+                                                {% if car_service_instances %}
+                                                <h4 class="card-title">Last Service</h4>
+        
+                                                    <div class="table-responsive">
+                                                        <table class="table table-centered table-hover table-xl mb-0" id="recent-orders">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="border-top-0">Service Date</th>
+                                                                    <th class="border-top-0">Cost</th>
+                                                                    <th class="border-top-0">Garage</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td class="text-truncate">{{ last_service.service_date }}</td>
+                                                                    <td class="text-truncate">$ {{ last_service.cost }}</td>
+                                                                    <td class="text-truncate">{{ last_service.service_company }}</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                {% else %}
+                                                    <div class="alert alert-warning" role="alert">
+                                                        This car has not been serviced yet.
+                                                    </div>
+                                                {% endif %}
                                             </div> <!-- end card-body-->
                                         </div> <!-- end card-->
-                                      </div>
+                                    </div>
+                                    
                                   </div> <!-- end col -->
                                   <div class="col-xl-6">
                                     <div class="card">

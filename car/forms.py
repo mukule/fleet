@@ -93,3 +93,17 @@ class CarForm(forms.ModelForm):
             if image.size > 5 * 1024 * 1024:
                 raise forms.ValidationError("The image size should be less than 5MB.")
         return image
+    
+class CarServiceForm(forms.ModelForm):
+    class Meta:
+        model = CarService
+        fields = [
+            'car', 'service_date', 'service_company', 'description', 'cost',
+        ]
+        widgets = {
+            'service_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'car': forms.Select(attrs={'class': 'form-control'}),
+            'service_company': forms.Select(attrs={'class': 'form-control'}),
+            'description': forms.Textarea(attrs={'class': 'form-control'}),
+            'cost': forms.NumberInput(attrs={'class': 'form-control'}),
+        }

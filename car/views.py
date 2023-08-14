@@ -48,3 +48,20 @@ def create_model(request):
 
     return render(request, 'car/create_model.html', {'form': form})
 
+
+
+def service(request):
+    if request.method == 'POST':
+        form = CarServiceForm(request.POST)
+        if form.is_valid():
+            form.save()
+            # Redirect to a success page or perform other actions
+            return redirect('reservations:reservations')
+    else:
+        form = CarServiceForm()
+    
+    return render(request, 'car/service.html', {'form': form})
+
+def car_services(request):
+    car_services = CarService.objects.all().order_by('-service_date')
+    return render(request, 'car/car_service.html', {'car_services': car_services})

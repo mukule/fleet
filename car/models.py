@@ -1,5 +1,6 @@
 from django.db import models
 from django.core.validators import MaxValueValidator
+from django.utils import timezone
 
 class CarClass(models.Model):
     name = models.CharField(max_length=100)
@@ -39,4 +40,22 @@ class Car(models.Model):
         make_name = self.make.name if self.make else "N/A"
         model_name = self.model.name if self.model else "N/A"
         return f"{make_name} {model_name} - {self.number_plate}"
-   
+    
+
+class ServiceCompany(models.Model):
+    name = models.CharField(max_length=100)
+    address = models.CharField(max_length=200)
+    contact_number = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.name
+
+class CarService(models.Model):
+    car = models.ForeignKey(Car, on_delete=models.CASCADE)
+    service_date = models.DateTimeField(default=timezone.now)
+    description = models.TextField()
+    cost = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)  # Update the default value
+    service_company = models.ForeignKey(ServiceCompany, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.car} - Service on {self.service_date} by {self.service_company}"

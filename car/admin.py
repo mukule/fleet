@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Car, CarModel, CarMake, CarClass
+from .models import *
 
 @admin.register(CarClass)
 class CarClassAdmin(admin.ModelAdmin):
@@ -36,4 +36,7 @@ class CarAdmin(admin.ModelAdmin):
     # )
 
 # If you have any other models to register, add them here following the same pattern as above.
+
+admin.site.register(ServiceCompany)
+admin.site.register(CarService)
 
