@@ -8,9 +8,25 @@
         <div class="page-content">
             <div class="container-fluid">
                 <!-- start page title -->
+                <div class="row">
+                    <div class="col-md-6 col-xl-12">
+                        <div class="card bg-primary border-primary">
+                            <div class="card-body text-center">
+                                <h2 class="text-center mb-0 text-white active">
+                                   Confirm the presence of this items on the car (Check where appropriate)
+                                </h2>
+                               
+                            </div>
+                        </div>
+                    </div> <!-- end col-->
+                </div>
                 <form method="post">
                     {% csrf_token %}
                     <div class="row">
+                        <div class="col-md-12 text-center mb-3">
+                            <button type="button" class="btn btn-secondary" id="check-all-btn">Check All</button>
+                            <button type="button" class="btn btn-secondary" id="uncheck-all-btn">Uncheck All</button>
+                        </div>
                         {% for field in form %}
                             <div class="col-md-3">
                                 <div class="form-check">
@@ -22,8 +38,11 @@
                             </div>
                         {% endfor %}
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <div class="text-center">
+                        <button type="submit" class="btn btn-primary active">Submit</button>
+                    </div>
                 </form>
+                
             </div> <!-- container-fluid -->
         </div>
         <!-- End Page-content -->

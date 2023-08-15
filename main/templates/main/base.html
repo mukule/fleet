@@ -109,5 +109,26 @@
         document.getElementById("submit-button").disabled = true;
     });
 </script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const checkAllBtn = document.getElementById("check-all-btn");
+        const uncheckAllBtn = document.getElementById("uncheck-all-btn");
+        const formCheckboxes = document.querySelectorAll(".form-check input[type='checkbox']");
+
+        checkAllBtn.addEventListener("click", function() {
+            formCheckboxes.forEach(function(checkbox) {
+                checkbox.checked = true;
+            });
+        });
+
+        uncheckAllBtn.addEventListener("click", function() {
+            formCheckboxes.forEach(function(checkbox) {
+                checkbox.checked = false;
+            });
+        });
+    });
+</script>
+
 </body>
 </html>

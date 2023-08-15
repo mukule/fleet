@@ -79,9 +79,16 @@ class CarInInspectionForm(CarInspectionForm):
 
             
 class CarOutUpdateForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field_name in self.fields:
+            self.fields[field_name].widget.attrs['class'] = 'form-control'
+
     class Meta:
         model = CarOut
         fields = ['fuel_out', 'kms_out']
+
+
 
 class CarCheckInForm(forms.ModelForm):
     class Meta:
