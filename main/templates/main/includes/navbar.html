@@ -62,13 +62,7 @@
                           <i class="mdi mdi-view-dashboard mr-2"></i>Inventory
                       </a>
                   </li>
-
-                <li class="nav-item">
-                  <a class="nav-link" href="#">
-                      <i class="mdi mdi-view-dashboard mr-2"></i>Quick Lookup
-                  </a>
-              </li>
-
+                  
               <li class="nav-item">
                 <a class="nav-link" href="{% url 'invoices:invoices' %}">
                     <i class="mdi mdi-view-dashboard mr-2"></i>Invoices
@@ -84,6 +78,11 @@
               <i class="mdi mdi-view-dashboard mr-2"></i>Reports
           </a>
       </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'main:contracts' %}">
+            <i class="mdi mdi-view-dashboard mr-2"></i>contracts
+        </a>
+    </li>
       <li class="nav-item">
         <a class="nav-link" href="{% url 'reservations:checkin' %}">
             <i class="mdi mdi-view-dashboard mr-2"></i>checkin

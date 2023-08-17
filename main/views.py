@@ -45,3 +45,6 @@ def car_detail(request, car_id):
         'total_cost': total_service_cost,
         'last_service': last_service
     })
+
+def contracts(request):
+    return render(request, 'main/contracts.html')
