@@ -1,0 +1,366 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+        <!-- Begin page -->
+        <div id="layout-wrapper">
+
+          <div class="main-content">
+
+              <div class="page-content">
+                  <div class="container-fluid">
+                      <!-- start page title -->
+                      <div class="row">
+                          <div class="col-12">
+                              <div class="page-title-box d-flex align-items-center justify-content-between">
+                                  <h4 class="mb-0 font-size-18">CAR HIRE</h4>
+
+                                  <div class="page-title-right">
+                                      <ol class="breadcrumb m-0">
+                                          <li class="breadcrumb-item"><a href="javascript: void(0);">CONTRACT</a></li>
+                                          <li class="breadcrumb-item active"><a href="">{{ carout.make }} {{ carout.model }} {{ carout.number_plate }}</a></li>
+                                      </ol>
+                                  </div>
+                                  
+                              </div>
+                          </div>
+                      </div>     
+                    <!-- end page title -->
+                    
+                
+        <!-- Invoice Card -->
+        <div class="card border-0">
+            <div class="card-body">
+                <div class="invoice" id="invoice">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="table-responsive mt-4 mb-0">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th class="border-0 mb-0 mt-0 text-center" style="padding: 0;">
+                                                <img src="{% static 'main/images/logo.jpg' %}" width="100" height="100" alt="">
+                                            </th>
+                                            <th class="text-center border-0">
+                                                <b class="mb-0">TOPSTAR CAR HIRE LIMITED</b>
+                                                <p class="mt-2 mb-1">Repen complex, Block B, Room 108, off Mombasa road</p>
+                                                <p class="my-0">+254704 955666, +254756 537835</p>
+                                                <p class="my-0">info@topstarcarhire.co.ke</p>
+                                            </th>
+                                            <th class="text-center border-0 align-middle">Rental Agreement No. <br><h1>{{ carout.invoice_number }}</h1></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <hr class="mt-0 mb-0">
+                    <!--End contract header section-->
+                    <h4 class="card-title text-center mb-0 mt-2">CAR HIRE CONTRACT</h4>
+                    <div class="row mb-0">
+                        <div class="col-md-12">
+                            <div class="table-responsive mt-4">
+                                <table class="table table-sm table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <td><p>REG NO.: <strong>{{ carout.number_plate }}</strong> </p></td>
+                                            <td><p>MAKE:  <strong>{{ carout.make }} {{ carout.model }}</strong> </p></td>
+                                            <td><p>MODEL:  <strong>{{ carout.model }}</strong> </p></td>
+                                            <td><p>CLASS:  <strong>{{ carout.car_class }}</strong> </p></td>
+                                        </tr>
+                                        <tr>
+                                            <td><p>HIRER'S NAME:  <strong>{{ carout.full_name }}</strong> </p></td>
+                                            <td>
+                                                <p>NATIONALITY: <strong>{{ carout.nationality|default:"-" }}</strong></p>
+                                            </td>
+                                            
+                                            <td><p>LD/APPT NO.:  <strong>{% if carout.ld_appt_number %}{{ carout.ld_appt_number }}{% else %}-{% endif %}</strong> </p></td>
+                                            <td><p>AGE:  <strong>{% if carout.age %}{{ carout.age }}{% else %}-{% endif %}</strong> </p></td>
+                                        </tr>
+                                        <tr>
+                                            <td><p>POSTAL ADDRESS:  <strong>{% if carout.postal_address %}{{ carout.postal_address }}{% else %}-{% endif %}</strong> </p></td>
+                                            <td><p>D/L NO.:  <strong>{% if carout.drivers_license_number %}{{ carout.drivers_license_number }}{% else %}-{% endif %}</strong> </p></td>
+                                            <td><p>COUNTRY OF ISSUE:  <strong>{% if carout.country_of_issue %}{{ carout.country_of_issue }}{% else %}-{% endif %}</strong> </p></td>
+                                            <td><p>EXPIRY:  <strong>{% if carout.license_expiry %}{{ carout.license_expiry }}{% else %}-{% endif %}</strong> </p></td>
+                                        </tr>
+                                        <tr>
+                                            <td><p>CREDIT CARD:  <strong>{% if carout.credit_card %}{{ carout.credit_card }}{% else %}-{% endif %}</strong> </p></td>
+                                            <td><p>CREDIT CARD NO.:  <strong>{% if carout.credit_card_number %}{{ carout.credit_card_number }}{% else %}-{% endif %}</strong> </p></td>
+                                            <td><p>EXPIRY:  <strong>{% if carout.card_expiry %}{{ carout.card_expiry }}{% else %}-{% endif %}</strong> </p></td>
+                                            <td></td>
+                                        </tr>
+                                        <tr>
+                                            <td><p>PHYSICAL ADDRESS:  <strong>{% if carout.physical_address %}{{ carout.physical_address }}{% else %}-{% endif %}</strong> </p></td>
+                                            <td><p>MOBILE NO.:  <strong>{% if carout.mobile_number %}{{ carout.mobile_number }}{% else %}-{% endif %}</strong> </p></td>
+                                            <td><p>TELEPHONE NO.:  <strong>{% if carout.office_telephone %}{{ carout.office_telephone }}{% else %}-{% endif %}</strong> </p></td>
+                                            <td><p>RESIDENCE:  <strong>{% if carout.residence_address %}{{ carout.residence_address }}{% else %}-{% endif %}</strong> </p></td>
+                                        </tr>
+                                        <tr>
+                                            <td><p>OTHER DRIVERS NAME:  <strong>{% if carout.other_driver_name1 %}{{ carout.other_driver_name1 }}{% else %}-{% endif %}</strong> </p></td>
+                                            <td><p>D/L NO.:  <strong>{% if carout.other_driver_dl1 %}{{ carout.other_driver_dl1 }}{% else %}-{% endif %}</strong> </p></td>
+                                            <td><p>COUNTRY OF ISSUE:  <strong>{% if carout.other_driver_country1 %}{{ carout.other_driver_country1 }}{% else %}-{% endif %}</strong> </p></td>
+                                            <td><p>EXPIRY:  <strong>{% if carout.other_driver_expiry1 %}{{ carout.other_driver_expiry1 }}{% else %}-{% endif %}</strong> </p></td>
+                                        </tr>
+                                        <tr>
+                                            <td><p>OTHER DRIVERS NAME:  <strong>{% if carout.other_driver_name2 %}{{ carout.other_driver_name2 }}{% else %}-{% endif %}</strong> </p></td>
+                                            <td><p>D/L NO.:  <strong>{% if carout.other_driver_dl2 %}{{ carout.other_driver_dl2 }}{% else %}-{% endif %}</strong> </p></td>
+                                            <td><p>COUNTRY OF ISSUE:  <strong>{% if carout.other_driver_country2 %}{{ carout.other_driver_country2 }}{% else %}-{% endif %}</strong> </p></td>
+                                            <td><p>EXPIRY:  <strong>{% if carout.other_driver_expiry2 %}{{ carout.other_driver_expiry2 }}{% else %}-{% endif %}</strong> </p></td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td colspan="2">
+                                                <p>WHERE THE VEHICLE WILL BE PARKED OR USED: <strong>{{ carout.where_the_car_will_be_used_or_parked|default:"-" }}</strong></p>
+                                            </td>
+                                            <td colspan="2">
+                                                <p>EMAIL & ADDRESS: <strong>{{ carout.email|default:"-" }}</strong></p>
+                                                <p> <strong>{{ carout.physical_address|default:"-" }}</strong></p>
+                                            </td>
+                                        </tr>
+                                                                                                                             
+                                    </tbody>
+                                    
+                                </table>
+                                
+                            </div>            
+                        </div>
+                    </div>
+                    <!-- End hires details-->
+                    <div class="row mt-0">
+                        <div class="col-md-12">
+                            <div class="table-responsive mt-0 mb-0">
+                                <table class="table table-sm table-bordered">
+                                    <tbody>
+                                        <tr>
+                                            <td>MODE OF PAYMENT: <strong>{{ carout.payment_method.name|default:"-" }}</strong></td>
+                                            <td>DEPOSIT: <strong>{{ carout.deposit|default:"-" }}</strong></td>
+                                            <td>L.P.O NO.: <strong>{{ carout.lpo_number|default:"-" }}</strong></td>
+                                            <td>CAR AUTH NO.: <strong>{{ carout.car_authorization_number|default:"-" }}</strong></td>
+                                            <td>DATE OUT: <strong>{{ carout.start_date|date:"F j, Y"|default:"-" }}</strong></td>
+                                        </tr>
+                                        
+                                        <tr>
+                                            <td>FUEL OUT: <strong>{{ carout.fuel_out|default:"-" }}</strong></td>
+                                            <td colspan="2">FUEL IN: <strong>{{ carout.fuel_in|default:"-" }}</strong></td>
+                                            <td>MIN KMS PER DAY CHARGED: <strong>{{ carout.min_kms_per_day_charged|default:"-" }}</strong></td>
+                                            <td>DATE IN: <strong>{{ carout.end_date|date:"F j, Y"|default:"-" }}</strong></td>
+                                        </tr>
+                                        
+                                         <tr>
+                                            <td>
+                                                <div class="row">
+                                                    {% for inspection_item in inspection_items %}
+                                                        
+                                                            <div class="col-3">
+                                                                {{ inspection_item.inspection_item.name }}:
+                                                            </div>
+                                                            <div class="col-3">
+                                                                {% if inspection_item.checked_out %}
+                                                                <i class="fas fa-check-square"></i>
+                                                            {% else %}
+                                                                <i class="far fa-square"></i>
+                                                            {% endif %}
+                                                            </div>
+                                                        {% if forloop.counter|divisibleby:2 and not forloop.last %}
+                                                            </div><div class="row">
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <ul class="list-group list-group-flush">
+                                                    <li class="list-group-item">KMS OUT: <strong>{{ carout.kms_out|default:"-" }}</strong></li>
+                                                    <li class="list-group-item">KMS IN: <strong>{{ carout.kms_in|default:"-" }}</strong></li>
+                                                    <li class="list-group-item">KMS DRIVEN: <strong>{{ carout.kms_driven|default:"-" }}</strong></li>
+                                                    <li class="list-group-item">KMS ALLOW: <strong>{{ carout.kms_allowed|default:"-" }}</strong></li>
+                                                </ul>
+                                                
+                                                  <h6 class="text-center">DAMAGES NOTED</h6>
+                                                  <P class=" text-center">{{ carout.damages_noted|default:"-"  }}</P>
+                                            </td>
+                                            <td colspan="3">
+                                               
+                                                    <div class="col-md-12">
+                                                        <table class="table table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th colspan="3" class="mb-0 mt-0 text-center"></th>
+                                                                    <th class="text-center">SHS</th>
+                                                                    <th class="text-center align-middle">CTS</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td colspan="3" class="mb-0 mt-0">DAILY @</td>
+                                                                    <td class="mb-0 mt-0 text-center"></td>
+                                                                    <td class="mb-0 mt-0 text-center"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="3" class="mb-0 mt-0">EXTRA KMS @</td>
+                                                                    <td class="mb-0 mt-0 text-center"></td>
+                                                                    <td class="mb-0 mt-0 text-center"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="3" class="mb-0 mt-0">SUB TOTAL</td>
+                                                                    <td class="mb-0 mt-0 text-center"></td>
+                                                                    <td class="mb-0 mt-0 text-center"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="3" class="mb-0 mt-0">DRIVER'S ALLOWANCE @</td>
+                                                                    <td class="mb-0 mt-0 text-center"></td>
+                                                                    <td class="mb-0 mt-0 text-center"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="3" class="mb-0 mt-0">SUB TOTAL</td>
+                                                                    <td class="mb-0 mt-0 text-center"></td>
+                                                                    <td class="mb-0 mt-0 text-center"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="3" class="mb-0 mt-0">        </td>
+                                                                    <td class="mb-0 mt-0 text-center"></td>
+                                                                    <td class="mb-0 mt-0 text-center"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="3" class="mb-0 mt-0">16 % VAT</td>
+                                                                    <td class="mb-0 mt-0 text-center"></td>
+                                                                    <td class="mb-0 mt-0 text-center"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="3" class="mb-0 mt-0">SUB TOTAL</td>
+                                                                    <td class="mb-0 mt-0 text-center"></td>
+                                                                    <td class="mb-0 mt-0 text-center"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="3" class="mb-0 mt-0">DEPOSIT</td>
+                                                                    <td class="mb-0 mt-0 text-center"></td>
+                                                                    <td class="mb-0 mt-0 text-center"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="3" class="mb-0 mt-0">BALANCE</td>
+                                                                    <td class="mb-0 mt-0 text-center"></td>
+                                                                    <td class="mb-0 mt-0 text-center"></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td colspan="5" class="mb-0 mt-0 text-center">CAR TO BE CHECKED IN AT PLACE</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        
+                                                        </div>
+                                                    
+                                                <!-- </div> -->
+                                            </td>
+                                            
+                                         </tr>
+                                         <tr>
+                                            <td>
+                                                Extended to
+                                            </td>
+                                            <td colspan="2">
+                                                Approved by
+                                            </td>
+                                            <td colspan="2">
+                                                Deposit/Add/IV
+                                            </td>
+                                         </tr>
+                                         <tr>
+                                            <td colspan="5">
+                                                <p>
+                                                    I FULLY UNDERSTAND THAT BY PAYMENT OF DAILY INSURANCE MY MAXIMUM LIABILITY TO THE COMPANY IS LIMITED UP TO KSHS .................. (FOR COLLISION AND)
+                                                    KSHS .................(FOR THEFT) BEING THE EXCESS PREMIUM ON EACH CLAIM PAYABLE TO THE INSURANCE COMPANY NOT WITHSTANDING PAYMENT OF THE AFOREMENTIONED
+                                                    RATE. I SHALL BE WHOLLY AND FULLY RESPONSIBLE FOR ANY DAMAGE(S) OCCASIONED TO THE VEHICLE IF USED, OPERATED OR DRIVEN IN VIOLATION OR BREACH OF THE TERMS
+                                                    AND CONDITIONS OF THIS CONTRACT.
+                                                </p>
+                                            </td>
+                                            
+                                         </tr>
+                                         <tr>
+                                            <td colspan="3">
+                                                <p>
+                                                    Signature of Hirer : .....................................
+                                                </p>
+                                            </td>
+                                            <td colspan="2">
+                                                <p>
+                                                    Date : .....................................
+                                                </p>
+                                            </td>
+                                            
+                                         </tr>
+                                         <tr>
+                                            <td colspan="5">
+                                                <p>
+                                                    I FULLY UNDERSTAND THAT I AM THE AUTHORISED PERSON TO DRIVE THIS VEHICLE UNLESS OTHER DRIVERS ARE SPECIFIED IN THE AGREEMENT. THE VEHICLE IS HIRED FOR 
+                                                    THE SPECIFIED PERIOD STATED ABOVE IN THE AGREEMENT.IF EXCEEDED THE VEHICLE WILL BE CONSIDERED STOLEN AND THE MATTER WILL BE REPORTED TO THE POLICE AS 
+                                                    UNLAWFULL USE OF MOTOR VEHICLE WHICH IS AN OFFENCE.
+                                                </p>
+                                            </td>
+                                            
+                                         </tr>
+                                         <tr>
+                                            <td colspan="3">
+                                                <p>
+                                                    I hereby agree to all terms and conditions of this contract as stated above and overleaf and accept full responsibility for the vehicle while on hire
+                                                    <br><br>
+                                                    Signature of Hirer:......................
+                                                </p>
+                                            </td>
+                                            <td colspan="2">
+                                                <p>
+                                                    <br><br>
+                                                    Date : .....................................
+                                                </p>
+                                            </td>
+                                            
+                                         </tr>
+                                         <tr>
+                                            <td>
+                                                INVOICE NO:
+                                            </td>
+                                            <td colspan="2">
+                                               OUT BY
+                                            </td>
+                                            <td colspan="2">
+                                                IN BY
+                                             </td>
+                                         </tr>
+
+                                         <tr>
+                                            <td colspan="5">
+                                               <P class="text-center"> GENERATED BY :</P>
+                                            </td>
+                                           
+                                         </tr>
+
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <!--End contract content-->
+
+                    <div class="d-print-none my-4">
+                        <div class="text-right">
+                            <a href="javascript:window.print()" class="btn btn-primary waves-effect waves-light"><i class="fa fa-print m-r-5"></i>Download Invoice</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End Invoice Card -->
+                
+            </div> <!-- container-fluid -->
+        </div>
+        <!-- End Page-content -->
+
+    <script type="text/javascript">
+        function convertHTMLtoPDF(invoiceNumber) {
+            const { jsPDF } = window.jspdf;
+            const pdfFileName = `Invoice_${invoiceNumber}`;
+    
+            // Rest of your PDF generation code here
+            // ...
+        }
+    </script>
+{% endblock content %}

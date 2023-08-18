@@ -47,4 +47,28 @@ def car_detail(request, car_id):
     })
 
 def contracts(request):
-    return render(request, 'main/contracts.html')
+    car_outs = CarOut.objects.all()
+    for car_out in car_outs:
+        print(car_out.pk)
+    context = {
+        'car_outs': car_outs
+    }
+    return render(request, 'main/contracts.html', context)
+
+def contract(request, carout_id):
+    carout = get_object_or_404(CarOut, pk=carout_id)
+    
+    try:
+        # Retrieve the related CarInspection instance that matches the CarOut ID
+        car_inspection = CarInspection.objects.get(car_out=carout)
+        
+        # Retrieve inspection items and their status associated with the CarInspection instance
+        inspection_items = car_inspection.inspectionitemstatus_set.all()
+    except CarInspection.DoesNotExist:
+        inspection_items = []
+    
+    context = {
+        'carout': carout,
+        'inspection_items': inspection_items,
+    }
+    return render(request, 'main/contract.html', context)
