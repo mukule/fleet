@@ -107,3 +107,29 @@ class CarServiceForm(forms.ModelForm):
             'description': forms.Textarea(attrs={'class': 'form-control'}),
             'cost': forms.NumberInput(attrs={'class': 'form-control'}),
         }
+
+class InsuranceForm(forms.ModelForm):
+    class Meta:
+        model = Insurance
+        fields = ['car', 'insurance_company', 'policy_number', 'start_date', 'insurance_amount', 'duration']
+        widgets = {
+            'car': forms.Select(attrs={'class': 'form-control'}),
+            'insurance_company': forms.TextInput(attrs={'class': 'form-control'}),
+            'policy_number': forms.TextInput(attrs={'class': 'form-control'}),
+            'start_date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
+            'insurance_amount': forms.NumberInput(attrs={'class': 'form-control'}),
+            'duration': forms.Select(attrs={'class': 'form-control'}),
+        }
+
+        labels = {
+            'car': 'Select Car',
+            'insurance_company': 'Insurance Company',
+            'policy_number': 'Policy Number',
+            'start_date': 'Start Date',
+            'insurance_amount': 'Insurance Amount',
+            'duration': 'Insurance Duration',
+        }
+
+        duration_choices = Insurance.DURATION_CHOICES
+        duration_choices.insert(0, ('', 'Select Duration'))
+        widgets['duration'] = forms.Select(attrs={'class': 'form-control'}, choices=duration_choices)

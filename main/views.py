@@ -2,6 +2,7 @@ from django.shortcuts import render,get_object_or_404
 from car.models import Car
 from django.contrib.auth.decorators import login_required
 from reservations.models import *
+from datetime import datetime
 from django.db.models import Sum
 
 
@@ -24,11 +25,10 @@ def car_detail(request, car_id):
 
     # Filter CarOut instances by the number plate of the current car
     car_out_instances = CarOut.objects.filter(number_plate=number_plate)
+    car_out_count = car_out_instances.count()
 
     # Filter CarService instances by the number plate of the current car
     car_service_instances = CarService.objects.filter(car__number_plate=number_plate)
-
-    # Retrieve the last car service instance for the current car
     last_service = CarService.objects.filter(car__number_plate=number_plate).order_by('-service_date').first()
 
     # Calculate the total cost for car service instances
@@ -37,14 +37,31 @@ def car_detail(request, car_id):
     # Count the number of car service instances
     car_service_count = car_service_instances.count()
 
+    # Filter Income instances by the number plate of the current car and sum the amounts
+    total_income = Income.objects.filter(number_plate=number_plate).aggregate(total_amount=Sum('amount'))['total_amount']
+
+    # Retrieve the insurance instance for the current car (if it exists)
+    current_date = datetime.now().date()
+    active_insurance = Insurance.objects.filter(car=car, start_date__lte=current_date, end_date__gte=current_date).first()
+    print(active_insurance)
+
+    # Calculate the number of days left before insurance expiry
+    days_left = (active_insurance.end_date - current_date).days if active_insurance else None
+    print(days_left)
+
     return render(request, 'main/car_detail.html', {
         'car': car,
         'car_out_instances': car_out_instances,
+        'car_out_count': car_out_count,
         'car_service_instances': car_service_instances,
         'car_service_count': car_service_count,
         'total_cost': total_service_cost,
-        'last_service': last_service
+        'last_service': last_service,
+        'total_income': total_income,
+        'days_left': days_left
+        
     })
+
 
 def contracts(request):
     car_outs = CarOut.objects.all()

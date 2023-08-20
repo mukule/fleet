@@ -395,10 +395,16 @@ def carout_detail(request, carout_id):
     if request.method == 'POST':
         form = CarCheckInForm(request.POST, instance=carout)
         if form.is_valid():
+            # Update the mileage field in the associated Car instance
+            car = Car.objects.get(number_plate=carout.number_plate)
+            car.mileage = form.cleaned_data['kms_in']
+            car.save(update_fields=['mileage'])
+
+            # Save the form data
             form.save()
 
             # Add a success message
-            messages.success(request, 'fuel and mileage updated')
+            messages.success(request, 'Mileage and form data updated')
 
             # Redirect to carin_inspection with the carout_id parameter
             return redirect('reservations:carin_inspection', carout_id=carout_id)
@@ -406,6 +412,8 @@ def carout_detail(request, carout_id):
         form = CarCheckInForm(instance=carout)
 
     return render(request, 'reservations/carout_detail.html', {'carout': carout, 'form': form})
+
+
 
 
 def carin_inspection(request, carout_id):

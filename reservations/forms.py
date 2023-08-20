@@ -52,8 +52,6 @@ class CarOutForm(forms.ModelForm):
     def save(self, commit=True):
         instance = super().save(commit=False)
 
-        # Additional processing specific to CarOut
-        # For example, you can set fields like 'full_name', 'nationality', etc. here
 
         if commit:
             instance.save()
@@ -88,11 +86,13 @@ class CarOutUpdateForm(forms.ModelForm):
         model = CarOut
         fields = ['fuel_out', 'kms_out']
 
-
-
 class CarCheckInForm(forms.ModelForm):
     class Meta:
         model = CarOut
-        fields = ['fuel_in', 'kms_in', 'damages_noted']
-
+        fields = ['fuel_in','kms_in', 'damages_noted']
+        widgets = {
+            'fuel_in': forms.Select(attrs={'class': 'form-control'}),
+            'kms_in': forms.NumberInput(attrs={'class': 'form-control'}),
+            'damages_noted': forms.Textarea(attrs={'class': 'form-control'}),
+        }
 

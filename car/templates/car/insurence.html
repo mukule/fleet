@@ -1,0 +1,59 @@
+{% extends 'main/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<!-- Begin page -->
+<div id="layout-wrapper">
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+                <!-- end row -->
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Car Insurance</h4>
+                                <form method="post" enctype="multipart/form-data" class="form-horizontal">
+                                    {% csrf_token %}
+                                    <fieldset class="form-group">
+                                      <div class="form-row">
+                                        <div class="form-group col-md-6 mb-0">
+                                          {{ form.car|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-6 mb-0">
+                                          {{ form.insurance_company|as_crispy_field }}
+                                        </div>
+                                      </div>
+                                      <div class="form-row">
+                                        <div class="form-group col-md-6 mb-0">
+                                          {{ form.policy_number|as_crispy_field }}
+                                        </div>
+                                        <div class="form-group col-md-6 mb-0">
+                                          {{ form.insurance_amount|as_crispy_field }}
+                                        </div>
+                                      </div>
+                                      <div class="form-row">
+                                        <div class="form-group col-md-6 mb-0">
+                                            {{ form.duration|as_crispy_field }}
+                                          </div>
+                                          <div class="form-group col-md-6 mb-0">
+                                            {{ form.start_date|as_crispy_field }}
+                                          </div>
+                                      </div>
+                                    </fieldset>
+                                    <div class="form-row text-center">
+                                      <div class="form-group col-md-12 mb-2">
+                                        <button style="background-color: #3d4255; border: #3d4255;" class="btn btn-success" type="submit">Submit</button>
+                                      </div>
+                                    </div>
+                                  </form>
+                                  
+                            </div>
+                        </div> <!-- end card-->
+                    </div> <!-- end col -->
+                </div>
+            </div> <!-- container-fluid -->
+        </div>
+    </div>
+    <!-- end main content-->
+</div>
+{% endblock content %}

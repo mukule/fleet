@@ -1,7 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from .forms import *
 from.models import *
+from dateutil.relativedelta import relativedelta
+
 
 
 def create_car(request):
@@ -65,3 +67,32 @@ def service(request):
 def car_services(request):
     car_services = CarService.objects.all().order_by('-service_date')
     return render(request, 'car/car_service.html', {'car_services': car_services})
+
+
+def insurance(request):
+    if request.method == 'POST':
+        form = InsuranceForm(request.POST)
+        if form.is_valid():
+            insurance = form.save(commit=False)
+
+            # Calculate end date based on duration
+            duration = form.cleaned_data['duration']
+            if duration == '1M':
+                insurance.end_date = insurance.start_date + relativedelta(months=1)
+            elif duration == '1Y':
+                insurance.end_date = insurance.start_date + relativedelta(years=1)
+
+            # Get the associated car's ID from the form
+            car_id = form.cleaned_data['car'].id
+            insurance.save()
+
+            # Add a success message
+            messages.success(request, 'Insurance added successfully.')
+
+            # Redirect to the detailed view of the associated car
+            return redirect('main:car_detail', car_id=car_id)
+
+    else:
+        form = InsuranceForm()
+
+    return render(request, 'car/insurence.html', {'form': form})

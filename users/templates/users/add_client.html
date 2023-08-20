@@ -132,41 +132,88 @@
                                   <div class="col-xl-12">
                                       <div class="card">
                                           <div class="card-body">      
-                                              <form method="post" enctype="multipart/form-data" class="form-horizontal">
+                                            <form method="post" enctype="multipart/form-data" class="form-horizontal">
                                                 {% csrf_token %}
                                                 <fieldset class="form-group">
-                                                  <div class="form-row">
-                                                    <div class="form-group col-md-4 mb-0">
-                                                      {{ form.first_name|as_crispy_field }}
-                                                     
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-4 mb-0">
+                                                            {{ form.first_name|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4 mb-0">
+                                                            {{ form.last_name|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4 mb-0">
+                                                            {{ form.id_number|as_crispy_field }}
+                                                        </div>
                                                     </div>
-                                                    <div class="form-group col-md-4 mb-0">
-                                                      {{ form.last_name|as_crispy_field }}
-                                                      
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-4 mb-0">
+                                                            {{ form.email|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4 mb-0">
+                                                            {{ form.phone_number|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4 mb-0">
+                                                            {{ form.local_address|as_crispy_field }}
+                                                        </div>
                                                     </div>
-                                                    <div class="form-group col-md-4 mb-0">
-                                                      {{ form.id_number|as_crispy_field }}
-                                                    
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-4 mb-0">
+                                                            {{ form.home_address|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4 mb-0">
+                                                            {{ form.company|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4 mb-0">
+                                                            {{ form.nationality|as_crispy_field }}
+                                                        </div>
                                                     </div>
-                                                  </div>
-                                                  <div class="form-row">
-                                                    <div class="form-group col-md-4 mb-0">
-                                                      {{ form.email|as_crispy_field }}
-                                                     
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-4 mb-0">
+                                                            {{ form.age|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4 mb-0">
+                                                            {{ form.drivers_license_number|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4 mb-0">
+                                                            {{ form.country_of_issue|as_crispy_field }}
+                                                        </div>
                                                     </div>
-                                                    <div class="form-group col-md-4 mb-0">
-                                                      {{ form.phone_number|as_crispy_field }}
-                                                      
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-4 mb-0">
+                                                            {{ form.license_expiry|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4 mb-0">
+                                                            {{ form.credit_card|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4 mb-0">
+                                                            {{ form.credit_card_number|as_crispy_field }}
+                                                        </div>
                                                     </div>
-                                                    
-                                                  </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-4 mb-0">
+                                                            {{ form.card_expiry|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4 mb-0">
+                                                            {{ form.physical_address|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4 mb-0">
+                                                            {{ form.office_telephone|as_crispy_field }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-12 mb-0">
+                                                            {{ form.residence_address|as_crispy_field }}
+                                                        </div>
+                                                    </div>
                                                 </fieldset>
                                                 <div class="form-row text-center">
-                                                  <div class="form-group col-md-12 mb-2">
-                                                    <button style="background-color: #3d4255; border: #3d4255;" class="btn btn-success" type="submit">Add Client</button>
-                                                  </div>
+                                                    <div class="form-group col-md-12 mb-2">
+                                                        <button style="background-color: #3d4255; border: #3d4255;" class="btn btn-success" type="submit">Add Client</button>
+                                                    </div>
                                                 </div>
-                                              </form>
+                                            </form>
+                                            
                                               
       
                                           </div> <!-- end card-body-->

@@ -23,115 +23,25 @@
                                       </div>
                                   </div>
                               </div>     
-                              <!-- end page title -->
-      
-                              <div class="row">
-                                  <div class="col-md-6 col-xl-3">
-                                      <div class="card bg-primary border-primary">
-                                          <div class="card-body">
-                                              <!-- <div class="mb-4">
-                                                  <span class="badge badge-soft-light float-right">Daily</span>
-                                                  <h5 class="card-title mb-0 text-white">Cost per Unit</h5>
-                                              </div>
-                                              <div class="row d-flex align-items-center mb-4">
-                                                  <div class="col-8">
-                                                      <h2 class="d-flex align-items-center mb-0 text-white">
-                                                          $17.21
-                                                      </h2>
-                                                  </div>
-                                                  <div class="col-4 text-right">
-                                                      <span class="text-white-50">12.5% <i class="mdi mdi-arrow-up"></i></span>
-                                                  </div>
-                                              </div>
-      
-                                              <div class="progress badge-soft-light shadow-sm" style="height: 5px;">
-                                                  <div class="progress-bar bg-light" role="progressbar" style="width: 38%;"></div>
-                                              </div> -->
-                                          </div>
-                                      </div>
-                                  </div> <!-- end col-->
-      
-                                  <div class="col-md-6 col-xl-3">
-                                      <div class="card bg-success border-success">
-                                          <div class="card-body">
-                                              <!-- <div class="mb-4">
-                                                  <span class="badge badge-soft-light float-right">Per Week</span>
-                                                  <h5 class="card-title mb-0 text-white">Market Revenue</h5>
-                                              </div>
-                                              <div class="row d-flex align-items-center mb-4">
-                                                  <div class="col-8">
-                                                      <h2 class="d-flex align-items-center text-white mb-0">
-                                                          $1875.54
-                                                      </h2>
-                                                  </div>
-                                                  <div class="col-4 text-right">
-                                                      <span class="text-white-50">18.71% <i class="mdi mdi-arrow-down"></i></span>
-                                                  </div>
-                                              </div>
-      
-                                              <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
-                                                  <div class="progress-bar bg-light" role="progressbar" style="width: 38%;"></div>
-                                              </div> -->
-                                          </div>
-                                      </div>
-                                  </div> <!-- end col-->
-      
-                                  <div class="col-md-6 col-xl-3">
-                                      <div class="card bg-warning border-warning">
-                                          <div class="card-body">
-                                              <!-- <div class="mb-4">
-                                                  <span class="badge badge-soft-light float-right">Per Month</span>
-                                                  <h5 class="card-title mb-0 text-white">Expenses</h5>
-                                              </div>
-                                              <div class="row d-flex align-items-center mb-4">
-                                                  <div class="col-8">
-                                                      <h2 class="d-flex align-items-center text-white mb-0">
-                                                          $784.62
-                                                      </h2>
-                                                  </div>
-                                                  <div class="col-4 text-right">
-                                                      <span class="text-white-50">57% <i class="mdi mdi-arrow-up"></i></span>
-                                                  </div>
-                                              </div>
-      
-                                              <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
-                                                  <div class="progress-bar bg-light" role="progressbar" style="width: 68%;"></div>
-                                              </div> -->
-                                          </div>
-                                      </div>
-                                  </div> <!-- end col-->
-      
-                                  <div class="col-md-6 col-xl-3">
-                                      <div class="card bg-info border-info">
-                                          <div class="card-body">
-                                              <!-- <div class="mb-4">
-                                                  <span class="badge badge-soft-light float-right">All Time</span>
-                                                  <h5 class="card-title mb-0 text-white">Daily Visits</h5>
-                                              </div>
-                                              <div class="row d-flex align-items-center mb-4">
-                                                  <div class="col-8">
-                                                      <h2 class="d-flex align-items-center text-white mb-0">
-                                                          1,15,187
-                                                      </h2>
-                                                  </div>
-                                                  <div class="col-4 text-right">
-                                                      <span class="text-white-50">17.8% <i class="mdi mdi-arrow-down"></i></span>
-                                                  </div>
-                                              </div>
-      
-                                              <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
-                                                  <div class="progress-bar bg-light" role="progressbar" style="width: 57%;"></div>
-                                              </div> -->
-                                          </div>
-                                      </div>
-                                  </div> <!-- end col-->
-                              </div>
-                              <!-- end row -->
+                             
                               <div class="row">
                                   <div class="col-xl-12">
                                       <div class="card">
                                           <div class="card-body">
-                                              </p>
+                                            <h4 class="card-title">Invoices</h4>
+                                            <p class="card-subtitle mb-4">Type the invoice number or clients Name for a specific Search
+                                            </p>
+
+                                            <div class="d-flex justify-content-center">
+                                                <form method="GET" action="{% url 'invoices:invoices' %}" class="form-inline">
+                                                    <div class="form-group mb-3">
+                                                        <input type="text" name="search" class="form-control" placeholder="Enter Invoice Number or Client Name">
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary" type="submit">Search</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
       
                                               <div class="table-responsive">
                                                 <table class="table table-centered table-hover table-xl mb-0" id="recent-orders">
@@ -139,13 +49,11 @@
                                                         <tr>
                                                             <th class="border-top-0">Invoice No.</th>
                                                             <th class="border-top-0">Car</th>
-                                                            <th class="border-top-0">Number Plate</th>
                                                             <th class="border-top-0">Car Class</th>
-                                                            <th class="border-top-0">Name</th>
+                                                            <th class="border-top-0">Client</th>
                                                             <th class="border-top-0">Phone</th>
                                                             <th class="border-top-0">Date</th>
-                                                            <th class="border-top-0">Start Date</th>
-                                                            <th class="border-top-0">End Date</th>
+                                                            <th class="border-top-0">Duration</th>
                                                             <th class="border-top-0">Amount</th>
                                                         </tr>
                                                     </thead>
@@ -153,21 +61,36 @@
                                                         {% for reservation in reservations %}
                                                             <tr>
                                                                 <td class="text-truncate"><a href="{% url 'invoices:invoice_detail' reservation.id %}">{{ reservation.reservation_number }}</a></td>
-                                                                <td class="text-truncate">{{ reservation.car.make.name }} {{ reservation.car.model.name }}</td>
-                                                                <td class="text-truncate">{{ reservation.car.number_plate }}</td>
+                                                                <td class="text-truncate">{{ reservation.car.make.name }} {{ reservation.car.model.name }} {{ reservation.car.number_plate }}</td>
                                                                 <td class="text-truncate">{{ reservation.car.car_class }}</td>
                                                                 <td class="text-truncate">{{ reservation.client.first_name }} {{ reservation.client.last_name }}</td>
                                                                 <td class="text-truncate">{{ reservation.client.phone_number }}</td>
                                                                 <td class="text-truncate">{{ reservation.created_at }}</td>
-                                                                <td class="text-truncate">{{ reservation.start_date }}</td>
-                                                                <td class="text-truncate">{{ reservation.end_date }}</td>
-                                                                <td class="text-truncate">$ {{ reservation.rate }}</td>
+                                                                <td class="text-truncate">{{ reservation.start_date }} - {{ reservation.end_date }}</td>
+                                                                <td class="text-truncate">Ksh.  {{ reservation.total_amount }}</td>
                                                             </tr>
                                                            
                                                         {% endfor %}
                                                     </tbody>
                                                 </table>
                                                 
+                                            </div>
+                                            <div class="d-flex justify-content-center mt-3">
+                                                <nav aria-label="Page navigation">
+                                                    <ul class="pagination">
+                                                        {% if reservations.has_previous %}
+                                                            <li class="page-item"><a class="page-link" href="?page=1">&laquo;</a></li>
+                                                            <li class="page-item"><a class="page-link" href="?page={{ reservations.previous_page_number }}">{{ reservations.previous_page_number }}</a></li>
+                                                        {% endif %}
+                                            
+                                                        <li class="page-item active"><a class="page-link" href="?page={{ reservations.number }}">{{ reservations.number }}</a></li>
+                                            
+                                                        {% if reservations.has_next %}
+                                                            <li class="page-item"><a class="page-link" href="?page={{ reservations.next_page_number }}">{{ reservations.next_page_number }}</a></li>
+                                                            <li class="page-item"><a class="page-link" href="?page={{ reservations.paginator.num_pages }}">&raquo;</a></li>
+                                                        {% endif %}
+                                                    </ul>
+                                                </nav>
                                             </div>
       
                                           </div> <!-- end card-body-->

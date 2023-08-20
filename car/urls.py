@@ -10,5 +10,6 @@ urlpatterns = [
    path('create_make/', views.create_make, name='create_make'),
    path('services/', views.service, name='service'),
    path('car_services/', views.car_services, name='car_services'),
+   path('insurance/', views.insurance, name='insurance'),
    
 ]

@@ -59,3 +59,21 @@ class CarService(models.Model):
 
     def __str__(self):
         return f"{self.car} - Service on {self.service_date} by {self.service_company}"
+    
+class Insurance(models.Model):
+    DURATION_CHOICES = [
+        ('1M', '1 Month'),
+        ('1Y', '1 Year'),
+    ]
+
+    car = models.ForeignKey(Car, on_delete=models.CASCADE)
+    insurance_company = models.CharField(max_length=100)
+    policy_number = models.CharField(max_length=50)
+    start_date = models.DateField()
+    end_date = models.DateField()
+    insurance_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    renew = models.BooleanField(default=False)
+    duration = models.CharField(max_length=2, choices=DURATION_CHOICES, null=True)  # New duration field
+
+    def __str__(self):
+        return f"{self.car} - Insurance {self.policy_number}"

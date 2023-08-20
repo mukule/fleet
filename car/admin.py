@@ -39,4 +39,5 @@ class CarAdmin(admin.ModelAdmin):
 
 admin.site.register(ServiceCompany)
 admin.site.register(CarService)
+admin.site.register(Insurance)
 

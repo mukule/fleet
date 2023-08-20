@@ -55,13 +55,13 @@
                                     <div class="card bg-success border-success">
                                         <div class="card-body">
                                             <div class="mb-4">
-                                                <span class="badge badge-soft-light float-right">Hires</span>
+                                                <span class="badge badge-soft-light float-right">Hires ( {{ car_out_count }} )</span>
                                                 <h5 class="card-title mb-0 text-white">Income Contributions</h5>
                                             </div>
                                             <div class="row d-flex align-items-center mb-4">
                                                 <div class="col-8">
                                                     <h2 class="d-flex align-items-center text-white mb-0">
-                                                        $1875.54
+                                                        {{total_income}}
                                                     </h2>
                                                 </div>
                                                 <div class="col-4 text-right">
@@ -110,9 +110,9 @@
                                             </div>
                                             <div class="row d-flex align-items-center mb-4">
                                                 <div class="col-8">
-                                                    <h2 class="d-flex align-items-center text-white mb-0">
-                                                        Due in
-                                                    </h2>
+                                                    <h4 class="d-flex align-items-center text-white mb-0">
+                                                        Due in {{ days_left }} Days
+                                                    </h4>
                                                 </div>
                                                
                                             </div>
