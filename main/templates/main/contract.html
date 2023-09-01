@@ -1,5 +1,6 @@
 {% extends 'main/base.html' %}
 {% load static %}
+{% load custom_filters %}
 {% block content %}
         <!-- Begin page -->
         <div id="layout-wrapper">
@@ -99,14 +100,7 @@
                                             <td><p>D/L NO.:  <strong>{% if carout.other_driver_dl1 %}{{ carout.other_driver_dl1 }}{% else %}-{% endif %}</strong> </p></td>
                                             <td><p>COUNTRY OF ISSUE:  <strong>{% if carout.other_driver_country1 %}{{ carout.other_driver_country1 }}{% else %}-{% endif %}</strong> </p></td>
                                             <td><p>EXPIRY:  <strong>{% if carout.other_driver_expiry1 %}{{ carout.other_driver_expiry1 }}{% else %}-{% endif %}</strong> </p></td>
-                                        </tr>
-                                        <tr>
-                                            <td><p>OTHER DRIVERS NAME:  <strong>{% if carout.other_driver_name2 %}{{ carout.other_driver_name2 }}{% else %}-{% endif %}</strong> </p></td>
-                                            <td><p>D/L NO.:  <strong>{% if carout.other_driver_dl2 %}{{ carout.other_driver_dl2 }}{% else %}-{% endif %}</strong> </p></td>
-                                            <td><p>COUNTRY OF ISSUE:  <strong>{% if carout.other_driver_country2 %}{{ carout.other_driver_country2 }}{% else %}-{% endif %}</strong> </p></td>
-                                            <td><p>EXPIRY:  <strong>{% if carout.other_driver_expiry2 %}{{ carout.other_driver_expiry2 }}{% else %}-{% endif %}</strong> </p></td>
-                                        </tr>
-                                        
+                                        </tr> 
                                         <tr>
                                             <td colspan="2">
                                                 <p>WHERE THE VEHICLE WILL BE PARKED OR USED: <strong>{{ carout.where_the_car_will_be_used_or_parked|default:"-" }}</strong></p>
@@ -211,8 +205,11 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td colspan="3" class="mb-0 mt-0">SUB TOTAL</td>
-                                                                    <td class="mb-0 mt-0 text-center"></td>
-                                                                    <td class="mb-0 mt-0 text-center"></td>
+                                                                    {% with carout.sub_total|default_if_none:"-"|split_decimal as sub_total_parts %}
+                                                                    <td class="mb-0 mt-0 text-center">{{ sub_total_parts.0 }}</td>
+                                                                    <td class="mb-0 mt-0 text-center">{{ sub_total_parts.1 }}</td>
+                                                                    {% endwith %}
+
                                                                 </tr>
                                                                 <tr>
                                                                     <td colspan="3" class="mb-0 mt-0">        </td>
@@ -221,23 +218,32 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td colspan="3" class="mb-0 mt-0">16 % VAT</td>
-                                                                    <td class="mb-0 mt-0 text-center"></td>
-                                                                    <td class="mb-0 mt-0 text-center"></td>
+                                                                    {% with carout.vat|default_if_none:"-"|split_decimal as vat_parts %}
+                                                                    <td class="mb-0 mt-0 text-center">{{ vat_parts.0 }}</td>
+                                                                    <td class="mb-0 mt-0 text-center">{{ vat_parts.1 }}</td>
+                                                                    {% endwith %}
+
                                                                 </tr>
                                                                 <tr>
-                                                                    <td colspan="3" class="mb-0 mt-0">SUB TOTAL</td>
-                                                                    <td class="mb-0 mt-0 text-center"></td>
-                                                                    <td class="mb-0 mt-0 text-center"></td>
+                                                                    <td colspan="3" class="mb-0 mt-0">TOTAL</td>
+                                                                    {% with carout.amount|default_if_none:"-"|split_decimal as amount_parts %}
+                                                                    <td class="mb-0 mt-0 text-center">{{ amount_parts.0 }}</td>
+                                                                    <td class="mb-0 mt-0 text-center">{{ amount_parts.1 }}</td>
+                                                                    {% endwith %}
                                                                 </tr>
                                                                 <tr>
                                                                     <td colspan="3" class="mb-0 mt-0">DEPOSIT</td>
-                                                                    <td class="mb-0 mt-0 text-center"></td>
-                                                                    <td class="mb-0 mt-0 text-center"></td>
+                                                                    {% with carout.deposit|default_if_none:"-"|split_decimal as deposit_parts %}
+                                                                    <td class="mb-0 mt-0 text-center">{{ deposit_parts.0 }}</td>
+                                                                    <td class="mb-0 mt-0 text-center">{{ deposit_parts.1 }}</td>
+                                                                    {% endwith %}
                                                                 </tr>
                                                                 <tr>
                                                                     <td colspan="3" class="mb-0 mt-0">BALANCE</td>
-                                                                    <td class="mb-0 mt-0 text-center"></td>
-                                                                    <td class="mb-0 mt-0 text-center"></td>
+                                                                    {% with carout.balance|default_if_none:"-"|split_decimal as balance_parts %}
+                                                                    <td class="mb-0 mt-0 text-center">{{ balance_parts.0 }}</td>
+                                                                    <td class="mb-0 mt-0 text-center">{{ balance_parts.1 }}</td>
+                                                                    {% endwith %}
                                                                 </tr>
                                                                 <tr>
                                                                     <td colspan="5" class="mb-0 mt-0 text-center">CAR TO BE CHECKED IN AT PLACE</td>
@@ -314,7 +320,7 @@
                                          </tr>
                                          <tr>
                                             <td>
-                                                INVOICE NO:
+                                                INVOICE NO: {{ carout.invoice_number }}
                                             </td>
                                             <td colspan="2">
                                                OUT BY
@@ -326,7 +332,7 @@
 
                                          <tr>
                                             <td colspan="5">
-                                               <P class="text-center"> GENERATED BY :</P>
+                                               <P class="text-center"> GENERATED BY : {{ carout.approver }}</P>
                                             </td>
                                            
                                          </tr>

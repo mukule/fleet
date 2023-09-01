@@ -246,43 +246,11 @@ def make_contract(request, reservation_id):
     car = reservation.car
     client = reservation.client
 
-    initial_data = {
-        # car details
-        'number_plate': car.number_plate,
-        'make': car.make.name if car.make else None,
-        'model': car.model.name if car.model else None,
-        'year': car.year,
-        'color': car.color,
-        'daily_rate': car.daily_rate,
-        'weekly_rate': car.weekly_rate,
-        'monthly_rate': car.monthly_rate,
-        'seating_capacity': car.seating_capacity,
-        'car_class': car.car_class.name if car.car_class else None,
-        'mileage': car.mileage,
-        'amount': reservation.total_amount_vat,
-
-        # renter details
-        'full_name': f"{client.first_name} {client.last_name}",
-        'email': client.email,
-        'id_number': client.id_number,
-        'nationality': client.nationality,
-        'age': client.age,
-        'drivers_license_number': client.drivers_license_number,
-        'country_of_issue': client.country_of_issue,
-        'license_expiry': client.license_expiry,
-        'credit_card': client.credit_card,
-        'credit_card_number': client.credit_card_number,
-        'card_expiry': client.card_expiry,
-        'physical_address': client.physical_address,
-        'mobile_number': client.phone_number,
-        'office_telephone': client.office_telephone,
-        'residence_address': client.residence_address,
-    }
-
     if request.method == 'POST':
-        combined_form = CarOutForm(request.POST, initial=initial_data)
+        combined_form = CarOutForm(request.POST)
         if combined_form.is_valid():
             car_out_instance = combined_form.save(commit=False)
+            
             # Update the renter-related fields in the CarOut instance from the Client model
             car_out_instance.full_name = f"{client.first_name} {client.last_name}"
             car_out_instance.email = client.email
@@ -299,17 +267,68 @@ def make_contract(request, reservation_id):
             car_out_instance.mobile_number = client.phone_number
             car_out_instance.office_telephone = client.office_telephone
             car_out_instance.residence_address = client.residence_address
-            car_out_instance.residence_address = client.residence_address
+            car_out_instance.approver = request.user.get_full_name()
+            amount = car_out_instance.amount if car_out_instance.amount is not None else Decimal('0')
+            deposit = car_out_instance.deposit if car_out_instance.deposit is not None else Decimal('0')
+            car_out_instance.balance = amount - deposit
+
+            car_out_instance.number_plate = car.number_plate
+            car_out_instance.make = car.make.name if car.make else None
+            car_out_instance.model = car.model.name if car.model else None
+            car_out_instance.year = car.year
+            car_out_instance.color = car.color
+            car_out_instance.daily_rate = car.daily_rate
+            car_out_instance.weekly_rate = car.weekly_rate
+            car_out_instance.monthly_rate = car.monthly_rate
+            car_out_instance.seating_capacity = car.seating_capacity
+            car_out_instance.car_class = car.car_class.name if car.car_class else None
+            car_out_instance.mileage = car.mileage
             car_out_instance.start_date = reservation.start_date
             car_out_instance.end_date = reservation.end_date
             car_out_instance.invoice_number = reservation.reservation_number
+
             car_out_instance.save()
             messages.success(request, 'Form submitted successfully')
             return redirect('reservations:car_inspection', car_out_id=car_out_instance.id, reservation_id=reservation_id)
     else:
+        initial_data = {
+            # car details
+            'number_plate': car.number_plate,
+            'make': car.make.name if car.make else None,
+            'model': car.model.name if car.model else None,
+            'year': car.year,
+            'color': car.color,
+            'daily_rate': car.daily_rate,
+            'weekly_rate': car.weekly_rate,
+            'monthly_rate': car.monthly_rate,
+            'seating_capacity': car.seating_capacity,
+            'car_class': car.car_class.name if car.car_class else None,
+            'mileage': car.mileage,
+            'amount': reservation.total_amount_vat,
+            'sub_total': reservation.total_amount,
+            'vat': reservation.vat,
+            'deposit': Decimal('0'),  # Set a default value for deposit here
+            # renter details
+            'full_name': f"{client.first_name} {client.last_name}",
+            'email': client.email,
+            'id_number': client.id_number,
+            'nationality': client.nationality,
+            'age': client.age,
+            'drivers_license_number': client.drivers_license_number,
+            'country_of_issue': client.country_of_issue,
+            'license_expiry': client.license_expiry,
+            'credit_card': client.credit_card,
+            'credit_card_number': client.credit_card_number,
+            'card_expiry': client.card_expiry,
+            'physical_address': client.physical_address,
+            'mobile_number': client.phone_number,
+            'office_telephone': client.office_telephone,
+            'residence_address': client.residence_address,
+        }
         combined_form = CarOutForm(initial=initial_data)
 
     return render(request, 'reservations/contract_details.html', {'combined_form': combined_form, 'reservation': reservation})
+
 
 def car_inspection(request, car_out_id, reservation_id):
     car_out_instance = get_object_or_404(CarOut, id=car_out_id)

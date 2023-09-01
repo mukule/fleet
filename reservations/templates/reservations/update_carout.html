@@ -22,7 +22,7 @@
                             
                         </div>
                     </div>
-                </div>     
+                </div>   
                 <form method="post" enctype="multipart/form-data" class="form-horizontal">
                     {% csrf_token %}
                     <div class="form-row">
@@ -32,7 +32,23 @@
                         <div class="form-group col-md-6">
                             {{ form.kms_out|as_crispy_field }}
                         </div>
-                        
+                    </div>
+                    <hr>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            {{ form.o_drivers_name|as_crispy_field }}
+                        </div>
+                        <div class="form-group col-md-6">
+                            {{ form.o_drivers_dl_no|as_crispy_field }}
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            {{ form.o_country_of_issue|as_crispy_field }}
+                        </div>
+                        <div class="form-group col-md-6">
+                            {{ form.o_drivers_dl_expiry|as_crispy_field }}
+                        </div>
                     </div>
                     <div class="form-row text-center">
                         <div class="form-group col-md-12 mb-2">
@@ -40,6 +56,7 @@
                         </div>
                     </div>
                 </form>
+                
             </div> <!-- container-fluid -->
         </div>
         <!-- End Page-content -->

@@ -74,6 +74,7 @@ class CarOut(models.Model):
     start_date = models.DateTimeField(null=True, blank=True)  # Change to DateTimeField
     end_date = models.DateTimeField(null=True, blank=True)    #
     created_at = models.DateTimeField(default=timezone.now)
+    approver = models.CharField(max_length=150, null=True, blank=True)
 
     # Renter details
     full_name = models.CharField(max_length=150, null=True, blank=True)
@@ -94,9 +95,16 @@ class CarOut(models.Model):
     residence_address = models.CharField(max_length=100, null=True, blank=True)  # Updated field name
     where_the_car_will_be_used_or_parked = models.CharField(max_length=100, null=True, blank=True)  # Updated field name
     payment_method = models.ForeignKey(PaymentMethod, on_delete=models.SET_NULL, null=True, blank=True)
+    sub_total = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    vat = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     amount = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    deposit = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
-    
+    deposit = models.DecimalField(max_digits=10, decimal_places=2, default=0.00, null=True, blank=True)
+    balance = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    # Fuel and Kilometers
+    o_drivers_name = models.CharField(max_length=150, null=True, blank=True)
+    o_drivers_dl_no = models.CharField(max_length=50, null=True, blank=True)
+    o_country_of_issue = models.CharField(max_length=50, null=True, blank=True)
+    o_drivers_dl_expiry = models.DateField(null=True, blank=True)
     # Fuel and Kilometers
     fuel_out = models.CharField(max_length=5, choices=Fuel.LEVEL_CHOICES, null=True)
     fuel_in = models.CharField(max_length=5, choices=Fuel.LEVEL_CHOICES, null=True)

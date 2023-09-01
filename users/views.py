@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import get_user_model, login, authenticate
 from .forms import UserRegistrationForm
 from django.contrib import messages
@@ -75,7 +75,7 @@ def custom_logout(request):
 
 
 def clients(request):
-    clients_list = Client.objects.all()  # Retrieve all Client objects from the database
+    clients_list = Client.objects.all()
     return render(request, 'users/clients.html', {'clients_list': clients_list})
 
 
@@ -86,9 +86,30 @@ def add_client(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Client added successfully!')
-            return redirect('users:clients')  # Replace 'clients_list' with the URL name for the clients list view
+            return redirect('users:clients')
         else:
             messages.error(request, 'Error: Please correct the form errors.')
     else:
         form = ClientForm()
     return render(request, 'users/add_client.html', {'form': form})
+
+
+def edit_client(request, client_id):
+    # Get the client object to be edited or return a 404 if it doesn't exist
+    client = get_object_or_404(Client, pk=client_id)
+
+    if request.method == 'POST':
+        form = ClientForm(request.POST, instance=client)
+        if form.is_valid():
+            form.save()
+            client_name = f"{client.first_name} {client.last_name}"
+            success_message = f'Client {client_name} updated successfully!'
+            messages.success(request, success_message)
+            return redirect('users:clients')
+        else:
+            messages.error(request, 'Error: Please correct the form errors.')
+    else:
+        # Populate the form with the current client data
+        form = ClientForm(instance=client)
+
+    return render(request, 'users/edit_client.html', {'form': form, 'client': client})

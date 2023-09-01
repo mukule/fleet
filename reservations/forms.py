@@ -20,8 +20,6 @@ class ReservationForm(forms.ModelForm):
             field.widget.attrs['class'] = 'form-control'
         self.fields['start_date'].widget.attrs['placeholder'] = 'YYYY-MM-DD HH:MM'
         self.fields['end_date'].widget.attrs['placeholder'] = 'YYYY-MM-DD HH:MM'
-
-
 class CarOutForm(forms.ModelForm):
     class Meta:
         model = CarOut
@@ -30,8 +28,41 @@ class CarOutForm(forms.ModelForm):
             'car_class', 'mileage', 'full_name', 'email', 'id_number', 'nationality', 'ld_appt_number', 'age',
             'drivers_license_number', 'country_of_issue', 'license_expiry', 'credit_card',
             'credit_card_number', 'card_expiry', 'physical_address', 'mobile_number',
-            'office_telephone', 'residence_address', 'where_the_car_will_be_used_or_parked','payment_method', 'amount', 'deposit',
+            'office_telephone', 'residence_address', 'where_the_car_will_be_used_or_parked', 'payment_method', 'amount', 'vat', 'sub_total', 'deposit',
         ]
+        labels = {
+            'number_plate': 'Number Plate',
+            'make': 'Make',
+            'model': 'Model',
+            'year': 'Year',
+            'color': 'Color',
+            'daily_rate': 'Daily Rate',
+            'seating_capacity': 'Seating Capacity',
+            'car_class': 'Car Class',
+            'mileage': 'Mileage',
+            'full_name': 'Full Name',
+            'email': 'Email',
+            'id_number': 'ID Number',
+            'nationality': 'Nationality',
+            'ld_appt_number': 'LD Appointment Number',
+            'age': 'Age',
+            'drivers_license_number': 'Driver\'s License Number',
+            'country_of_issue': 'Country of Issue (Driver\'s License)',
+            'license_expiry': 'License Expiry Date',
+            'credit_card': 'Credit Card',
+            'credit_card_number': 'Credit Card Number',
+            'card_expiry': 'Card Expiry Date',
+            'physical_address': 'Physical Address',
+            'mobile_number': 'Mobile Number',
+            'office_telephone': 'Office Telephone',
+            'residence_address': 'Residence Address',
+            'where_the_car_will_be_used_or_parked': 'Where the Car Will Be Used or Parked',
+            'payment_method': 'Payment Method',
+            'amount': 'Total Amount',
+            'vat': 'VAT (16%)',
+            'sub_total': 'Sub Total',
+            'deposit': 'Deposit',
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -52,10 +83,12 @@ class CarOutForm(forms.ModelForm):
     def save(self, commit=True):
         instance = super().save(commit=False)
 
-
         if commit:
             instance.save()
         return instance
+
+
+
 
 class CarInspectionForm(forms.Form):
     def __init__(self, inspection_items, *args, **kwargs):
@@ -75,7 +108,6 @@ class CarInInspectionForm(CarInspectionForm):
                 label=f' {item.name}'  # Customize the label for check out
             )
 
-            
 class CarOutUpdateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -84,7 +116,24 @@ class CarOutUpdateForm(forms.ModelForm):
 
     class Meta:
         model = CarOut
-        fields = ['fuel_out', 'kms_out']
+        fields = ['fuel_out', 'kms_out', 'o_drivers_name', 'o_drivers_dl_no', 'o_country_of_issue', 'o_drivers_dl_expiry']
+        labels = {
+            'fuel_out': 'Fuel Tank Level',
+            'kms_out': 'Kilometers Out',
+            'o_drivers_name': 'Other Driver\'s Name',
+            'o_drivers_dl_no': 'Other Driver\'s License Number',
+            'o_country_of_issue': 'Other Drivers License Country of Issue',
+            'o_drivers_dl_expiry': 'Other Driver\'s License Expiry Date',
+        }
+        widgets = {
+            'fuel_out': forms.Select(attrs={'class': 'form-control'}),
+            'kms_out': forms.TextInput(attrs={'placeholder': 'Enter kilometers out'}),
+            'o_drivers_name': forms.TextInput(attrs={'placeholder': 'Enter driver\'s name'}),
+            'o_drivers_dl_no': forms.TextInput(attrs={'placeholder': 'Enter driver\'s license number'}),
+            'o_country_of_issue': forms.TextInput(attrs={'placeholder': 'Enter country of issue'}),
+            'o_drivers_dl_expiry': forms.DateInput(attrs={'placeholder': 'YYYY-MM-DD', 'class': 'form-control datepicker', 'type': 'date'}),
+            # You can use 'class': 'form-control datepicker' or any other class you need for styling.
+        }
 
 class CarCheckInForm(forms.ModelForm):
     class Meta:

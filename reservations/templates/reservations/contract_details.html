@@ -149,6 +149,9 @@
                                                         <div class="form-group col-md-6">
                                                             {{ combined_form.where_the_car_will_be_used_or_parked|as_crispy_field }}
                                                         </div>
+                                                        <div class="form-group col-md-6">
+                                                            {{ combined_form.payment_method|as_crispy_field }}
+                                                        </div>
                                                     </div>
                                                     <div class="form-row text-center">
                                                         <div class="form-group col-md-12">
@@ -156,13 +159,16 @@
                                                         </div>
                                                     </div>
                                                     <div class="form-row">
-                                                        <div class="form-group col-md-4">
-                                                            {{ combined_form.payment_method|as_crispy_field }}
+                                                        <div class="form-group col-md-3">
+                                                            {{ combined_form.sub_total|as_crispy_field }}
                                                         </div>
-                                                        <div class="form-group col-md-4">
+                                                        <div class="form-group col-md-3">
+                                                            {{ combined_form.vat|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-3">
                                                             {{ combined_form.amount|as_crispy_field }}
                                                         </div>
-                                                        <div class="form-group col-md-4">
+                                                        <div class="form-group col-md-3">
                                                             {{ combined_form.deposit|as_crispy_field }}
                                                         </div>
                                                     </div>
