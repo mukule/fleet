@@ -50,15 +50,20 @@ class ServiceCompany(models.Model):
     def __str__(self):
         return self.name
 
+
 class CarService(models.Model):
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
     service_date = models.DateTimeField(default=timezone.now)
-    description = models.TextField()
-    cost = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)  # Update the default value
-    service_company = models.ForeignKey(ServiceCompany, on_delete=models.CASCADE)
+    service_report = models.TextField()
+    cost = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    current_kms = models.PositiveIntegerField(null=True)
+    quantity = models.PositiveIntegerField(null=True)
+    next_service = models.DateField(null=True)
+    service_by = models.CharField(max_length=255, null=True)
+    service_provider_contacts = models.TextField(null=True)
 
     def __str__(self):
-        return f"{self.car} - Service on {self.service_date} by {self.service_company}"
+        return f"{self.car} - Service on {self.service_date} by {self.service_by}"
     
 class Insurance(models.Model):
     DURATION_CHOICES = [

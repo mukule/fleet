@@ -11,14 +11,7 @@
                               <div class="row">
                                   <div class="col-12">
                                       <div class="page-title-box d-flex align-items-center justify-content-between">
-                                          <h4 class="mb-0 font-size-18">Dashboard</h4>
-      
-                                          <div class="page-title-right">
-                                              <ol class="breadcrumb m-0">
-                                                  <li class="breadcrumb-item"><a href="javascript: void(0);">Vehicles</a></li>
-                                                  <li class="breadcrumb-item active"><a href="{% url 'users:add_client' %}">Add Client</a></li>
-                                              </ol>
-                                          </div>
+                                          <h4 class="mb-0 font-size-18">Invoices</h4>
                                           
                                       </div>
                                   </div>
@@ -51,10 +44,10 @@
                                                             <th class="border-top-0">Car</th>
                                                             <th class="border-top-0">Car Class</th>
                                                             <th class="border-top-0">Client</th>
-                                                            <th class="border-top-0">Phone</th>
                                                             <th class="border-top-0">Date</th>
                                                             <th class="border-top-0">Duration</th>
                                                             <th class="border-top-0">Amount</th>
+                                                            <th class="border-top-0">Action</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -64,10 +57,17 @@
                                                                 <td class="text-truncate">{{ reservation.car.make.name }} {{ reservation.car.model.name }} {{ reservation.car.number_plate }}</td>
                                                                 <td class="text-truncate">{{ reservation.car.car_class }}</td>
                                                                 <td class="text-truncate">{{ reservation.client.first_name }} {{ reservation.client.last_name }}</td>
-                                                                <td class="text-truncate">{{ reservation.client.phone_number }}</td>
                                                                 <td class="text-truncate">{{ reservation.created_at }}</td>
                                                                 <td class="text-truncate">{{ reservation.start_date }} - {{ reservation.end_date }}</td>
                                                                 <td class="text-truncate">Ksh.  {{ reservation.total_amount }}</td>
+                                                                <td class="text-truncate">
+                                                                    <a href="{% url 'reservations:update_reservation' reservation.id %}" class="btn btn-sm btn-warning">
+                                                                        <i class="fas fa-edit"></i> 
+                                                                    </a>
+                                                                    <a href="{% url 'reservations:delete_invoice' reservation.id %}" class="btn btn-sm btn-danger">
+                                                                        <i class="fas fa-trash"></i>
+                                                                
+                                                                
                                                             </tr>
                                                            
                                                         {% endfor %}

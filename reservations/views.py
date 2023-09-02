@@ -223,6 +223,131 @@ def create_reservation(request, car_id):
 
     return render(request, 'reservations/reservation_form.html', {'form': form, 'car': car})
 
+
+def update_reservation(request, reservation_id):
+    reservation = get_object_or_404(Reservation, id=reservation_id)
+
+    if request.method == 'POST':
+        form = ReservationForm(request.POST, instance=reservation)
+        if form.is_valid():
+            start_date = form.cleaned_data['start_date']
+            end_date = form.cleaned_data['end_date']
+
+            # Check if the start date is less than the current date
+            if start_date < reservation.created_at:
+                messages.error(request, "Start date cannot be in the past.")
+            # Check if the end date is less than the start date
+            elif end_date < start_date:
+                messages.error(request, "End date cannot be before the start date.")
+            else:
+                # Check if the car is already reserved for any overlapping period
+                overlapping_reservations = Reservation.objects.filter(
+                    car=reservation.car,
+                    start_date__lte=end_date,
+                    end_date__gte=start_date,
+                ).exclude(id=reservation_id)  # Exclude the current reservation
+
+                if overlapping_reservations.exists():
+                    reserved_dates = [
+                        f"{reservation.start_date.strftime('%Y-%m-%d')} to {reservation.end_date.strftime('%Y-%m-%d')}"
+                        for reservation in overlapping_reservations
+                    ]
+                    reserved_dates_str = ', '.join(reserved_dates)
+                    messages.error(request, f"Car is already reserved for the following dates: {reserved_dates_str}.")
+                else:
+                    updated_reservation = form.save(commit=False)
+
+                    # Calculate the duration in days
+                    duration_days = (end_date - start_date).days + 1
+
+                    if form.cleaned_data['apply_normal_rates']:
+                        # Using normal rates
+                        if duration_days < 7:
+                            rate_before_discount = reservation.car.daily_rate
+                        elif duration_days >= 7 and duration_days < 30:
+                            rate_before_discount = reservation.car.weekly_rate
+                        else:
+                            rate_before_discount = reservation.car.monthly_rate
+
+                        # Save the rates before applying the discount in the daily_rates field
+                        updated_reservation.daily_rates = rate_before_discount
+                    else:
+                        # Using custom rates
+                        rate_before_discount = form.cleaned_data['daily_rates']
+
+                        # Check if daily rates are provided when normal rates are not used
+                        if not rate_before_discount:
+                            messages.error(request, "Please enter the daily rates.")
+                            return render(request, 'reservations/reservation_update_form.html', {'form': form, 'reservation': reservation})
+
+                    # Convert the rate_before_discount to Decimal before performing calculations
+                    rate_before_discount = Decimal(str(rate_before_discount))
+
+                    # Calculate the total amount before VAT
+                    updated_reservation.rate = rate_before_discount * duration_days
+
+                    # Apply VAT if selected
+                    if form.cleaned_data['add_VAT']:
+                        vat_rate = 0.16  # You can adjust this rate accordingly
+                        updated_reservation.vat = updated_reservation.rate * Decimal(str(vat_rate))
+                    else:
+                        # If "add VAT" checkbox is unchecked, set VAT to 0.00
+                        updated_reservation.vat = Decimal('0.00')
+
+                    # Calculate the total amount (excluding VAT) and assign to total_amount field
+                    updated_reservation.total_amount = updated_reservation.rate
+
+                    # Calculate the total amount including VAT (if applicable) and assign to total_amount_vat field
+                    updated_reservation.total_amount_vat = updated_reservation.rate + updated_reservation.vat
+
+                    # Update the car, client, and other reservation details
+                    updated_reservation.days = duration_days  # Save the duration in days
+                    updated_reservation.save()
+
+                    # Update the CarOut model based on the updated Reservation
+                    car_out = CarOut.objects.get(invoice_number=reservation.reservation_number)
+                    car_out.start_date = updated_reservation.start_date
+                    car_out.end_date = updated_reservation.end_date
+                    car_out.vat = updated_reservation.vat
+                    car_out.sub_total = updated_reservation.total_amount
+                    car_out.amount = updated_reservation.total_amount_vat
+
+                    # Update the balance field based on the updated Reservation
+                    car_out.balance = updated_reservation.total_amount_vat - car_out.deposit
+
+                    car_out.save()
+
+                    messages.success(request, f"Invoice {reservation.reservation_number} updated successfully.")
+                    return redirect('invoices:invoice_detail', reservation_id=updated_reservation.id)
+
+        # If the form is not valid or there are errors, render the form again
+        else:
+            messages.error(request, 'Error updating reservation. Please check the form data.')
+
+    else:
+        form = ReservationForm(instance=reservation)  # Initialize the form with existing reservation data
+
+    return render(request, 'invoices/update_invoice.html', {'form': form, 'reservation': reservation})
+
+def delete_invoice(request, reservation_id):
+    reservation = get_object_or_404(Reservation, id=reservation_id)
+
+    # Find the associated CarOut instance using the reservation_number
+    
+    car_out = CarOut.objects.get(invoice_number=reservation.reservation_number)
+       
+   
+    # Delete the Reservation instance
+    car_out.delete()
+    # Delete the Reservation instance
+    reservation.delete()
+    messages.success(request, f"Invoice {reservation.reservation_number} and associated Contract deleted successfully.")
+    return redirect('invoices:invoices')  # Replace 'your_success_url_here' with the URL you want to redirect to after deletion
+
+
+
+
+
 def confirm_make_contract(request, reservation_id):
     # Retrieve the reservation object using the reservation_id
     reservation = get_object_or_404(Reservation, id=reservation_id)

@@ -1,264 +1,273 @@
 {% extends 'main/base.html' %}
 {% load static %}
 {% block content %}
-    <div class="container-fluid">
-        <!-- Page Title -->
-        <div class="page-title-box d-flex align-items-center justify-content-between">
-            <h4 class="mb-0 font-size-18">Dashboard</h4>
-            <div class="page-title-right">
-                <ol class="breadcrumb m-0">
-                    <li class="breadcrumb-item"><a href="javascript: void(0);">Vehicles</a></li>
-                    <li class="breadcrumb-item active"><a href="{% url 'users:add_client' %}">Add Client</a></li>
-                </ol>
-            </div>
-        </div>
-        <!-- End Page Title -->
+<div id="layout-wrapper">
 
-        <!-- Invoice Card -->
-        <div class="card border-0">
-            <div class="card-body">
-                <div class="invoice" id="invoice">
-                    <h4 style="width: 20%; text-align: center; border: 2px solid #dee2e6; border-radius: 10px; padding: 10px; margin: 0 auto;"><b>INVOICE</b></h4>
-                  <section style="border: 2px solid #dee2e6; border-radius: 10px; padding: 10px; margin: 0 auto;" class="mt-5">
-                    <div class="row mt-1">
-                        <div class="col-md-12">
-                                    <div class="clearfix">
-                                        <div class="float-left">
-                                            <img src="{% static 'main/images/logo.jpg' %}" width="100" height="100" alt="">
-                                        </div>
-                                    </div>
-                        </div>
-                        <div class="col-md-12 mt-2">
-                            <div class="table-responsive">
-                                <table class="table mb-0 table-bordered">
-                                    <tbody>
-                                        <tr>
-                                            <td class="border-0">
-                                               <p>
-                                                TOPSTAR CAR HIRE LIMITED <br>Repen complex, Block B, Room 108, off Mombasa road <br>+254704 955666, +254756 537835  <br>
-                                                info@topstarcarhire.co.ke
-                                               </p>
-                                            </td>
-                                            <td>
-                                                <p> <u>Bill To</u>
-                                                    <address class="line-height-24">
-                                                        <b>{{ reservation.client.first_name }} {{ reservation.client.last_name }}</b><br>
-                                                        {{ reservation.client.id_number }}<br>
-                                                        {{ reservation.client.email }}<br>
-                                                        {{ reservation.client.phone_number }}<br>
-                                                       
-                                                    </address>
-                                                
-                                                </p>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                  </section>
+  <div class="main-content">
 
-                  <section class="mt-1">
-                    <div class="row text-center">
-                        <div class="col-sm-4">
-                          <div style="border-radius: 10px; overflow: hidden;">
-                            <table class="table table-bordered">
-                              <tr>
-                                <td>Date</td>
-                              </tr>
-                              <tr>
-                                <td>{{ reservation.created_at }}</td>
-                              </tr>
-                            </table>
+      <div class="page-content">
+        <div class="container-fluid">
+          <!-- Page Title -->
+          <div class="page-title-box d-flex align-items-center justify-content-between">
+              <h4 class="mb-0 font-size-18">Invoice</h4>
+              <div class="page-title-right">
+                  <ol class="breadcrumb m-0">
+                      <li class="breadcrumb-item"><a href="javascript: void(0);">Invoice No.</a></li>
+                      <li class="breadcrumb-item active"><a href="">{{reservation.reservation_number}}</a></li>
+                  </ol>
+              </div>
+          </div>
+          <!-- End Page Title -->
+  
+          <!-- Invoice Card -->
+          <div class="card border-0">
+              <div class="card-body">
+                  <div class="invoice" id="invoice">
+                      <h4 style="width: 20%; text-align: center; border: 2px solid #dee2e6; border-radius: 10px; padding: 10px; margin: 0 auto;"><b>INVOICE</b></h4>
+                    <section style="border: 2px solid #dee2e6; border-radius: 10px; padding: 10px; margin: 0 auto;" class="mt-5">
+                      <div class="row mt-1">
+                          <div class="col-md-12">
+                                      <div class="clearfix">
+                                          <div class="float-left">
+                                              <img src="{% static 'main/images/logo.jpg' %}" width="100" height="100" alt="">
+                                          </div>
+                                      </div>
                           </div>
-                        </div>
-                        <div class="col-sm-4">
-                          <div style="border-radius: 10px; overflow: hidden;">
-                            <table class="table table-bordered">
-                              <tr>
-                                <td>INVOICE #</td>
-                              </tr>
-                              <tr>
-                                <td>{{ reservation.reservation_number }}</td>
-                              </tr>
-                            </table>
-                          </div>
-                        </div>
-                        <div class="col-sm-4">
-                          <div style="border-radius: 10px; overflow: hidden;">
-                            <table class="table table-bordered">
-                              <tr>
-                                <td>P.O BOX</td>
-                                <td>TERMS</td>
-                              </tr>
-                              <tr>
-                                <td>-</td>
-                                <td>-</td>
-                              </tr>
-                            </table>
-                          </div>
-                        </div>
-                      </div>
-                      
-                  </section>
-
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="table-responsive mt-4">
-                                <table class="table table-bordered">
-                                  <thead>
-                                    <tr>
-                                      <th>Quantity</th>
-                                      <th colspan="3">Vehicle</th>
-                                      <th>Rate (ksh)</th>
-                                      <th>Days</th>
-                                      <th>Amount (ksh)</th>
-                                    </tr>
-                                  </thead>
-                                  <tbody>
-                                    <tr>
-                                      <td class="text-center">1</td>
-                                      <td colspan="3">
-                                        <b>{{ reservation.car.make.name }} {{ reservation.car.model.name }}</b>
-                                        {{ reservation.car.number_plate }}
-                                      </td>
-                                      <td>{{ reservation.daily_rates }}</td>
-                                      <td>{{ reservation.days }}</td>
-                                      <td>{{ reservation.total_amount }}</td>
-                                    </tr>
-                                    <!-- Leave 5 blank rows without borders -->
-                                    <tr style="border-top: none;">
-                                        <td></td>
-                                        <td colspan="3"></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr style="border-top: none;">
-                                        <td></td>
-                                        <td colspan="3"></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr style="border-top: none;">
-                                        <td></td>
-                                        <td colspan="3"></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr style="border-top: none;">
-                                        <td></td>
-                                        <td colspan="3"></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr style="border-top: none;">
-                                        <td></td>
-                                        <td colspan="3"></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                    <tr style="border-top: none;">
-                                        <td></td>
-                                        <td colspan="3"></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                    </tr>
-                                   
-                                    <tr>
-                                      <td class="text-center"></td>
-                                      <td colspan="3">
-                                        <h6 class="text-muted">ACOUNT DETAILS:</h6>
-                                        <small>
-                                            <table class="table">
-                                                <tbody>
-                                                  <tr>
-                                                    <td>Account name</td>
-                                                    <td>TOP STAR CAR HIRE LTD</td>
-                                                </tr>
-                                                    <td>Bank</td>
-                                                    <td>FAMILY BANK LIMITED </td>
-                                                </tr>
-                                                    <td>Branch</td>
-                                                    <td>GATEWAY MALL </td>
-                                                </tr>
-                                                    <td>Account Number</td>
-                                                    <td>39000009718</td>
-                                                </tr>
-                                            </tr>
-                                            <td>Bank Code</td>
-                                            <td>70</td>
-                                        </tr>
-                                                    <td>Swift code</td>
-                                                    <td>FABLKENA</td>
-                                                </tr>
-                                                    <td>Branch Code</td>
-                                                    <td>39</td>
-                                                </tr>
-                                                    <td>e-mail address</td>
-                                                    <td>info@marketcarhire.com</td>
-                                                </tr>
-                                                    <td>PIN No.</td>
-                                                    <td></td>
-                                                </tr>
-                                                    <td>VAT No.</td>
-                                                    <td></td>
-                                                </tr>
-                                                    <td>Postal address</td>
-                                                    <td>P.O BOX 74145-00200 NAIROBI</td>
-                                                </tr>
-                                                    <td>Physical address</td>
-                                                    <td>Repen complex ,Block B,Room 108,off mombasa road</td>
-                                                </tr>
-                                                    <td>telephone number</td>
-                                                    <td>0704 955666/+254 750 032740</td>
-                                                </tr>
-                                                   
-                                                </tbody>
-                                              </table>
-                                        </small>
-                                      </td>
-                                      <td colspan="3"></td>
-                                    </tr>
-                                   <tr>
-                                    <td colspan="5"></td>
-                                    <td>Subtotal</td>
-                                    <td>{{ reservation.total_amount }}</td>
-                                   </tr>
-                                   <tr>
-                                    <td colspan="5"></td>
-                                    <td>VAT (16 % )</td>
-                                    <td>{{ reservation.vat }}</td>
-                                   </tr>
-                                   <tr>
-                                    <td colspan="5"></td>
-                                    <td>Total</td>
-                                    <td>{{ reservation.total_amount_vat }}</td>
-                                   </tr>
-                                  </tbody>
-                                </table>
+                          <div class="col-md-12 mt-2">
+                              <div class="table-responsive">
+                                  <table class="table mb-0 table-bordered">
+                                      <tbody>
+                                          <tr>
+                                              <td class="border-0">
+                                                 <p>
+                                                  TOPSTAR CAR HIRE LIMITED <br>Repen complex, Block B, Room 108, off Mombasa road <br>+254704 955666, +254756 537835  <br>
+                                                  info@topstarcarhire.co.ke
+                                                 </p>
+                                              </td>
+                                              <td>
+                                                  <p> <u>Bill To</u>
+                                                      <address class="line-height-24">
+                                                          <b>{{ reservation.client.first_name }} {{ reservation.client.last_name }}</b><br>
+                                                          {{ reservation.client.id_number }}<br>
+                                                          {{ reservation.client.email }}<br>
+                                                          {{ reservation.client.phone_number }}<br>
+                                                         
+                                                      </address>
+                                                  
+                                                  </p>
+                                              </td>
+                                          </tr>
+                                      </tbody>
+                                  </table>
                               </div>
-                              
+                          </div>
+                      </div>
+                    </section>
+  
+                    <section class="mt-1">
+                      <div class="row text-center">
+                          <div class="col-sm-4">
+                            <div style="border-radius: 10px; overflow: hidden;">
+                              <table class="table table-bordered">
+                                <tr>
+                                  <td>Date</td>
+                                </tr>
+                                <tr>
+                                  <td>{{ reservation.created_at }}</td>
+                                </tr>
+                              </table>
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
+                            <div style="border-radius: 10px; overflow: hidden;">
+                              <table class="table table-bordered">
+                                <tr>
+                                  <td>INVOICE #</td>
+                                </tr>
+                                <tr>
+                                  <td>{{ reservation.reservation_number }}</td>
+                                </tr>
+                              </table>
+                            </div>
+                          </div>
+                          <div class="col-sm-4">
+                            <div style="border-radius: 10px; overflow: hidden;">
+                              <table class="table table-bordered">
+                                <tr>
+                                  <td>P.O BOX</td>
+                                  <td>TERMS</td>
+                                </tr>
+                                <tr>
+                                  <td>-</td>
+                                  <td>-</td>
+                                </tr>
+                              </table>
+                            </div>
+                          </div>
                         </div>
-                    </div>
+                        
+                    </section>
+  
+                      <div class="row">
+                          <div class="col-md-12">
+                              <div class="table-responsive mt-4">
+                                  <table class="table table-bordered">
+                                    <thead>
+                                      <tr>
+                                        <th>Quantity</th>
+                                        <th colspan="3">Vehicle</th>
+                                        <th>Rate (ksh)</th>
+                                        <th>Days</th>
+                                        <th>Amount (ksh)</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                        <td class="text-center">1</td>
+                                        <td colspan="3">
+                                          <b>{{ reservation.car.make.name }} {{ reservation.car.model.name }}</b>
+                                          {{ reservation.car.number_plate }}
+                                        </td>
+                                        <td>{{ reservation.daily_rates }}</td>
+                                        <td>{{ reservation.days }}</td>
+                                        <td>{{ reservation.total_amount }}</td>
+                                      </tr>
+                                      <!-- Leave 5 blank rows without borders -->
+                                      <tr style="border-top: none;">
+                                          <td></td>
+                                          <td colspan="3"></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                      </tr>
+                                      <tr style="border-top: none;">
+                                          <td></td>
+                                          <td colspan="3"></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                      </tr>
+                                      <tr style="border-top: none;">
+                                          <td></td>
+                                          <td colspan="3"></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                      </tr>
+                                      <tr style="border-top: none;">
+                                          <td></td>
+                                          <td colspan="3"></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                      </tr>
+                                      <tr style="border-top: none;">
+                                          <td></td>
+                                          <td colspan="3"></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                      </tr>
+                                      <tr style="border-top: none;">
+                                          <td></td>
+                                          <td colspan="3"></td>
+                                          <td></td>
+                                          <td></td>
+                                          <td></td>
+                                      </tr>
+                                     
+                                      <tr>
+                                        <td class="text-center"></td>
+                                        <td colspan="3">
+                                          <h6 class="text-muted">ACOUNT DETAILS:</h6>
+                                          <small>
+                                              <table class="table">
+                                                  <tbody>
+                                                    <tr>
+                                                      <td>Account name</td>
+                                                      <td>TOP STAR CAR HIRE LTD</td>
+                                                  </tr>
+                                                      <td>Bank</td>
+                                                      <td>FAMILY BANK LIMITED </td>
+                                                  </tr>
+                                                      <td>Branch</td>
+                                                      <td>GATEWAY MALL </td>
+                                                  </tr>
+                                                      <td>Account Number</td>
+                                                      <td>39000009718</td>
+                                                  </tr>
+                                              </tr>
+                                              <td>Bank Code</td>
+                                              <td>70</td>
+                                          </tr>
+                                                      <td>Swift code</td>
+                                                      <td>FABLKENA</td>
+                                                  </tr>
+                                                      <td>Branch Code</td>
+                                                      <td>39</td>
+                                                  </tr>
+                                                      <td>e-mail address</td>
+                                                      <td>info@marketcarhire.com</td>
+                                                  </tr>
+                                                      <td>PIN No.</td>
+                                                      <td></td>
+                                                  </tr>
+                                                      <td>VAT No.</td>
+                                                      <td></td>
+                                                  </tr>
+                                                      <td>Postal address</td>
+                                                      <td>P.O BOX 74145-00200 NAIROBI</td>
+                                                  </tr>
+                                                      <td>Physical address</td>
+                                                      <td>Repen complex ,Block B,Room 108,off mombasa road</td>
+                                                  </tr>
+                                                      <td>telephone number</td>
+                                                      <td>0704 955666/+254 750 032740</td>
+                                                  </tr>
+                                                     
+                                                  </tbody>
+                                                </table>
+                                          </small>
+                                        </td>
+                                        <td colspan="3"></td>
+                                      </tr>
+                                     <tr>
+                                      <td colspan="5"></td>
+                                      <td>Subtotal</td>
+                                      <td>{{ reservation.total_amount }}</td>
+                                     </tr>
+                                     <tr>
+                                      <td colspan="5"></td>
+                                      <td>VAT (16 % )</td>
+                                      <td>{{ reservation.vat }}</td>
+                                     </tr>
+                                     <tr>
+                                      <td colspan="5"></td>
+                                      <td>Total</td>
+                                      <td>{{ reservation.total_amount_vat }}</td>
+                                     </tr>
+                                    </tbody>
+                                  </table>
+                                </div>
+                                
+                          </div>
+                      </div>
+  
+  
+                      <div class="d-print-none my-4">
+                          <div class="text-right">
+                              <a href="javascript:window.print()" class="btn btn-primary waves-effect waves-light"><i class="fa fa-print m-r-5"></i>Download Invoice</a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <!-- End Invoice Card -->
+      </div>
+      </div>
 
-
-                    <div class="d-print-none my-4">
-                        <div class="text-right">
-                            <a href="javascript:window.print()" class="btn btn-primary waves-effect waves-light"><i class="fa fa-print m-r-5"></i>Download Invoice</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- End Invoice Card -->
-    </div>
+  </div>
+</div>
     <script type="text/javascript">
         function convertHTMLtoPDF(invoiceNumber) {
             const { jsPDF } = window.jspdf;

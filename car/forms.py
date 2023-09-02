@@ -98,14 +98,18 @@ class CarServiceForm(forms.ModelForm):
     class Meta:
         model = CarService
         fields = [
-            'car', 'service_date', 'service_company', 'description', 'cost',
+            'car', 'service_date', 'service_report', 'cost', 'current_kms', 'quantity', 'next_service', 'service_by', 'service_provider_contacts',
         ]
         widgets = {
-            'service_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'car': forms.Select(attrs={'class': 'form-control'}),
-            'service_company': forms.Select(attrs={'class': 'form-control'}),
-            'description': forms.Textarea(attrs={'class': 'form-control'}),
+            'service_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'service_report': forms.Textarea(attrs={'class': 'form-control'}),
             'cost': forms.NumberInput(attrs={'class': 'form-control'}),
+            'current_kms': forms.NumberInput(attrs={'class': 'form-control'}),
+            'quantity': forms.NumberInput(attrs={'class': 'form-control'}),
+            'next_service': forms.DateInput(attrs={'placeholder': 'YYYY-MM-DD', 'class': 'form-control datepicker', 'type': 'date'}),
+            'service_by': forms.TextInput(attrs={'class': 'form-control'}),
+            'service_provider_contacts': forms.Textarea(attrs={'class': 'form-control'}),
         }
 
 class InsuranceForm(forms.ModelForm):

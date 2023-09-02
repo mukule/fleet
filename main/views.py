@@ -5,6 +5,9 @@ from reservations.models import *
 from datetime import datetime
 from django.db.models import Sum
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
+
 
 # Create your views here.
 @login_required
@@ -64,13 +67,44 @@ def car_detail(request, car_id):
 
 
 def contracts(request):
+    # Get the search query from the request's GET parameters
+    search_query = request.GET.get('search')
+
+    # Fetch all CarOut records
     car_outs = CarOut.objects.all()
-    for car_out in car_outs:
-        print(car_out.pk)
+
+    # Apply filter if a search query is provided
+    if search_query:
+        car_outs = car_outs.filter(
+            Q(invoice_number__icontains=search_query) |  # Filter by invoice_number
+            Q(full_name__icontains=search_query) |        # Filter by full_name
+            Q(number_plate__icontains=search_query)      # Filter by number_plate
+        )
+
+    # Configure pagination (5 items per page)
+    items_per_page = 5
+    paginator = Paginator(car_outs, items_per_page)
+
+    # Get the requested page number from the request's GET parameters
+    page_number = request.GET.get('page')
+
+    try:
+        car_outs = paginator.page(page_number)
+    except PageNotAnInteger:
+        # If page is not an integer, deliver the first page
+        car_outs = paginator.page(1)
+    except EmptyPage:
+        # If page is out of range (e.g., page 9999), deliver the last page of results
+        car_outs = paginator.page(paginator.num_pages)
+
+    # Prepare the context dictionary
     context = {
-        'car_outs': car_outs
+        'car_outs': car_outs,
+        'search_query': search_query  # Pass the search query to the template for displaying
     }
+
     return render(request, 'main/contracts.html', context)
+
 
 def contract(request, carout_id):
     carout = get_object_or_404(CarOut, pk=carout_id)

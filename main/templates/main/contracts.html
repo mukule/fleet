@@ -1,83 +1,106 @@
 {% extends 'main/base.html' %}
-        {% block content %}
-                <!-- Begin page -->
-                <div id="layout-wrapper">
+{% block content %}
+    <!-- Begin page -->
+    <div id="layout-wrapper">
 
-                  <div class="main-content">
-      
-                      <div class="page-content">
-                          <div class="container-fluid">
-                              <!-- start page title -->
-                              <div class="row">
-                                  <div class="col-12">
-                                      <div class="page-title-box d-flex align-items-center justify-content-between">
-                                          <h4 class="mb-0 font-size-18">Dashboard</h4>
-      
-                                          <div class="page-title-right">
-                                              <ol class="breadcrumb m-0">
-                                                  <li class="breadcrumb-item"><a href="javascript: void(0);">Vehicles</a></li>
-                                                  <li class="breadcrumb-item active">Dashboard</li>
-                                              </ol>
-                                          </div>
-                                          
-                                      </div>
-                                  </div>
-                              </div>     
-                              <!-- end page title -->
-      
-                              <div class="row">
-                                  <div class="col-xl-12">
-                                      <div class="card">
-                                          <div class="card-body">
-                                              <div class="table-responsive">
-                                                <table class="table table-centered table-hover table-xl mb-0" id="car-reservations">
-                                                    <thead>
-                                                        <tr>
-                                                            <th class="border-top-0">Contract No.</th>
-                                                            <th class="border-top-0">Class</th>
-                                                            <th class="border-top-0">Car</th>
-                                                            <th class="border-top-0">Period</th>
-                                                            <th class="border-top-0">Client</th>
-                                                            <th class="border-top-0">Email</th>
-                                                            <th class="border-top-0">Phone</th>
-                                                            <th class="border-top-0">Total Amount</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {% for car in car_outs %}
-                                                            <tr>
-                                                                <td class="text-truncate"><a href="{% url 'main:contract' carout_id=car.pk %}">
-                                                                    {{ car.invoice_number }}
-                                                                </a></td>
-                                                                <td class="text-truncate">{{ car.car_class }}</td>
-                                                                <td class="text-truncate">{{ car.make }} {{ car.model }}</td>
-                                                                <td class="text-truncate">{{ car.start_date }} - {{ car.end_date }} </td>
-                                                                <td class="text-truncate">{{ car.full_name }}</td>
-                                                                <td class="text-truncate">{{ car.email }}</td>
-                                                                <td class="text-truncate">{{ car.mobile_number }}</td>
-                                                                <td class="text-truncate">$ {{ car.amount }}</td>
-                                                            </tr>
-                                                        {% endfor %}
-                                                    </tbody>
-                                                </table>
-                                              </div>
-      
-                                          </div> <!-- end card-body-->
-                                      </div> <!-- end card-->
-                                  </div> <!-- end col -->
-                              </div>
-                            
-                              
-          
-          
-      
-                              
-                          </div> <!-- container-fluid -->
-                      </div>
-      
-                  </div>
-                  <!-- end main content-->
-      
-              </div>
-        {% endblock content %}
-   
+        <div class="main-content">
+
+            <div class="page-content">
+                <div class="container-fluid">
+                    <!-- start page title -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box d-flex align-items-center justify-content-between">
+                                <h4 class="mb-0 font-size-18">Contracts</h4>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end page title -->
+
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h4 class="card-title">Contracts</h4>
+                                    <p class="card-subtitle mb-4">Type the invoice number, Car number or clients Name for a specific Search
+                                    </p>
+                                    <div class="row justify-content-center">
+                                        <div class="col-md-6">
+                                            <div class="d-flex justify-content-center">
+                                                <form method="GET" action="{% url 'main:contracts' %}" class="form-inline">
+                                                    <div class="form-group mb-3">
+                                                        <input type="text" name="search" class="form-control" placeholder="Search by Invoice Number or Client Name">
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-primary" type="submit">Search</button>
+                                                        </div>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <table class="table table-centered table-hover table-xl mb-0" id="car-reservations">
+                                            <thead>
+                                            <tr>
+                                                <th class="border-top-0">Contract No.</th>
+                                                <th class="border-top-0">Class</th>
+                                                <th class="border-top-0">Car</th>
+                                                <th class="border-top-0">Period</th>
+                                                <th class="border-top-0">Client</th>
+                                                <th class="border-top-0">Email</th>
+                                                <th class="border-top-0">Phone</th>
+                                                <th class="border-top-0">Total Amount</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for car in car_outs %}
+                                                <tr>
+                                                    <td class="text-truncate"><a href="{% url 'main:contract' carout_id=car.pk %}">
+                                                        {{ car.invoice_number }}
+                                                    </a></td>
+                                                    <td class="text-truncate">{{ car.car_class }}</td>
+                                                    <td class="text-truncate">{{ car.make }} {{ car.model }}</td>
+                                                    <td class="text-truncate">{{ car.start_date }} - {{ car.end_date }} </td>
+                                                    <td class="text-truncate">{{ car.full_name }}</td>
+                                                    <td class="text-truncate">{{ car.email }}</td>
+                                                    <td class="text-truncate">{{ car.mobile_number }}</td>
+                                                    <td class="text-truncate">$ {{ car.amount }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div> <!-- end card-body-->
+
+                                <div class="d-flex justify-content-center mt-3">
+                                    <nav aria-label="Page navigation">
+                                        <ul class="pagination">
+                                            {% if car_outs.has_previous %}
+                                                <li class="page-item"><a class="page-link" href="?page=1">&laquo;</a></li>
+                                                <li class="page-item"><a class="page-link" href="?page={{ car_outs.previous_page_number }}">{{ car_outs.previous_page_number }}</a></li>
+                                            {% endif %}
+            
+                                            <li class="page-item active"><a class="page-link" href="?page={{ car_outs.number }}">{{ car_outs.number }}</a></li>
+            
+                                            {% if car_outs.has_next %}
+                                                <li class="page-item"><a class="page-link" href="?page={{ car_outs.next_page_number }}">{{ car_outs.next_page_number }}</a></li>
+                                                <li class="page-item"><a class="page-link" href="?page={{ car_outs.paginator.num_pages }}">&raquo;</a></li>
+                                            {% endif %}
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div> <!-- end card-->
+                        </div> <!-- end col -->
+                    </div>
+                  
+
+                </div> <!-- container-fluid -->
+            </div>
+
+        </div>
+        <!-- end main content-->
+
+    </div>
+{% endblock content %}

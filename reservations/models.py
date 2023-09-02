@@ -42,6 +42,8 @@ class Reservation(models.Model):
     total_amount = models.DecimalField(max_digits=8, decimal_places=2, null=True)  # Set to null=True
     vat = models.DecimalField(max_digits=8, decimal_places=2, default=0)  # Default VAT is set to 0
     total_amount_vat = models.DecimalField(max_digits=8, decimal_places=2, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True)
+
 
     def __str__(self):
         return f"Reservation #{self.reservation_number} for {self.car} by {self.client} (Staff: {self.staff})"
