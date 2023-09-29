@@ -38,25 +38,20 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3">
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             {{ form.cost.label_tag }}
                                             {{ form.cost }}
                                         </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             {{ form.quantity.label_tag }}
                                             {{ form.quantity }}
                                         </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            {{ form.current_kms.label_tag }}
-                                            {{ form.current_kms }}
-                                        </div>
-                                        <div class="col-md-6">
+                                        <div class="col-md-4">
                                             {{ form.next_service.label_tag }}
                                             {{ form.next_service }}
                                         </div>
                                     </div>
+                                  
                                     <div class="row justify-content-center">
                                        <div class="col-md-6 text-center">
                                         <button type="submit" class="btn btn-primary">Submit</button>
@@ -72,4 +67,5 @@
     </div>
     <!-- end main content-->
 </div>
+    
 {% endblock content %}

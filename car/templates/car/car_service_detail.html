@@ -1,0 +1,47 @@
+{% extends 'main/base.html' %}
+{% block content %}
+<!-- Begin page -->
+<div id="layout-wrapper">
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+                <!-- start page title -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="page-title-box d-flex align-items-center justify-content-between">
+                            <h4 class="mb-0 font-size-18">Car Service Report</h4>
+
+                            <div class="page-title-right">
+                                <ol class="breadcrumb m-0">
+                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Vehicle</a></li>
+                                    <li class="breadcrumb-item active"><a href="">{{ car_service.car }}</a></li>
+                                </ol>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <p><strong>Service Date:</strong> {{ car_service.service_date }}</p>
+                                <p><strong>Service Provider:</strong> {{ car_service.service_by }}</p>
+                                <p><strong>Cost:</strong> Ksh. {{ car_service.cost }}</p>
+                                <p><strong>Mileage:</strong> {{ car_service.current_kms }}</p>
+                                <p><strong>Next Service:</strong> {{ car_service.next_service }}</p>
+                                <p><strong>Service provider Contacts:</strong> {{ car_service.service_provider_contacts }}</p>
+                                <p><strong>Next Service:</strong> {{ car_service.service_report }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+            </div>
+        </div> <!-- container-fluid -->
+    </div>
+</div>
+{% endblock content %}

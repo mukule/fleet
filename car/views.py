@@ -3,23 +3,36 @@ from django.contrib import messages
 from .forms import *
 from.models import *
 from dateutil.relativedelta import relativedelta
-
+from django.http import JsonResponse
+from django.db.models import Q
 
 
 def create_car(request):
     if request.method == 'POST':
         form = CarForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Car added successfully.')
-            return redirect('main:inventory')  # Redirect to the car list page after successful form submission
+            # Validate the number plate format
+            number_plate = form.cleaned_data.get('number_plate')
+            if not is_valid_number_plate(number_plate):
+                messages.error(request, 'Number plate format should be like ABC 123X (3 letters, 3 digits, 1 letter).')
+            else:
+                form.save()
+                messages.success(request, 'Car added successfully.')
+                return redirect('main:inventory')  # Redirect to the car list page after successful form submission
         else:
             messages.error(request, 'Please correct the errors below.')
-
     else:
         form = CarForm()
 
     return render(request, 'car/create_car.html', {'form': form})
+
+# Define a function to check the number plate format
+def is_valid_number_plate(number_plate):
+    import re
+    pattern = r'^[A-Z]{3}\s\d{3}[A-Z]$'  # Example format: ABC 123X (3 letters, 3 digits, 1 letter)
+    return bool(re.match(pattern, number_plate))
+
+
 
 def create_make(request):
     if request.method == 'POST':
@@ -51,23 +64,95 @@ def create_model(request):
     return render(request, 'car/create_model.html', {'form': form})
 
 
-
 def service(request):
     if request.method == 'POST':
         form = CarServiceForm(request.POST)
         if form.is_valid():
-            form.save()
-            # Redirect to a success page or perform other actions
-            return redirect('reservations:reservations')
+            # Get the related car instance from the form
+            car = form.cleaned_data.get('car')
+
+            # Check if the car instance exists and has mileage
+            if car and car.mileage is not None:
+                # Set the 'current_kms' field to the car's mileage
+                car_service = form.save(commit=False)
+                car_service.current_kms = car.mileage
+                car_service.save()
+
+                # Add a success message
+                messages.success(request, 'Car service record saved successfully.')
+
+                # Redirect to a success page or perform other actions
+                return redirect('reservations:reservations')
+            else:
+                # Add an error message if the car or mileage is missing
+                messages.error(request, 'Error: Selected car or car mileage is missing.')
+        else:
+            # Add an error message if the form is not valid
+            messages.error(request, 'Error: Form is not valid.')
+
     else:
         form = CarServiceForm()
-    
+
     return render(request, 'car/service.html', {'form': form})
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 def car_services(request):
+    # Get the filter parameters from the request
+    search_query = request.GET.get('search')
+    
+    # Start with all CarService objects
     car_services = CarService.objects.all().order_by('-service_date')
+    
+    # Apply filters based on search_query
+    if search_query:
+        car_services = car_services.filter(
+            Q(car__make__name__icontains=search_query) |  # Filter by car make name
+            Q(car__model__name__icontains=search_query) |  # Filter by car model name
+            Q(service_by__icontains=search_query)  # Filter by service provider
+        )
+    
+    # Configure pagination
+    page_number = request.GET.get('page', 1)
+    items_per_page = 10  # Set the number of items per page
+    paginator = Paginator(car_services, items_per_page)
+    
+    try:
+        car_services = paginator.page(page_number)
+    except PageNotAnInteger:
+        car_services = paginator.page(1)
+    except EmptyPage:
+        car_services = paginator.page(paginator.num_pages)
+    
     return render(request, 'car/car_service.html', {'car_services': car_services})
 
+def car_service_detail(request, car_service_id):
+    # Get the CarService record with the given ID or return a 404 error if not found
+    car_service = get_object_or_404(CarService, pk=car_service_id)
+    
+    return render(request, 'car/car_service_detail.html', {'car_service': car_service})
+
+def edit_car_service(request, service_id):
+    car_service = get_object_or_404(CarService, pk=service_id)
+
+    if request.method == 'POST':
+        form = CarServiceForm(request.POST, instance=car_service)
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Car service record updated successfully.')
+            return redirect('car_service_detail', service_id=service_id)
+        else:
+            messages.error(request, 'Error: Please correct the errors below.')
+    else:
+        form = CarServiceForm(instance=car_service)
+
+    return render(request, 'car/edit_car_service.html', {'form': form, 'car_service': car_service})
+
+def delete_car_service(request, service_id):
+    car_service = get_object_or_404(CarService, pk=service_id)
+    car_service.delete()
+    messages.success(request, 'Car service record deleted successfully.')
+    return redirect('car:car_services')  # Redirect to the list of Car Services
 
 def insurance(request):
     if request.method == 'POST':
@@ -96,3 +181,49 @@ def insurance(request):
         form = InsuranceForm()
 
     return render(request, 'car/insurence.html', {'form': form})
+
+# Display view for an insurance instance
+def insurances(request):
+    insurances = Insurance.objects.all()
+    return render(request, 'car/insurances.html', {'insurances': insurances})
+
+# Edit view for an insurance instance
+def edit_insurance(request, insurance_id):
+    insurance = get_object_or_404(Insurance, pk=insurance_id)
+    if request.method == 'POST':
+        form = InsuranceForm(request.POST, instance=insurance)
+        if form.is_valid():
+            insurance = form.save(commit=False)
+
+            # Calculate end date based on duration
+            duration = form.cleaned_data['duration']
+            if duration == '1M':
+                insurance.end_date = insurance.start_date + relativedelta(months=1)
+            elif duration == '1Y':
+                insurance.end_date = insurance.start_date + relativedelta(years=1)
+
+            insurance.save()
+
+            # Add a success message
+            messages.success(request, 'Insurance updated successfully.')
+
+            # Redirect to the detailed view of the insurance instance
+            return redirect('car:view_insurance', insurance_id=insurance.id)
+    else:
+        form = InsuranceForm(instance=insurance)
+
+    return render(request, 'car/edit_insurance.html', {'form': form, 'insurance': insurance})
+
+# Delete view for an insurance instance
+def delete_insurance(request, insurance_id):
+    insurance = get_object_or_404(Insurance, pk=insurance_id)
+    car_id = insurance.car.id  # Get the associated car's ID before deletion
+    insurance.delete()
+
+    # Add a success message
+    messages.success(request, 'Insurance deleted successfully.')
+
+    # Redirect to the detailed view of the associated car
+    return redirect('main:car_detail', car_id=car_id)
+
+

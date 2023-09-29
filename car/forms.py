@@ -47,20 +47,25 @@ class SelectYearWidget(forms.Select):
     def get_years(self):
         now = datetime.now()
         current_year = now.year
-        return [(year, year) for year in range(1900, current_year + 1)]
+        return [(year, year) for year in range(2000, current_year + 1)]
 
 
 class CarForm(forms.ModelForm):
     year = forms.IntegerField(
         widget=SelectYearWidget(),
         label='Year',
-        min_value=1900,
+        min_value=2000,
         max_value=datetime.now().year
+    )
+
+    mileage = forms.IntegerField(
+        label='Mileage',
+        required=False,  # Mileage can be optional
     )
 
     class Meta:
         model = Car
-        fields = ['number_plate', 'make', 'model', 'year', 'color',  'daily_rate', 'weekly_rate', 'monthly_rate', 'seating_capacity', 'image', 'car_class']
+        fields = ['number_plate', 'make', 'model', 'year', 'color', 'daily_rate', 'weekly_rate', 'monthly_rate', 'seating_capacity', 'image', 'car_class', 'mileage']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -98,19 +103,22 @@ class CarServiceForm(forms.ModelForm):
     class Meta:
         model = CarService
         fields = [
-            'car', 'service_date', 'service_report', 'cost', 'current_kms', 'quantity', 'next_service', 'service_by', 'service_provider_contacts',
+            'car', 'service_date', 'service_report', 'cost', 'quantity', 'next_service', 'service_by', 'service_provider_contacts',
         ]
         widgets = {
             'car': forms.Select(attrs={'class': 'form-control'}),
             'service_date': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'service_report': forms.Textarea(attrs={'class': 'form-control'}),
             'cost': forms.NumberInput(attrs={'class': 'form-control'}),
-            'current_kms': forms.NumberInput(attrs={'class': 'form-control'}),
             'quantity': forms.NumberInput(attrs={'class': 'form-control'}),
-            'next_service': forms.DateInput(attrs={'placeholder': 'YYYY-MM-DD', 'class': 'form-control datepicker', 'type': 'date'}),
+            'next_service': forms.TextInput(attrs={'class': 'form-control'}),
             'service_by': forms.TextInput(attrs={'class': 'form-control'}),
             'service_provider_contacts': forms.Textarea(attrs={'class': 'form-control'}),
         }
+      
+
+
+
 
 class InsuranceForm(forms.ModelForm):
     class Meta:
