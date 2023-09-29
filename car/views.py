@@ -26,6 +26,42 @@ def create_car(request):
 
     return render(request, 'car/create_car.html', {'form': form})
 
+def edit_car(request, car_id):
+    car = get_object_or_404(Car, id=car_id)
+
+    if request.method == 'POST':
+        form = CarForm(request.POST, request.FILES, instance=car)
+        if form.is_valid():
+            number_plate = form.cleaned_data.get('number_plate')
+            if not is_valid_number_plate(number_plate):
+                messages.error(request, 'Number plate format should be like ABC 123X (3 letters, 3 digits, 1 letter).')
+            else:
+                form.save()
+                messages.success(request, 'Car updated successfully.')
+                return redirect('main:inventory')
+        else:
+            messages.error(request, 'Please correct the errors below.')
+    else:
+        # Initialize the form fields with initial data
+        initial_data = {
+            'model': car.model,
+            'make': car.make,
+            'car_class': car.car_class,
+            # Add other fields as needed
+        }
+        form = CarForm(instance=car, initial=initial_data)
+
+    return render(request, 'car/edit_car.html', {'form': form, 'car': car})
+
+
+def delete_car(request, car_id):
+    car = get_object_or_404(Car, id=car_id)
+
+    car.delete()
+    messages.success(request, 'Car deleted successfully.')
+    return redirect('main:inventory')
+
+
 # Define a function to check the number plate format
 def is_valid_number_plate(number_plate):
     import re
@@ -225,5 +261,39 @@ def delete_insurance(request, insurance_id):
 
     # Redirect to the detailed view of the associated car
     return redirect('main:car_detail', car_id=car_id)
+
+
+def car_class(request):
+    car_classes = CarClass.objects.all()
+    return render(request, 'car/car_class.html', {'vehicle_classes': car_classes})
+
+def add_vehicle_class(request):
+    if request.method == 'POST':
+        form = CarClassForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('car:car_class')  # Redirect to the list of vehicle classes after adding
+    else:
+        form = CarClassForm()
+
+    return render(request, 'car/add_vehicle_class.html', {'form': form})
+
+def edit_vehicle_class(request, pk):
+    vehicle_class = get_object_or_404(CarClass, pk=pk)
+
+    if request.method == 'POST':
+        form = CarClassForm(request.POST, instance=vehicle_class)
+        if form.is_valid():
+            form.save()
+            return redirect('car:car_class')  # Redirect to the list of vehicle classes after editing
+    else:
+        form = CarClassForm(instance=vehicle_class)
+
+    return render(request, 'car/edit_vehicle_class.html', {'form': form, 'vehicle_class': vehicle_class})
+
+def delete_vehicle_class(request, pk):
+    vehicle_class = get_object_or_404(CarClass, pk=pk)
+    vehicle_class.delete()
+    return redirect('car:car_class')  
 
 

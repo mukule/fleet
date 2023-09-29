@@ -86,19 +86,19 @@
     
                                         <div class="tab-content">
                                             <div class="tab-pane show active" id="fleet">
-                                                <form method="GET" action="{% url 'reservations:reservations' %}" class="text-center mt-3 mb-3">
+                                                <form method="GET" action="{% url 'reservations:reservations' %}" class="text-center mt-4 mb-4">
                                                     <label for="number_plate_filter">Search by Number Plate:</label>
-                                                    <input type="text" id="number_plate_filter" name="number_plate" class="form-control-sm" value="{{ request.GET.number_plate }}">
+                                                    <input type="text" id="number_plate_filter" name="number_plate" class="form-control-lg" placeholder="Enter Car Number plate" value="{{ request.GET.number_plate }}">
                                             
                                                     <label for="car_class_filter">Search by Car Class:</label>
-                                                    <select id="car_class_filter" class="form-control-sm" name="car_class">
-                                                        <option value="">All</option>
+                                                    <select id="car_class_filter" class="form-control-lg" name="car_class">
+                                                        <option value="">Select Car Class</option>
                                                         {% for car_class in car_classes %}
                                                             <option value="{{ car_class.id }}" {% if request.GET.car_class == car_class.id %}selected{% endif %}>{{ car_class.name }}</option>
                                                         {% endfor %}
                                                     </select>
                                             
-                                                    <button type="submit" class="btn btn-primary">Apply</button>
+                                                    <button type="submit" class="btn btn-primary btn-lg">Apply</button>
                                                 </form>
                                                 <table class="table table-centered table-hover table-xl mb-0" id="car-reservations">
                                                     <thead>
@@ -125,9 +125,9 @@
                                                                 <td class="text-truncate">{{ car.number_plate }}</td>
                                                                 <td class="text-truncate">{{ car.color }}</td>
                                                                 <td class="text-truncate">{{ car.seating_capacity }}</td>
-                                                                <td class="text-truncate">$ {{ car.daily_rate }}</td>
-                                                                <td class="text-truncate">$ {{ car.weekly_rate }}</td>
-                                                                <td class="text-truncate">$ {{ car.monthly_rate }}</td>
+                                                                <td class="text-truncate">Ksh {{ car.daily_rate }}</td>
+                                                                <td class="text-truncate">Ksh {{ car.weekly_rate }}</td>
+                                                                <td class="text-truncate">Ksh {{ car.monthly_rate }}</td>
                                                             </tr>
                                                         {% endfor %}
                                                     </tbody>

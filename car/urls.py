@@ -15,6 +15,10 @@ urlpatterns = [
    path('car_service/edit/<int:service_id>/', views.edit_car_service, name='edit_car_service'),
    path('delete_car_service/<int:service_id>/', views.delete_car_service, name='delete_car_service'),
    path('insurances/', views.insurances, name='insurances'),
-   
-   
+   path('edit/<int:car_id>/', views.edit_car, name='edit_car'),
+   path('delete/<int:car_id>/', views.delete_car, name='delete_car'),
+   path('car-classes/', views.car_class, name='car_class'),
+   path('add-vehicle-class/', views.add_vehicle_class, name='add_vehicle_class'),
+   path('edit-vehicle-class/<int:pk>/', views.edit_vehicle_class, name='edit_vehicle_class'),
+   path('delete-vehicle-class/<int:pk>/', views.delete_vehicle_class, name='delete_vehicle_class'),
 ]

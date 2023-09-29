@@ -1,0 +1,62 @@
+{% extends 'main/base.html' %}
+{% block content %}
+<!-- Begin page -->
+<div id="layout-wrapper">
+
+  <div class="main-content">
+
+      <div class="page-content">
+          <div class="container-fluid">
+              <!-- start page title -->
+              <div class="row">
+                  <div class="col-12">
+                      <div class="page-title-box d-flex align-items-center justify-content-between">
+                          <h4 class="mb-0 font-size-18">Dashboard</h4>
+                      </div>
+                  </div>
+              </div>     
+              <!-- end page title -->
+
+              <div class="row">
+                  <div class="col-xl-12">
+                      <div class="card">
+                          <div class="card-body">
+                            <h4 class="card-title">Vehicle Classes</h4>
+                            <p class="card-subtitle mb-4">List of Vehicle classes available</p>
+                            
+                            {% if vehicle_classes %}
+                                <ul class="list-group list-group-flush">
+                                    {% for vehicle_class in vehicle_classes %}
+                                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                                        {{ vehicle_class.name }}
+                                        <span>
+                                            <a href="{% url 'car:edit_vehicle_class' vehicle_class.pk %}" class="btn btn-sm btn-primary">
+                                                <i class="fas fa-pencil-alt"></i> Edit
+                                            </a>
+                                            <a href="{% url 'car:delete_vehicle_class' vehicle_class.pk %}" class="btn btn-sm btn-danger">
+                                                <i class="fas fa-trash"></i> Delete
+                                            </a>
+                                        </span>
+                                    </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p>No vehicle classes added yet.</p>
+                            {% endif %}
+                            
+                            <div class="col-12 text-center mt-4">
+                                <a href="{% url 'car:add_vehicle_class' %}" class="btn btn-primary btn-lg">Add Vehicle Class</a>
+                            </div>
+                            
+                          </div>
+                      </div> <!-- end card-->
+                  </div> <!-- end col -->
+              </div>
+          </div> <!-- container-fluid -->
+      </div>
+
+  </div>
+  <!-- end main content-->
+
+</div>
+{% endblock content %}

@@ -1,190 +1,131 @@
 {% extends 'main/base.html' %}
-        {% block content %}
-                <!-- Begin page -->
-                <div id="layout-wrapper">
+{% block content %}
+<!-- Begin page -->
+<div id="layout-wrapper">
 
-                  <div class="main-content">
-      
-                      <div class="page-content">
-                          <div class="container-fluid">
-                              <!-- start page title -->
-                              <div class="row">
-                                  <div class="col-12">
-                                      <div class="page-title-box d-flex align-items-center justify-content-between">
-                                          <h4 class="mb-0 font-size-18">Dashboard</h4>
-      
-                                          <div class="page-title-right">
-                                              <ol class="breadcrumb m-0">
-                                                  <li class="breadcrumb-item"><a href="javascript: void(0);">Vehicles</a></li>
-                                                  <li class="breadcrumb-item active"><a href="{% url 'car:create_car' %}">Add Car</a></li>
-                                              </ol>
-                                          </div>
-                                          
-                                      </div>
-                                  </div>
-                              </div>     
-                              <!-- end page title -->
-      
-                              <div class="row">
-                                  <div class="col-md-6 col-xl-3">
-                                      <div class="card bg-primary border-primary">
-                                          <div class="card-body">
-                                              <!-- <div class="mb-4">
-                                                  <span class="badge badge-soft-light float-right">Daily</span>
-                                                  <h5 class="card-title mb-0 text-white">Cost per Unit</h5>
-                                              </div>
-                                              <div class="row d-flex align-items-center mb-4">
-                                                  <div class="col-8">
-                                                      <h2 class="d-flex align-items-center mb-0 text-white">
-                                                          $17.21
-                                                      </h2>
-                                                  </div>
-                                                  <div class="col-4 text-right">
-                                                      <span class="text-white-50">12.5% <i class="mdi mdi-arrow-up"></i></span>
-                                                  </div>
-                                              </div>
-      
-                                              <div class="progress badge-soft-light shadow-sm" style="height: 5px;">
-                                                  <div class="progress-bar bg-light" role="progressbar" style="width: 38%;"></div>
-                                              </div> -->
-                                          </div>
-                                      </div>
-                                  </div> <!-- end col-->
-      
-                                  <div class="col-md-6 col-xl-3">
-                                      <div class="card bg-success border-success">
-                                          <div class="card-body">
-                                              <!-- <div class="mb-4">
-                                                  <span class="badge badge-soft-light float-right">Per Week</span>
-                                                  <h5 class="card-title mb-0 text-white">Market Revenue</h5>
-                                              </div>
-                                              <div class="row d-flex align-items-center mb-4">
-                                                  <div class="col-8">
-                                                      <h2 class="d-flex align-items-center text-white mb-0">
-                                                          $1875.54
-                                                      </h2>
-                                                  </div>
-                                                  <div class="col-4 text-right">
-                                                      <span class="text-white-50">18.71% <i class="mdi mdi-arrow-down"></i></span>
-                                                  </div>
-                                              </div>
-      
-                                              <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
-                                                  <div class="progress-bar bg-light" role="progressbar" style="width: 38%;"></div>
-                                              </div> -->
-                                          </div>
-                                      </div>
-                                  </div> <!-- end col-->
-      
-                                  <div class="col-md-6 col-xl-3">
-                                      <div class="card bg-warning border-warning">
-                                          <div class="card-body">
-                                              <!-- <div class="mb-4">
-                                                  <span class="badge badge-soft-light float-right">Per Month</span>
-                                                  <h5 class="card-title mb-0 text-white">Expenses</h5>
-                                              </div>
-                                              <div class="row d-flex align-items-center mb-4">
-                                                  <div class="col-8">
-                                                      <h2 class="d-flex align-items-center text-white mb-0">
-                                                          $784.62
-                                                      </h2>
-                                                  </div>
-                                                  <div class="col-4 text-right">
-                                                      <span class="text-white-50">57% <i class="mdi mdi-arrow-up"></i></span>
-                                                  </div>
-                                              </div>
-      
-                                              <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
-                                                  <div class="progress-bar bg-light" role="progressbar" style="width: 68%;"></div>
-                                              </div> -->
-                                          </div>
-                                      </div>
-                                  </div> <!-- end col-->
-      
-                                  <div class="col-md-6 col-xl-3">
-                                      <div class="card bg-info border-info">
-                                          <div class="card-body">
-                                              <!-- <div class="mb-4">
-                                                  <span class="badge badge-soft-light float-right">All Time</span>
-                                                  <h5 class="card-title mb-0 text-white">Daily Visits</h5>
-                                              </div>
-                                              <div class="row d-flex align-items-center mb-4">
-                                                  <div class="col-8">
-                                                      <h2 class="d-flex align-items-center text-white mb-0">
-                                                          1,15,187
-                                                      </h2>
-                                                  </div>
-                                                  <div class="col-4 text-right">
-                                                      <span class="text-white-50">17.8% <i class="mdi mdi-arrow-down"></i></span>
-                                                  </div>
-                                              </div>
-      
-                                              <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
-                                                  <div class="progress-bar bg-light" role="progressbar" style="width: 57%;"></div>
-                                              </div> -->
-                                          </div>
-                                      </div>
-                                  </div> <!-- end col-->
-                              </div>
-                              <!-- end row -->
-                              <div class="row">
-                                  <div class="col-xl-12">
-                                      <div class="card">
-                                          <div class="card-body">
-                                              </p>
-      
-                                              <div class="table-responsive">
-                                                <table class="table table-centered table-hover table-xl mb-0" id="recent-orders">
-                                                    <thead>
-                                                        <tr>
-                                                            <th class="border-top-0">class</th>
-                                                            <th class="border-top-0">Model</th>
-                                                            <th class="border-top-0">Car Make</th>
-                                                            <th class="border-top-0">Year</th>
-                                                            <th class="border-top-0">Number Plate</th>
-                                                            <th class="border-top-0">Color</th>
-                                                            <th class="border-top-0">Seating Capacity</th>
-                                                            <th class="border-top-0">Daily Rate</th>
-                                                            <th class="border-top-0">Weekly Rate</th>
-                                                            <th class="border-top-0">Monthly Rate</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {% for car in cars %}
-                                                            <tr>
-                                                                <td class="text-truncate">{{ car.car_class.name }}</td>
-                                                                <td class="text-truncate"><a href="{% url 'main:car_detail' car.id %}">{{ car.model.name }}</a></td>
-                                                                <td class="text-truncate">{{ car.make.name }}</td>
-                                                                <td class="text-truncate">{{ car.year }}</td>
-                                                                <td class="text-truncate">{{ car.number_plate }}</td>
-                                                                <td class="text-truncate">{{ car.color }}</td>
-                                                                <td class="text-truncate">{{ car.seating_capacity }}</td>
-                                                                <td class="text-truncate">$ {{ car.daily_rate }}</td>
-                                                                <td class="text-truncate">$ {{ car.weekly_rate }}</td>
-                                                                <td class="text-truncate">$ {{ car.monthly_rate }}</td>
-                                                            </tr>
-                                                        {% endfor %}
-                                                    </tbody>
-                                                </table>
-                                                
-                                            </div>
-      
-                                          </div> <!-- end card-body-->
-                                      </div> <!-- end card-->
-                                  </div> <!-- end col -->
-                              </div>
-                            
-                              
-          
-          
-      
-                              
-                          </div> <!-- container-fluid -->
+  <div class="main-content">
+
+      <div class="page-content">
+          <div class="container-fluid">
+              <!-- start page title -->
+              <div class="row">
+                  <div class="col-12">
+                      <div class="page-title-box d-flex align-items-center justify-content-between">
+                          <h4 class="mb-0 font-size-18">Dashboard</h4>
+
+                          <div class="page-title-right">
+                            <ol class="breadcrumb m-0">
+                                <li class="breadcrumb-item"><a href="javascript: void(0);">Vehicles</a></li>
+                                <li class="breadcrumb-item active"><a href="{% url 'car:car_class' %}" class="btn btn-sm btn-success"> <i class="fas fa-car"></i> Vehicle Classes</a></li>
+                            </ol>
+                        </div>
+                          
                       </div>
-      
                   </div>
-                  <!-- end main content-->
-      
+              </div>     
+              <!-- end page title -->
+
+
+              <div class="row">
+                  <div class="col-xl-12">
+                      <div class="card">
+                          <div class="card-body">
+                            <h4 class="card-title">Vehicles</h4>
+                            <p class="card-subtitle mb-4">This is a list of all vehicles we have in the system</p>
+
+                            <form method="GET" action="{% url 'main:inventory' %}" class="text-center mt-4 mb-4">
+                                <label for="number_plate_filter">Search by Number Plate:</label>
+                                <input type="text" id="number_plate_filter" name="number_plate" class="form-control-lg" placeholder="Enter Car Number plate" value="{{ request.GET.number_plate }}">
+                                
+                                <label for="car_class_filter">Search by Car Class:</label>
+                                <select id="car_class_filter" class="form-control-lg" name="car_class">
+                                    <option value="">Select Car Class</option>
+                                    {% for car_class in car_classes %}
+                                        <option value="{{ car_class.id }}" {% if request.GET.car_class|default:"" == car_class.id|stringformat:"s" %}selected{% endif %}>{{ car_class.name }}</option>
+                                    {% endfor %}
+                                </select>
+                                
+                                <button type="submit" class="btn btn-lg btn-primary">Search Car</button>
+                            </form>
+                            
+                              <div class="table-responsive">
+                                {% if page.object_list %}
+                                <table class="table table-centered table-hover table-xl mb-0" id="recent-orders">
+                                    <thead>
+                                        <tr>
+                                            <th class="border-top-0">Class</th>
+                                            <th class="border-top-0">Model</th>
+                                            <th class="border-top-0">Car Make</th>
+                                            <th class="border-top-0">Year</th>
+                                            <th class="border-top-0">Number Plate</th>
+                                            <th class="border-top-0">Color</th>
+                                            <th class="border-top-0">Seating Capacity</th>
+                                            <th class="border-top-0">Daily Rate</th>
+                                            <th class="border-top-0">Weekly Rate</th>
+                                            <th class="border-top-0">Monthly Rate</th>
+                                            <th class="border-top-0">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for car in page.object_list %}
+                                        <tr>
+                                            <td class="text-truncate">{{ car.car_class.name }}</td>
+                                            <td class="text-truncate"><a href="{% url 'main:car_detail' car.id %}">{{ car.model.name }}</a></td>
+                                            <td class="text-truncate">{{ car.make.name }}</td>
+                                            <td class="text-truncate">{{ car.year }}</td>
+                                            <td class="text-truncate">{{ car.number_plate }}</td>
+                                            <td class="text-truncate">{{ car.color }}</td>
+                                            <td class="text-truncate">{{ car.seating_capacity }}</td>
+                                            <td class="text-truncate">Ksh {{ car.daily_rate }}</td>
+                                            <td class="text-truncate">Ksh {{ car.weekly_rate }}</td>
+                                            <td class="text-truncate">Ksh {{ car.monthly_rate }}</td>
+                                            <td class="text-truncate">
+                                                <a href="{% url 'car:edit_car' car.id %}" class="btn btn-sm btn-primary">
+                                                    <i class="fas fa-edit"></i> Edit
+                                                </a>
+                                                <a href="{% url 'car:delete_car' car.id %}" class="btn btn-sm btn-danger">
+                                                    <i class="fas fa-trash-alt"></i> Delete
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                
+                                {% else %}
+                                <p>No vehicles added yet.</p>
+                                {% endif %}
+                                
+                                <div class="pagination">
+                                    <span class="step-links">
+                                        {% if page.has_previous %}
+                                            <a href="?page=1">&laquo; first</a>
+                                            <a href="?page={{ page.previous_page_number }}">previous</a>
+                                        {% endif %}
+                                
+                                        <span class="current-page">{{ page.number }}</span>
+                                
+                                        {% if page.has_next %}
+                                            <a href="?page={{ page.next_page_number }}">next</a>
+                                            <a href="?page={{ page.paginator.num_pages }}">last &raquo;</a>
+                                        {% endif %}
+                                    </span>
+                                </div>
+                                <div class="col-12 text-center">
+                                    <a href="{% url 'car:create_car' %}" class="btn btn-primary btn-lg">Add Vehicle</a>
+                                </div>
+                                
+                            </div>
+                          </div> <!-- end card-body-->
+                      </div> <!-- end card-->
+                  </div> <!-- end col -->
               </div>
-        {% endblock content %}
-   
+            </div>
+          </div> <!-- container-fluid -->
+      </div>
+
+  </div>
+  <!-- end main content-->
+
+</div>
+{% endblock content %}

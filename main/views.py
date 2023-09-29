@@ -19,8 +19,31 @@ def dashboard(request):
     return render(request, 'main/dashboard.html', {'cars': cars})
 
 def inventory(request):
+    # Retrieve all Car objects
     cars = Car.objects.all()
-    return render(request, 'main/inventory.html', {'cars': cars})
+    car_classes = CarClass.objects.all()
+
+    # Apply filters based on user input
+    car_class_filter = request.GET.get('car_class')
+    number_plate_filter = request.GET.get('number_plate')
+
+    if car_class_filter:
+        cars = cars.filter(car_class=car_class_filter)
+
+    if number_plate_filter:
+        cars = cars.filter(number_plate__icontains=number_plate_filter)
+
+    # Create a Paginator instance with filtered cars and specify the number of items per page
+    paginator = Paginator(cars, 10)  # 10 cars per page
+
+    # Get the current page number from the request's GET parameters
+    page_number = request.GET.get('page')
+
+    # Get the Page object for the current page number
+    page = paginator.get_page(page_number)
+
+    return render(request, 'main/inventory.html', {'page': page, 'car_classes': car_classes})
+
 
 def car_detail(request, car_id):
     car = get_object_or_404(Car, id=car_id)
