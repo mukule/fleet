@@ -126,7 +126,7 @@ class CarOutUpdateForm(forms.ModelForm):
             'o_drivers_dl_expiry': 'Other Driver\'s License Expiry Date',
         }
         widgets = {
-            'fuel_out': forms.Select(attrs={'class': 'form-control'}),
+            'fuel_out': forms.TextInput(attrs={'placeholder': 'Enter the level for fuel'}),
             'kms_out': forms.TextInput(attrs={'placeholder': 'Enter kilometers out'}),
             'o_drivers_name': forms.TextInput(attrs={'placeholder': 'Enter driver\'s name'}),
             'o_drivers_dl_no': forms.TextInput(attrs={'placeholder': 'Enter driver\'s license number'}),

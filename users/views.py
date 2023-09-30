@@ -5,6 +5,8 @@ from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
+from django.utils import timezone
+from django.forms import ValidationError 
 
 from .forms import *
 from .decorators import user_not_authenticated
@@ -53,7 +55,7 @@ def custom_login(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, f"Hello <b>{user.username}</b>! You have been logged in")
-                return redirect("main:dashboard")
+                return redirect("reservations:reservations")
 
         else:
             for error in list(form.errors.values()):
@@ -79,14 +81,18 @@ def clients(request):
     return render(request, 'users/clients.html', {'clients_list': clients_list})
 
 
-
 def add_client(request):
     if request.method == 'POST':
         form = ClientForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Client added successfully!')
-            return redirect('users:clients')
+            # Check license expiry date
+            license_expiry = form.cleaned_data.get('license_expiry')
+            if license_expiry and license_expiry < timezone.now().date():
+                form.add_error('license_expiry', 'License has expired. Please enter a valid license expiry date.')
+            else:
+                form.save()
+                messages.success(request, 'Client added successfully!')
+                return redirect('users:clients')
         else:
             messages.error(request, 'Error: Please correct the form errors.')
     else:

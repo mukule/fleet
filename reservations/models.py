@@ -108,8 +108,8 @@ class CarOut(models.Model):
     o_country_of_issue = models.CharField(max_length=50, null=True, blank=True)
     o_drivers_dl_expiry = models.DateField(null=True, blank=True)
     # Fuel and Kilometers
-    fuel_out = models.CharField(max_length=5, choices=Fuel.LEVEL_CHOICES, null=True)
-    fuel_in = models.CharField(max_length=5, choices=Fuel.LEVEL_CHOICES, null=True)
+    fuel_out = models.CharField(max_length=50, blank=True, null=True)
+    fuel_in = models.CharField(max_length=50, blank=True, null=True)
     kms_out = models.PositiveIntegerField(null=True, blank=True)
     kms_in = models.PositiveIntegerField(null=True, blank=True)
     kms_driven = models.PositiveIntegerField(null=True, blank=True)

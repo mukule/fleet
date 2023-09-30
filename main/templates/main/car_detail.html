@@ -44,9 +44,7 @@
                                                 </div>
                                             </div>
     
-                                            <div class="progress badge-soft-light shadow-sm" style="height: 5px;">
-                                                <div class="progress-bar bg-light" role="progressbar" style="width: 25%;"></div>
-                                            </div>
+                                            
                                         </div>
                                     </div>
                                 </div> <!-- end col-->
@@ -69,9 +67,7 @@
                                                 </div>
                                             </div>
     
-                                            <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
-                                                <div class="progress-bar bg-light" role="progressbar" style="width: 50%;"></div>
-                                            </div>
+                                            
                                         </div>
                                     </div>
                                 </div> <!-- end col-->
@@ -94,9 +90,7 @@
                                                 </div>
                                             </div>
     
-                                            <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
-                                                <div class="progress-bar bg-light" role="progressbar" style="width: 75%;"></div>
-                                            </div>
+                                            
                                         </div>
                                     </div>
                                 </div> <!-- end col-->
@@ -111,15 +105,20 @@
                                             <div class="row d-flex align-items-center mb-4">
                                                 <div class="col-8">
                                                     <h4 class="d-flex align-items-center text-white mb-0">
-                                                        Due in {{ days_left }} Days
+                                                       {% if days_left %}
+                                                       Due in {{ days_left }} Days
+                                                       {%else%}
+                                                       Not set
+                                                       {%endif%}
                                                     </h4>
+                                                </div>
+                                                <div class="col-4 text-right">
+                                                    <span class="text-white-50"><i class="mdi mdi-arrow-down"></i></span>
                                                 </div>
                                                
                                             </div>
     
-                                            <div class="progress badge-soft-light shadow-sm" style="height: 7px;">
-                                                <div class="progress-bar bg-light" role="progressbar" style="width: 100%;"></div>
-                                            </div>
+                                            
                                         </div>
                                     </div>
                                 </div> <!-- end col-->
@@ -154,9 +153,9 @@
                                                                   <td class="text-truncate">{{ car.model.name }}</td>
                                                                   <td class="text-truncate">{{ car.number_plate }}</td>
                                                                   <td class="text-truncate">{{ car.seating_capacity }}</td>
-                                                                  <td class="text-truncate">$ {{ car.daily_rate }}</td>
-                                                                  <td class="text-truncate">$ {{ car.weekly_rate }}</td>
-                                                                  <td class="text-truncate">$ {{ car.monthly_rate }}</td>
+                                                                  <td class="text-truncate">Ksh {{ car.daily_rate }}</td>
+                                                                  <td class="text-truncate">Ksh {{ car.weekly_rate }}</td>
+                                                                  <td class="text-truncate">Ksh {{ car.monthly_rate }}</td>
                                                                  
                                                               </tr>
                                                          
@@ -184,7 +183,7 @@
                                                             <tbody>
                                                                 <tr>
                                                                     <td class="text-truncate">{{ last_service.service_date }}</td>
-                                                                    <td class="text-truncate">$ {{ last_service.cost }}</td>
+                                                                    <td class="text-truncate">Ksh {{ last_service.cost }}</td>
                                                                     <td class="text-truncate">{{ last_service.service_company }}</td>
                                                                 </tr>
                                                             </tbody>
@@ -202,9 +201,14 @@
                                   </div> <!-- end col -->
                                   <div class="col-xl-6">
                                     <div class="card">
-                                        <img class="card-img-top img-fluid" src="{{ car.image.url }}" alt="Car Image">
+                                        {% if car.image %}
+                                            <img class="card-img-top img-fluid" src="{{ car.image.url }}" alt="{{ car.number_plate }}" style="height: 300px;">
+                                        {% else %}
+                                            <p>No Image Available</p>
+                                        {% endif %}
                                         <a href="{% url 'reservations:create_reservation' car.id %}" class="btn btn-primary waves-effect waves-light">Reserve</a>
                                     </div>
+                                    
                                     
                                 </div> <!-- end col -->
                               </div>

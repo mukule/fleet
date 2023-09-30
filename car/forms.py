@@ -91,13 +91,7 @@ class CarForm(forms.ModelForm):
         self.fields['car_class'].to_field_name = 'name'
         self.fields['car_class'].label_from_instance = lambda obj: obj.name  # Set custom label for car class choices
 
-    def clean_image(self):
-        image = self.cleaned_data.get('image')
-        if image:
-            # Ensure the uploaded image is not too large (limit to 5MB)
-            if image.size > 5 * 1024 * 1024:
-                raise forms.ValidationError("The image size should be less than 5MB.")
-        return image
+    
     
 class CarServiceForm(forms.ModelForm):
     class Meta:

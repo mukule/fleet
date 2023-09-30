@@ -366,6 +366,7 @@ def delete_reservation(request, reservation_id):
     # Redirect to a success page or reservations list
     return redirect('reservations:reservations')
 
+
 def make_contract(request, reservation_id):
     reservation = get_object_or_404(Reservation, id=reservation_id)
     car = reservation.car
@@ -397,6 +398,11 @@ def make_contract(request, reservation_id):
             deposit = car_out_instance.deposit if car_out_instance.deposit is not None else Decimal('0')
             car_out_instance.balance = amount - deposit
 
+            # Update the CarOut instance's mileage
+            new_mileage = combined_form.cleaned_data['mileage']
+            car_out_instance.mileage = new_mileage
+            
+            # Update car details from the Car model
             car_out_instance.number_plate = car.number_plate
             car_out_instance.make = car.make.name if car.make else None
             car_out_instance.model = car.model.name if car.model else None
@@ -408,6 +414,8 @@ def make_contract(request, reservation_id):
             car_out_instance.seating_capacity = car.seating_capacity
             car_out_instance.car_class = car.car_class.name if car.car_class else None
             car_out_instance.mileage = car.mileage
+
+            # Update reservation-related fields
             car_out_instance.start_date = reservation.start_date
             car_out_instance.end_date = reservation.end_date
             car_out_instance.invoice_number = reservation.reservation_number
@@ -453,6 +461,7 @@ def make_contract(request, reservation_id):
         combined_form = CarOutForm(initial=initial_data)
 
     return render(request, 'reservations/contract_details.html', {'combined_form': combined_form, 'reservation': reservation})
+
 
 
 def car_inspection(request, car_out_id, reservation_id):

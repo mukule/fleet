@@ -32,7 +32,7 @@ class Car(models.Model):
     weekly_rate = models.DecimalField(max_digits=8, decimal_places=2, null=True)
     monthly_rate = models.DecimalField(max_digits=8, decimal_places=2, null=True)
     seating_capacity = models.PositiveIntegerField()
-    image = models.ImageField(upload_to='car_images/', blank=True, null=True)
+    image = models.ImageField(upload_to='car_images/', blank=True, null=True, default='default_image.jpg')
     car_class = models.ForeignKey(CarClass, on_delete=models.SET_NULL, null=True)
     mileage = models.PositiveIntegerField(default=0, validators=[MaxValueValidator(999999)], null=True)  # 6-digit mileage
 

@@ -24,8 +24,8 @@
                     {% csrf_token %}
                     <div class="row">
                         <div class="col-md-12 text-center mb-3">
-                            <button type="button" class="btn btn-secondary" id="check-all-btn">Check All</button>
-                            <button type="button" class="btn btn-secondary" id="uncheck-all-btn">Uncheck All</button>
+                            <button type="button" class="btn btn-primary btn-sm" id="check-all-btn">Check All</button>
+                            <button type="button" class="btn btn-primary btn-sm" id="uncheck-all-btn">Uncheck All</button>
                         </div>
                         {% for field in form %}
                             <div class="col-md-3">
@@ -39,7 +39,7 @@
                         {% endfor %}
                     </div>
                     <div class="text-center">
-                        <button type="submit" class="btn btn-primary active">Submit</button>
+                        <button type="submit" class="btn btn-primary btn-lg">Submit</button>
                     </div>
                 </form>
                 
