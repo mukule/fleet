@@ -17,10 +17,21 @@ def index(request):
 
     return render(request, 'users/index.html')
 
-def register(request):
-    if request.user.is_authenticated:
-        return redirect('/')
+from functools import wraps
+from django.contrib.auth.decorators import user_passes_test
 
+def superuser_required(function=None):
+    actual_decorator = user_passes_test(
+        lambda user: user.is_superuser,
+        login_url='users:index',  # Replace with the login URL
+    )
+    if function:
+        return actual_decorator(function)
+    return actual_decorator
+
+
+@superuser_required  # Apply the custom decorator here
+def register(request):
     if request.method == "POST":
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
@@ -38,11 +49,9 @@ def register(request):
 
     return render(
         request=request,
-        template_name = "users/register.html",
+        template_name="users/register.html",
         context={"form": form}
-        )
-
-
+    )
 @user_not_authenticated
 def custom_login(request):
     if request.method == "POST":
@@ -55,6 +64,10 @@ def custom_login(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, f"Hello <b>{user.username}</b>! You have been logged in")
+                
+                # Create a UserLog entry for the user's login
+                UserLog.objects.create(user=user)
+                
                 return redirect("reservations:reservations")
 
         else:
@@ -67,7 +80,8 @@ def custom_login(request):
         request=request,
         template_name="users/index.html",
         context={"form": form}
-        )
+    )
+
 
 @login_required
 def custom_logout(request):
@@ -119,3 +133,14 @@ def edit_client(request, client_id):
         form = ClientForm(instance=client)
 
     return render(request, 'users/edit_client.html', {'form': form, 'client': client})
+
+
+def staffs(request):
+    users = CustomUser.objects.all()
+    return render(request, 'users/staffs.html', {'users': users})
+
+def logs(request):
+    # Retrieve all UserLog instances
+    user_logs = UserLog.objects.all()
+
+    return render(request,'users/logs.html',{'logs': user_logs})

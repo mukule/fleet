@@ -11,12 +11,7 @@
                         <div class="page-title-box d-flex align-items-center justify-content-between">
                             <h4 class="mb-0 font-size-18">Car Service</h4>
 
-                            <div class="page-title-right">
-                                <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Vehicles</a></li>
-                                    <li class="breadcrumb-item active"><a href="{% url 'car:service' %}">Add Car Service</a></li>
-                                </ol>
-                            </div>
+                          
 
                         </div>
                     </div>
@@ -85,6 +80,9 @@
                                             {% endif %}
                                         </tbody>
                                     </table>
+                                    <div class="col-12 text-center">
+                                        <a href="{% url 'car:service' %}" class="btn btn-primary btn-lg">Add Car Service</a>
+                                    </div>
                                 </div>
 
                                 <!-- Pagination Links -->

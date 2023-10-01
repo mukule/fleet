@@ -27,7 +27,7 @@ def invoices(request):
 
     # Configure pagination
     page_number = request.GET.get('page', 1)
-    items_per_page = 5
+    items_per_page = 10
     paginator = Paginator(reservations, items_per_page)
 
     try:

@@ -100,15 +100,15 @@
                                         <div class="card-body">
                                             <div class="mb-4">
                                               
-                                                <h5 class="card-title mb-0 text-white">Insurance</h5>
+                                                <h5 class="card-title mb-0 text-white">Insurance (Due in )</h5>
                                             </div>
                                             <div class="row d-flex align-items-center mb-4">
                                                 <div class="col-8">
                                                     <h4 class="d-flex align-items-center text-white mb-0">
                                                        {% if days_left %}
-                                                       Due in {{ days_left }} Days
+                                                       {{ days_left }} Days
                                                        {%else%}
-                                                       Not set
+                                                       Not Covered
                                                        {%endif%}
                                                     </h4>
                                                 </div>

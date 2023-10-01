@@ -1,0 +1,279 @@
+{% extends 'main/base.html' %}
+{% block content %}
+    <!-- Begin page -->
+    <div id="layout-wrapper">
+
+        <div class="main-content">
+
+            <div class="page-content">
+                <div class="container-fluid">
+                    <!-- start page title -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box d-flex align-items-center justify-content-between">
+                                <h4 class="mb-0 font-size-18">Reports</h4>
+
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end page title -->
+
+                    <div class="row">
+                        <div class="col-md-6 col-xl-3">
+                           <a href="{% url 'users:staffs' %}">
+                            <div class="card bg-primary border-primary">
+                                <div class="card-body">
+                                    <div class="mb-4">
+                                    </div>
+                                    <div class="row d-flex align-items-center mb-4 text-center">
+                                        <div class="col-8 text-center">
+                                            <h2 class="d-flex align-items-center mb-0 text-white">
+                                                Staffs
+                                            </h2>
+                                        </div>
+                                    </div>
+
+                                    
+                                </div>
+                            </div>
+                           </a>
+                        </div> <!-- end col-->
+
+                        <div class="col-md-6 col-xl-3">
+                           <a href="{% url 'users:logs' %}">
+                            <div class="card bg-success border-success">
+                                <div class="card-body">
+                                    <div class="mb-4">
+                                    </div>
+                                    <div class="row d-flex align-items-center mb-4">
+                                        <div class="col-8">
+                                            <h2 class="d-flex align-items-center text-white mb-0">
+                                                Staff Logs
+                                            </h2>
+                                        </div>
+                                    </div>
+
+                                    
+                                </div>
+                            </div>
+                           </a>
+                        </div> <!-- end col-->
+
+                        <div class="col-md-6 col-xl-3">
+                            <a href="">
+                             <div class="card bg-warning border-warning">
+                                 <div class="card-body">
+                                     <div class="mb-4">
+                                     </div>
+                                     <div class="row d-flex align-items-center mb-4">
+                                         <div class="col-12">
+                                             <h2 class="d-flex align-items-center text-white mb-0">
+                                                 Car Classes ({{classes}})
+                                             </h2>
+                                         </div>
+                                     </div>
+ 
+                                     
+                                 </div>
+                             </div>
+                            </a>
+                         </div> <!-- end col-->
+
+                         <div class="col-md-6 col-xl-3">
+                            <a href="">
+                             <div class="card bg-info border-info">
+                                 <div class="card-body">
+                                     <div class="mb-4">
+                                     </div>
+                                     <div class="row d-flex align-items-center mb-4">
+                                         <div class="col-12">
+                                             <h2 class="d-flex align-items-center text-white mb-0">
+                                                 Vehicles ({{cars}})
+                                             </h2>
+                                         </div>
+                                     </div>
+ 
+                                     
+                                 </div>
+                             </div>
+                            </a>
+                         </div> <!-- end col-->
+                    </div>
+                    <!-- end row -->
+
+
+                    <div class="row">
+                        <div class="col-md-6 col-xl-3">
+                           <a href="">
+                            <div class="card bg-primary border-primary">
+                                <div class="card-body">
+                                    <div class="mb-4">
+                                    </div>
+                                    <div class="row d-flex align-items-center mb-4 text-center">
+                                        <div class="col-12 text-center">
+                                            <h2 class="d-flex align-items-center mb-0 text-white">
+                                                Uncovered ({{uncovered}})
+                                            </h2>
+                                        </div>
+                                    </div>
+
+                                    
+                                </div>
+                            </div>
+                           </a>
+                        </div> <!-- end col-->
+
+                        <div class="col-md-6 col-xl-3">
+                           <a href="">
+                            <div class="card bg-success border-success">
+                                <div class="card-body">
+                                    <div class="mb-4">
+                                    </div>
+                                    <div class="row d-flex align-items-center mb-4">
+                                        <div class="col-12">
+                                            <h2 class="d-flex align-items-center text-white mb-0">
+                                                Covered ({{covered}})
+                                            </h2>
+                                        </div>
+                                    </div>
+
+                                    
+                                </div>
+                            </div>
+                           </a>
+                        </div> <!-- end col-->
+
+                        <div class="col-md-6 col-xl-3">
+                            <a href="">
+                             <div class="card bg-warning border-warning">
+                                 <div class="card-body">
+                                     <div class="mb-4">
+                                     </div>
+                                     <div class="row d-flex align-items-center mb-4">
+                                         <div class="col-12">
+                                             <h2 class="d-flex align-items-center text-white mb-0">
+                                                 Active ({{active}})
+                                             </h2>
+                                         </div>
+                                     </div>
+ 
+                                     
+                                 </div>
+                             </div>
+                            </a>
+                         </div> <!-- end col-->
+
+                         <div class="col-md-6 col-xl-3">
+                            <a href="">
+                             <div class="card bg-info border-info">
+                                 <div class="card-body">
+                                     <div class="mb-4">
+                                     </div>
+                                     <div class="row d-flex align-items-center mb-4">
+                                         <div class="col-12">
+                                             <h2 class="d-flex align-items-center text-white mb-0">
+                                                 Expired ({{expired}})
+                                             </h2>
+                                         </div>
+                                     </div>
+ 
+                                     
+                                 </div>
+                             </div>
+                            </a>
+                         </div> <!-- end col-->
+                    </div>
+                    <!-- end row -->
+
+                    <div class="row">
+                        <div class="col-md-6 col-xl-3">
+                           <a href="">
+                            <div class="card bg-primary border-primary">
+                                <div class="card-body">
+                                    <div class="mb-4">
+                                    </div>
+                                    <div class="row d-flex align-items-center mb-4 text-center">
+                                        <div class="col-12 text-center">
+                                            <h2 class="d-flex align-items-center mb-0 text-white">
+                                                Planned ({{upcoming}})
+                                            </h2>
+                                        </div>
+                                    </div>
+
+                                    
+                                </div>
+                            </div>
+                           </a>
+                        </div> <!-- end col-->
+
+                        <div class="col-md-6 col-xl-3">
+                           <a href="">
+                            <div class="card bg-success border-success">
+                                <div class="card-body">
+                                    <div class="mb-4">
+                                    </div>
+                                    <div class="row d-flex align-items-center mb-4">
+                                        <div class="col-12">
+                                            <h4 class="d-flex align-items-center text-white mb-0">
+                                                Cash In ({{cashin}})
+                                            </h4>
+                                        </div>
+                                    </div>
+
+                                    
+                                </div>
+                            </div>
+                           </a>
+                        </div> <!-- end col-->
+
+                        <div class="col-md-6 col-xl-3">
+                            <a href="">
+                             <div class="card bg-warning border-warning">
+                                 <div class="card-body">
+                                     <div class="mb-4">
+                                     </div>
+                                     <div class="row d-flex align-items-center mb-4">
+                                         <div class="col-12">
+                                             <h2 class="d-flex align-items-center text-white mb-0">
+                                                 insurance cost
+                                             </h2>
+                                         </div>
+                                     </div>
+ 
+                                     
+                                 </div>
+                             </div>
+                            </a>
+                         </div> <!-- end col-->
+
+                         <div class="col-md-6 col-xl-3">
+                            <a href="">
+                             <div class="card bg-info border-info">
+                                 <div class="card-body">
+                                     <div class="mb-4">
+                                     </div>
+                                     <div class="row d-flex align-items-center mb-4">
+                                         <div class="col-12">
+                                             <h2 class="d-flex align-items-center text-white mb-0">
+                                                 service cost
+                                             </h2>
+                                         </div>
+                                     </div>
+ 
+                                     
+                                 </div>
+                             </div>
+                            </a>
+                         </div> <!-- end col-->
+                    </div>
+                    <!-- end row -->
+                  
+
+                </div> <!-- container-fluid -->
+            </div>
+
+        </div>
+        <!-- end main content-->
+
+    </div>
+{% endblock content %}

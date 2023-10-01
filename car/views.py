@@ -6,7 +6,6 @@ from dateutil.relativedelta import relativedelta
 from django.http import JsonResponse
 from django.db.models import Q
 
-
 def create_car(request):
     if request.method == 'POST':
         form = CarForm(request.POST, request.FILES)
@@ -16,15 +15,19 @@ def create_car(request):
             if not is_valid_number_plate(number_plate):
                 messages.error(request, 'Number plate format should be like ABC 123X (3 letters, 3 digits, 1 letter).')
             else:
+                # Set initial value for mileage to 0
+                form.initial['mileage'] = 0
                 form.save()
                 messages.success(request, 'Car added successfully.')
                 return redirect('main:inventory')  # Redirect to the car list page after successful form submission
         else:
             messages.error(request, 'Please correct the errors below.')
     else:
-        form = CarForm()
+        # Set initial value for mileage to 0 when creating the form
+        form = CarForm(initial={'mileage': 0})
 
     return render(request, 'car/create_car.html', {'form': form})
+
 
 def edit_car(request, car_id):
     car = get_object_or_404(Car, id=car_id)

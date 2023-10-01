@@ -9,7 +9,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="page-title-box d-flex align-items-center justify-content-between">
-                            <h4 class="mb-0 font-size-18">Car Service</h4>
+                            <h4 class="mb-0 font-size-18">Staffs</h4>
 
 
                         </div>
@@ -22,35 +22,29 @@
                         <div class="card">
                             
                             <div class="card-body">
-                                <h4 class="card-title">Car Insurance</h4>
+                                <h4 class="card-title">All Staffs</h4>
 
                                 <div class="table-responsive">
                                     <table class="table table-centered table-hover table-xl mb-0" id="car-service-table">
                                         <thead>
                                             <tr>
-                                                <th class="border-top-0">Car</th>
-                                                <th class="border-top-0">Insurance Company</th>
-                                                <th class="border-top-0">Policy Number</th>
-                                                <th class="border-top-0">Start Date</th>
-                                                <th class="border-top-0">End Date</th>
-                                                <th class="border-top-0">Amount</th>
-                                                <th class="border-top-0">Period</th>
-
+                                                <th class="border-top-0">Staff ID</th>
+                                                <th class="border-top-0">Username</th>
+                                                <th class="border-top-0">First Name</th>
+                                                <th class="border-top-0">Last Name</th>
+                                                <th class="border-top-0">Email</th>
+                                                <th class="border-top-0">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            {% if insurances %}
-                                                {% for service in insurances %}
-                                                    <tr>
-                                                        <td class="text-truncate">
-                                                            <a href="{% url 'car:car_service' service.id %}">{{ service.car }}</a>
-                                                        </td>                                                        
-                                                        <td class="text-truncate">{{ service.insurance_company }}</td>
-                                                        <td class="text-truncate">{{ service.policy_number }}</td>
-                                                        <td class="text-truncate">Ksh. {{ service.start_date }}</td>
-                                                        <td class="text-truncate">{{ service.end_date }}</td>
-                                                        <td class="text-truncate">{{ service.insurance_amount }}</td>
-                                                        <td class="text-truncate">{{ service.duration }}</td>
+                                            {% if users %}
+                                                {% for service in users %}
+                                                    <tr>                                                      
+                                                        <td class="text-truncate">{{ service.id }}</td>
+                                                        <td class="text-truncate">{{ service.username }}</td>
+                                                        <td class="text-truncate">{{ service.first_name }}</td>
+                                                        <td class="text-truncate">{{ service.last_name }}</td>
+                                                        <td class="text-truncate">{{ service.email }}</td>
                                                         <td class="text-truncate">
                                                             <a href="{% url 'car:edit_car_service' service.id %}" class="btn btn-sm btn-warning">
                                                                 <i class="fas fa-edit"></i> Edit
@@ -69,7 +63,7 @@
                                         </tbody>
                                     </table>
                                     <div class="col-12 text-center">
-                                        <a href="{% url 'car:insurance' %}" class="btn btn-primary btn-lg">Add Vehicle insurance</a>
+                                        <a href="{% url 'users:register' %}" class="btn btn-primary btn-lg">Add Staff</a>
                                     </div>
                                 </div>
 

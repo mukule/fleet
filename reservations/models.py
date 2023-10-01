@@ -26,7 +26,6 @@ class PaymentMethod(models.Model):
         return self.name
 
 
-
 class Reservation(models.Model):
     reservation_number = models.CharField(max_length=20, unique=True, null=True)
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
@@ -44,10 +43,13 @@ class Reservation(models.Model):
     total_amount_vat = models.DecimalField(max_digits=8, decimal_places=2, null=True)
     updated_at = models.DateTimeField(auto_now=True, blank=True)
 
+    # New field for contract generated
+    contract_generated = models.BooleanField(default=False)
 
     def __str__(self):
         return f"Reservation #{self.reservation_number} for {self.car} by {self.client} (Staff: {self.staff})"
-    
+
+
 class Fuel(models.Model):
     LEVEL_CHOICES = (
         ('1/4', '1/4'),

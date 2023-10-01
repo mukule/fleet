@@ -60,7 +60,6 @@ class CarForm(forms.ModelForm):
 
     mileage = forms.IntegerField(
         label='Mileage',
-        required=False,  # Mileage can be optional
     )
 
     class Meta:

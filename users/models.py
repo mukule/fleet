@@ -43,3 +43,11 @@ class Driver(models.Model):
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
+    
+
+class UserLog(models.Model):
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    login_time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Login by {self.user.username} at {self.login_time}"

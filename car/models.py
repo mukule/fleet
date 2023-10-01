@@ -64,7 +64,8 @@ class CarService(models.Model):
 
     def __str__(self):
         return f"{self.car} - Service on {self.service_date} by {self.service_by}"
-    
+
+
 class Insurance(models.Model):
     DURATION_CHOICES = [
         ('1M', '1 Month'),
@@ -79,6 +80,14 @@ class Insurance(models.Model):
     insurance_amount = models.DecimalField(max_digits=10, decimal_places=2)
     renew = models.BooleanField(default=False)
     duration = models.CharField(max_length=2, choices=DURATION_CHOICES, null=True)  # New duration field
+
+    def is_active(self):
+        """
+        Check if the insurance policy is currently active.
+        """
+        current_date = timezone.now().date()
+
+        return self.start_date <= current_date <= self.end_date
 
     def __str__(self):
         return f"{self.car} - Insurance {self.policy_number}"

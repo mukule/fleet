@@ -15,7 +15,7 @@
                             <div class="page-title-right">
                                 <ol class="breadcrumb m-0">
                                     <li class="breadcrumb-item"><a href="javascript: void(0);">Vehicles</a></li>
-                                    <li class="breadcrumb-item active"><a href="">{{ reservation.car.make.name }} {{ reservation.car.model.name }}</a></li>
+                                    <li class="breadcrumb-item active"><a href="">{{ car_out.invoice_number}}</a></li>
                                 </ol>
                             </div>
                         </div>
@@ -36,123 +36,125 @@
                                                 <form method="post" enctype="multipart/form-data" class="form-horizontal">
                                                     {% csrf_token %}
                                                     <div class="form-row">
+                                                        <!-- Car details fields -->
                                                         <div class="form-group col-md-4">
-                                                            {{ combined_form.number_plate|as_crispy_field }}
+                                                            {{ form.number_plate|as_crispy_field }}
                                                         </div>
                                                         <div class="form-group col-md-4">
-                                                            {{ combined_form.make|as_crispy_field }}
+                                                            {{ form.make|as_crispy_field }}
                                                         </div>
                                                         <div class="form-group col-md-4">
-                                                            {{ combined_form.model|as_crispy_field }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-row">
-                                                        <div class="form-group col-md-4">
-                                                            {{ combined_form.year|as_crispy_field }}
-                                                        </div>
-                                                        <div class="form-group col-md-4">
-                                                            {{ combined_form.car_class|as_crispy_field }}
-                                                        </div>
-                                                        <div class="form-group col-md-4">
-                                                            {{ combined_form.color|as_crispy_field }}
+                                                            {{ form.model|as_crispy_field }}
                                                         </div>
                                                     </div>
                                                     <div class="form-row">
                                                         <div class="form-group col-md-4">
-                                                            {{ combined_form.mileage|as_crispy_field }}
+                                                            {{ form.year|as_crispy_field }}
                                                         </div>
                                                         <div class="form-group col-md-4">
-                                                            {{ combined_form.seating_capacity|as_crispy_field }}
+                                                            {{ form.car_class|as_crispy_field }}
                                                         </div>
                                                         <div class="form-group col-md-4">
-                                                            {{ combined_form.daily_rate|as_crispy_field }}
+                                                            {{ form.color|as_crispy_field }}
                                                         </div>
                                                     </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-4">
+                                                            {{ form.mileage|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            {{ form.seating_capacity|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            {{ form.daily_rate|as_crispy_field }}
+                                                        </div>
+                                                    </div>
+                                                    <!-- Renters details fields -->
                                                     <div class="form-row text-center">
                                                         <div class="form-group col-md-12">
                                                             <p class="mb-4">----------------------Renters Details----------------------</p>
                                                         </div>
                                                     </div>
-                                                    
                                                     <div class="form-row">
                                                         <div class="form-group col-md-4">
-                                                            {{ combined_form.full_name|as_crispy_field }}
+                                                            {{ form.full_name|as_crispy_field }}
                                                         </div>
                                                         <div class="form-group col-md-4">
-                                                            {{ combined_form.id_number|as_crispy_field }}
+                                                            {{ form.id_number|as_crispy_field }}
                                                         </div>
                                                         <div class="form-group col-md-4">
-                                                            {{ combined_form.email|as_crispy_field }}
+                                                            {{ form.email|as_crispy_field }}
                                                         </div>
                                                     </div>
                                                     <div class="form-row">
                                                         <div class="form-group col-md-4">
-                                                            {{ combined_form.age|as_crispy_field }}
+                                                            {{ form.age|as_crispy_field }}
                                                         </div>
                                                         <div class="form-group col-md-4">
-                                                            {{ combined_form.nationality|as_crispy_field }}
+                                                            {{ form.nationality|as_crispy_field }}
                                                         </div>
                                                         <div class="form-group col-md-4">
-                                                            {{ combined_form.ld_appt_number|as_crispy_field }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-row">
-                                                        <div class="form-group col-md-4">
-                                                            {{ combined_form.drivers_license_number|as_crispy_field }}
-                                                        </div>
-                                                        <div class="form-group col-md-4">
-                                                            {{ combined_form.country_of_issue|as_crispy_field }}
-                                                        </div>
-                                                        <div class="form-group col-md-4">
-                                                            {{ combined_form.license_expiry|as_crispy_field }}
+                                                            {{ form.ld_appt_number|as_crispy_field }}
                                                         </div>
                                                     </div>
                                                     <div class="form-row">
                                                         <div class="form-group col-md-4">
-                                                            {{ combined_form.credit_card|as_crispy_field }}
+                                                            {{ form.drivers_license_number|as_crispy_field }}
                                                         </div>
                                                         <div class="form-group col-md-4">
-                                                            {{ combined_form.credit_card_number|as_crispy_field }}
+                                                            {{ form.country_of_issue|as_crispy_field }}
                                                         </div>
                                                         <div class="form-group col-md-4">
-                                                            {{ combined_form.card_expiry|as_crispy_field }}
-                                                        </div>
-                                                    </div>
-                                                    <div class="form-row">
-                                                        <div class="form-group col-md-4">
-                                                            {{ combined_form.mobile_number|as_crispy_field }}
-                                                        </div>
-                                                        <div class="form-group col-md-4">
-                                                            {{ combined_form.country_of_issue|as_crispy_field }}
-                                                        </div>
-                                                        <div class="form-group col-md-4">
-                                                            {{ combined_form.office_telephone|as_crispy_field }}
+                                                            {{ form.license_expiry|as_crispy_field }}
                                                         </div>
                                                     </div>
                                                     <div class="form-row">
                                                         <div class="form-group col-md-4">
-                                                            {{ combined_form.mobile_number|as_crispy_field }}
+                                                            {{ form.credit_card|as_crispy_field }}
                                                         </div>
                                                         <div class="form-group col-md-4">
-                                                            {{ combined_form.office_telephone|as_crispy_field }}
+                                                            {{ form.credit_card_number|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            {{ form.card_expiry|as_crispy_field }}
                                                         </div>
                                                     </div>
                                                     <div class="form-row">
                                                         <div class="form-group col-md-4">
-                                                            {{ combined_form.physical_address|as_crispy_field }}
+                                                            {{ form.mobile_number|as_crispy_field }}
                                                         </div>
                                                         <div class="form-group col-md-4">
-                                                            {{ combined_form.residence_address|as_crispy_field }}
+                                                            {{ form.country_of_issue|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            {{ form.office_telephone|as_crispy_field }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-4">
+                                                            {{ form.mobile_number|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            {{ form.office_telephone|as_crispy_field }}
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-row">
+                                                        <div class="form-group col-md-4">
+                                                            {{ form.physical_address|as_crispy_field }}
+                                                        </div>
+                                                        <div class="form-group col-md-4">
+                                                            {{ form.residence_address|as_crispy_field }}
                                                         </div>
                                                     </div>
                                                     <div class="form-row">
                                                         <div class="form-group col-md-6">
-                                                            {{ combined_form.where_the_car_will_be_used_or_parked|as_crispy_field }}
+                                                            {{ form.where_the_car_will_be_used_or_parked|as_crispy_field }}
                                                         </div>
                                                         <div class="form-group col-md-6">
-                                                            {{ combined_form.payment_method|as_crispy_field }}
+                                                            {{ form.payment_method|as_crispy_field }}
                                                         </div>
                                                     </div>
+                                                    <!-- Payment fields -->
                                                     <div class="form-row text-center">
                                                         <div class="form-group col-md-12">
                                                             <p class="mb-4">----------------------Payment----------------------</p>
@@ -160,23 +162,23 @@
                                                     </div>
                                                     <div class="form-row">
                                                         <div class="form-group col-md-3">
-                                                            {{ combined_form.sub_total|as_crispy_field }}
+                                                            {{ form.sub_total|as_crispy_field }}
                                                         </div>
                                                         <div class="form-group col-md-3">
-                                                            {{ combined_form.vat|as_crispy_field }}
+                                                            {{ form.vat|as_crispy_field }}
                                                         </div>
                                                         <div class="form-group col-md-3">
-                                                            {{ combined_form.amount|as_crispy_field }}
+                                                            {{ form.amount|as_crispy_field }}
                                                         </div>
                                                         <div class="form-group col-md-3">
-                                                            {{ combined_form.deposit|as_crispy_field }}
+                                                            {{ form.deposit|as_crispy_field }}
                                                         </div>
                                                     </div>
                                                     <!-- More rows for other fields can be added here -->
 
                                                     <div class="form-row text-center">
                                                         <div class="form-group col-md-12 mb-2">
-                                                            <button name="car_details_submit" class="btn btn-primary bg-lg" type="submit" {% if combined_form.instance.pk %} disabled {% endif %}>Submit the contract Details</button>
+                                                            <button name="car_details_submit" class="btn btn-primary bg-lg" type="submit">Submit the contract Details</button>
                                                         </div>
                                                     </div>
                                                 </form>
@@ -193,6 +195,5 @@
         <!-- End Page-content -->
     </div>
 </div>
-
 
 {% endblock content %}
