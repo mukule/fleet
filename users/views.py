@@ -5,6 +5,8 @@ from django.contrib import messages
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
+from django.utils import timezone
+from django.forms import ValidationError 
 
 from .forms import *
 from .decorators import user_not_authenticated
@@ -12,13 +14,23 @@ from .decorators import user_not_authenticated
 
 # Create your views here.
 def index(request):
-
     return render(request, 'users/index.html')
 
-def register(request):
-    if request.user.is_authenticated:
-        return redirect('/')
+from functools import wraps
+from django.contrib.auth.decorators import user_passes_test
 
+def superuser_required(function=None):
+    actual_decorator = user_passes_test(
+        lambda user: user.is_superuser,
+        login_url='users:index',  # Replace with the login URL
+    )
+    if function:
+        return actual_decorator(function)
+    return actual_decorator
+
+
+@superuser_required  # Apply the custom decorator here
+def register(request):
     if request.method == "POST":
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
@@ -36,12 +48,10 @@ def register(request):
 
     return render(
         request=request,
-        template_name = "users/register.html",
+        template_name="users/register.html",
         context={"form": form}
-        )
-
-
-@user_not_authenticated
+    )
+# @user_not_authenticated
 def custom_login(request):
     if request.method == "POST":
         form = UserLoginForm(request=request, data=request.POST)
@@ -53,7 +63,11 @@ def custom_login(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, f"Hello <b>{user.username}</b>! You have been logged in")
-                return redirect("main:dashboard")
+                
+                # Create a UserLog entry for the user's login
+                UserLog.objects.create(user=user)
+                
+                return redirect("reservations:reservations")
 
         else:
             for error in list(form.errors.values()):
@@ -65,7 +79,8 @@ def custom_login(request):
         request=request,
         template_name="users/index.html",
         context={"form": form}
-        )
+    )
+
 
 @login_required
 def custom_logout(request):
@@ -79,14 +94,18 @@ def clients(request):
     return render(request, 'users/clients.html', {'clients_list': clients_list})
 
 
-
 def add_client(request):
     if request.method == 'POST':
         form = ClientForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Client added successfully!')
-            return redirect('users:clients')
+            # Check license expiry date
+            license_expiry = form.cleaned_data.get('license_expiry')
+            if license_expiry and license_expiry < timezone.now().date():
+                form.add_error('license_expiry', 'License has expired. Please enter a valid license expiry date.')
+            else:
+                form.save()
+                messages.success(request, 'Client added successfully!')
+                return redirect('users:clients')
         else:
             messages.error(request, 'Error: Please correct the form errors.')
     else:
@@ -113,3 +132,14 @@ def edit_client(request, client_id):
         form = ClientForm(instance=client)
 
     return render(request, 'users/edit_client.html', {'form': form, 'client': client})
+
+
+def staffs(request):
+    users = CustomUser.objects.all()
+    return render(request, 'users/staffs.html', {'users': users})
+
+def logs(request):
+    # Retrieve all UserLog instances
+    user_logs = UserLog.objects.all()
+
+    return render(request,'users/logs.html',{'logs': user_logs})

@@ -59,7 +59,7 @@
                                                                 <td class="text-truncate">{{ reservation.client.first_name }} {{ reservation.client.last_name }}</td>
                                                                 <td class="text-truncate">{{ reservation.created_at }}</td>
                                                                 <td class="text-truncate">{{ reservation.start_date }} - {{ reservation.end_date }}</td>
-                                                                <td class="text-truncate">Ksh.  {{ reservation.total_amount }}</td>
+                                                                <td class="text-truncate">Ksh.  {{ reservation.total_amount_vat }}</td>
                                                                 <td class="text-truncate">
                                                                     <a href="{% url 'reservations:update_reservation' reservation.id %}" class="btn btn-sm btn-warning">
                                                                         <i class="fas fa-edit"></i> 

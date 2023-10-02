@@ -42,34 +42,38 @@
                                     <div class="table-responsive">
                                         <table class="table table-centered table-hover table-xl mb-0" id="car-reservations">
                                             <thead>
-                                            <tr>
-                                                <th class="border-top-0">Contract No.</th>
-                                                <th class="border-top-0">Class</th>
-                                                <th class="border-top-0">Car</th>
-                                                <th class="border-top-0">Period</th>
-                                                <th class="border-top-0">Client</th>
-                                                <th class="border-top-0">Email</th>
-                                                <th class="border-top-0">Phone</th>
-                                                <th class="border-top-0">Total Amount</th>
-                                            </tr>
+                                                <tr>
+                                                    <th class="border-top-0">Contract No.</th>
+                                                    <th class="border-top-0">Car</th>
+                                                    <th class="border-top-0">Period</th>
+                                                    <th class="border-top-0">Client</th>
+                                                    <th class="border-top-0">Phone</th>
+                                                    <th class="border-top-0">Total Amount</th>
+                                                    <th class="border-top-0">Action</th>
+                                                </tr>
                                             </thead>
                                             <tbody>
-                                            {% for car in car_outs %}
+                                                {% for car in car_outs %}
                                                 <tr>
-                                                    <td class="text-truncate"><a href="{% url 'main:contract' carout_id=car.pk %}">
-                                                        {{ car.invoice_number }}
-                                                    </a></td>
-                                                    <td class="text-truncate">{{ car.car_class }}</td>
-                                                    <td class="text-truncate">{{ car.make }} {{ car.model }}</td>
+                                                    <td class="text-truncate">
+                                                        <a href="{% url 'main:contract' carout_id=car.pk %}">
+                                                            {{ car.invoice_number }}
+                                                        </a>
+                                                    </td>
+                                                    <td class="text-truncate">{{ car.car_class }} - {{ car.make }} {{ car.model }}</td>
                                                     <td class="text-truncate">{{ car.start_date }} - {{ car.end_date }} </td>
                                                     <td class="text-truncate">{{ car.full_name }}</td>
-                                                    <td class="text-truncate">{{ car.email }}</td>
                                                     <td class="text-truncate">{{ car.mobile_number }}</td>
-                                                    <td class="text-truncate">$ {{ car.amount }}</td>
+                                                    <td class="text-truncate">Ksh {{ car.amount }}</td>
+                                                    <td class="text-truncate">
+                                                        <a href="{% url 'reservations:edit_contract' car_out_id=car.pk %}" class="btn btn-primary btn-sm">Edit</a>
+                                                        
+                                                    </td>
                                                 </tr>
-                                            {% endfor %}
+                                                {% endfor %}
                                             </tbody>
                                         </table>
+                                        
                                     </div>
 
                                 </div> <!-- end card-body-->

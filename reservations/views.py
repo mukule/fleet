@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, redirect, reverse
+from django.http import HttpResponse
 from car.models import * 
 from datetime import timedelta
 from .forms import *
@@ -12,9 +13,19 @@ import json
 from django.utils.crypto import get_random_string
 from datetime import datetime, time
 from decimal import Decimal
+from django.db import transaction
 
+
+
+def delete_unprocessed_reservations(request):
+    # Delete reservations with contract_generated=False
+    deleted_count, _ = Reservation.objects.filter(contract_generated=False).delete()
+    
+    # Return a 200 OK response
+    return HttpResponse(status=200)
 
 def reservations(request):
+    delete_unprocessed_reservations(request)
     # Retrieve all Car objects from the database
     cars_list = Car.objects.all()
     carsout = CarOut.objects.all()
@@ -224,6 +235,8 @@ def create_reservation(request, car_id):
     return render(request, 'reservations/reservation_form.html', {'form': form, 'car': car})
 
 
+from decimal import Decimal
+
 def update_reservation(request, reservation_id):
     reservation = get_object_or_404(Reservation, id=reservation_id)
 
@@ -305,17 +318,33 @@ def update_reservation(request, reservation_id):
                     updated_reservation.save()
 
                     # Update the CarOut model based on the updated Reservation
-                    car_out = CarOut.objects.get(invoice_number=reservation.reservation_number)
-                    car_out.start_date = updated_reservation.start_date
-                    car_out.end_date = updated_reservation.end_date
-                    car_out.vat = updated_reservation.vat
-                    car_out.sub_total = updated_reservation.total_amount
-                    car_out.amount = updated_reservation.total_amount_vat
+                    car_out = CarOut.objects.filter(invoice_number=reservation.reservation_number).first()
+                    if car_out:
+                        car_out.full_name = f"{form.cleaned_data['client'].first_name} {form.cleaned_data['client'].last_name}"
+                        car_out.email = form.cleaned_data['client'].email
+                        car_out.id_number = form.cleaned_data['client'].id_number
+                        car_out.nationality = form.cleaned_data['client'].nationality
+                        car_out.age = form.cleaned_data['client'].age
+                        car_out.drivers_license_number = form.cleaned_data['client'].drivers_license_number
+                        car_out.country_of_issue = form.cleaned_data['client'].country_of_issue
+                        car_out.license_expiry = form.cleaned_data['client'].license_expiry
+                        car_out.credit_card = form.cleaned_data['client'].credit_card
+                        car_out.credit_card_number = form.cleaned_data['client'].credit_card_number
+                        car_out.card_expiry = form.cleaned_data['client'].card_expiry
+                        car_out.physical_address = form.cleaned_data['client'].physical_address
+                        car_out.mobile_number = form.cleaned_data['client'].phone_number
+                        car_out.office_telephone = form.cleaned_data['client'].office_telephone
+                        car_out.residence_address = form.cleaned_data['client'].residence_address
+                        car_out.start_date = updated_reservation.start_date
+                        car_out.end_date = updated_reservation.end_date
+                        car_out.vat = updated_reservation.vat
+                        car_out.sub_total = updated_reservation.total_amount
+                        car_out.amount = updated_reservation.total_amount_vat
 
-                    # Update the balance field based on the updated Reservation
-                    car_out.balance = updated_reservation.total_amount_vat - car_out.deposit
+                        # Update the balance field based on the updated Reservation
+                        car_out.balance = updated_reservation.total_amount_vat - car_out.deposit
 
-                    car_out.save()
+                        car_out.save()
 
                     messages.success(request, f"Invoice {reservation.reservation_number} updated successfully.")
                     return redirect('invoices:invoice_detail', reservation_id=updated_reservation.id)
@@ -328,6 +357,7 @@ def update_reservation(request, reservation_id):
         form = ReservationForm(instance=reservation)  # Initialize the form with existing reservation data
 
     return render(request, 'invoices/update_invoice.html', {'form': form, 'reservation': reservation})
+
 
 def delete_invoice(request, reservation_id):
     reservation = get_object_or_404(Reservation, id=reservation_id)
@@ -357,14 +387,23 @@ def confirm_make_contract(request, reservation_id):
     # Pass the reservation object to the template context
     return render(request, 'reservations/confirm_contract.html', {'reservation': reservation})
 
+
 def delete_reservation(request, reservation_id):
     reservation = get_object_or_404(Reservation, id=reservation_id)
     
-    # Perform the deletion
-    reservation.delete()
+    # Fetch the associated CarOut instance using the reservation number
+    car_out_to_delete = CarOut.objects.filter(invoice_number=reservation.reservation_number).first()
+    
+    # Perform the deletion of both the reservation and CarOut
+    with transaction.atomic():
+        reservation.delete()
+        if car_out_to_delete:
+            car_out_to_delete.delete()
     
     # Redirect to a success page or reservations list
     return redirect('reservations:reservations')
+
+
 
 def make_contract(request, reservation_id):
     reservation = get_object_or_404(Reservation, id=reservation_id)
@@ -397,6 +436,11 @@ def make_contract(request, reservation_id):
             deposit = car_out_instance.deposit if car_out_instance.deposit is not None else Decimal('0')
             car_out_instance.balance = amount - deposit
 
+            # Update the CarOut instance's mileage
+            new_mileage = combined_form.cleaned_data['mileage']
+            car_out_instance.mileage = new_mileage
+            
+            # Update car details from the Car model
             car_out_instance.number_plate = car.number_plate
             car_out_instance.make = car.make.name if car.make else None
             car_out_instance.model = car.model.name if car.model else None
@@ -408,9 +452,15 @@ def make_contract(request, reservation_id):
             car_out_instance.seating_capacity = car.seating_capacity
             car_out_instance.car_class = car.car_class.name if car.car_class else None
             car_out_instance.mileage = car.mileage
+
+            # Update reservation-related fields
             car_out_instance.start_date = reservation.start_date
             car_out_instance.end_date = reservation.end_date
             car_out_instance.invoice_number = reservation.reservation_number
+
+            # Set the contract_generated field to True
+            reservation.contract_generated = True
+            reservation.save()
 
             car_out_instance.save()
             messages.success(request, 'Form submitted successfully')
@@ -455,6 +505,78 @@ def make_contract(request, reservation_id):
     return render(request, 'reservations/contract_details.html', {'combined_form': combined_form, 'reservation': reservation})
 
 
+
+@login_required
+def edit_contract(request, car_out_id):
+    car_out = get_object_or_404(CarOut, id=car_out_id)
+
+    # Convert the end_date to a datetime.date object
+    end_date = datetime.combine(car_out.end_date, datetime.min.time()).date()
+
+    # Check if the end date is less than the current date
+    if end_date < datetime.now().date():
+        messages.error(request, 'Cannot edit contract because the end date has passed.')
+        return redirect('reservations:edit_contract')
+    if request.method == 'POST':
+        form = CarOutForm(request.POST, instance=car_out)
+        if form.is_valid():
+            updated_car_out = form.save(commit=False)
+
+            # Update other fields if needed
+            # For example, you can update the mileage or other details
+
+            # Calculate the balance
+            amount = updated_car_out.amount if updated_car_out.amount is not None else Decimal('0')
+            deposit = updated_car_out.deposit if updated_car_out.deposit is not None else Decimal('0')
+            updated_car_out.balance = amount - deposit
+
+            # Save the updated CarOut instance
+            updated_car_out.save()
+
+            messages.success(request, 'Contract updated successfully')
+            return redirect(reverse('reservations:update_car_inspection', args=[car_out_id]))
+
+    else:
+        # Provide initial values for the form from the existing CarOut instance
+        initial_data = {
+            'number_plate': car_out.number_plate,
+            'make': car_out.make if car_out.make else None,
+            'model': car_out.model if car_out.model else None,
+            'year': car_out.year,
+            'color': car_out.color,
+            'daily_rate': car_out.daily_rate,
+            'seating_capacity': car_out.seating_capacity,
+            'car_class': car_out.car_class if car_out.car_class else None,
+            'mileage': car_out.mileage,
+            'full_name': car_out.full_name,
+            'email': car_out.email,
+            'id_number': car_out.id_number,
+            'nationality': car_out.nationality,
+            'ld_appt_number': car_out.ld_appt_number,
+            'age': car_out.age,
+            'drivers_license_number': car_out.drivers_license_number,
+            'country_of_issue': car_out.country_of_issue,
+            'license_expiry': car_out.license_expiry,
+            'credit_card': car_out.credit_card,
+            'credit_card_number': car_out.credit_card_number,
+            'card_expiry': car_out.card_expiry,
+            'physical_address': car_out.physical_address,
+            'mobile_number': car_out.mobile_number,
+            'office_telephone': car_out.office_telephone,
+            'residence_address': car_out.residence_address,
+            'where_the_car_will_be_used_or_parked': car_out.where_the_car_will_be_used_or_parked,
+            'payment_method': car_out.payment_method,
+            'amount': car_out.amount,
+            'vat': car_out.vat,
+            'sub_total': car_out.sub_total,
+            'deposit': car_out.deposit,
+        }
+        form = CarOutForm(instance=car_out, initial=initial_data)
+
+    return render(request, 'reservations/edit_contract.html', {'form': form, 'car_out': car_out})
+
+
+
 def car_inspection(request, car_out_id, reservation_id):
     car_out_instance = get_object_or_404(CarOut, id=car_out_id)
     inspection_items = InspectionItem.objects.all()
@@ -493,6 +615,48 @@ def car_inspection(request, car_out_id, reservation_id):
         'form': form,
     })
 
+
+def update_car_inspection(request, car_out_id):
+    car_out_instance = get_object_or_404(CarOut, id=car_out_id)
+    inspection_items = InspectionItem.objects.all()
+    inspection_item_statuses = InspectionItemStatus.objects.filter(car_inspection__car_out=car_out_instance)
+
+    if request.method == 'POST':
+        form = CarInspectionForm(inspection_items, request.POST)
+        if form.is_valid():
+            # Get or create the CarInspection instance associated with the car_out_instance
+            car_inspection_instance, created = CarInspection.objects.get_or_create(car_out=car_out_instance)
+            
+            # Loop through inspection items and update their statuses
+            for item in inspection_items:
+                checked_out = form.cleaned_data[f"checked_out_{item.id}"]
+                inspection_item_status, _ = InspectionItemStatus.objects.get_or_create(
+                    car_inspection=car_inspection_instance,
+                    inspection_item=item
+                )
+                inspection_item_status.checked_out = checked_out
+                inspection_item_status.save()
+            
+            car_inspection_instance.save()
+
+            # Redirect to a success page or perform other actions
+            messages.success(request, 'Car inpection updated succesfully updated successfully')
+            return redirect('reservations:edit_update_carout', carout_id=car_out_id)
+    else:
+        initial_data = {}
+        for item_status in inspection_item_statuses:
+            initial_data[f"checked_out_{item_status.inspection_item.id}"] = item_status.checked_out
+        form = CarInspectionForm(inspection_items, initial=initial_data)
+
+    return render(request, 'reservations/car_inspection.html', {
+        'car_out_instance': car_out_instance,
+        'inspection_items': inspection_items,
+        'inspection_item_statuses': inspection_item_statuses,
+        'form': form,
+    })
+
+
+
 def update_carout(request, carout_id, reservation_id):
     carout = get_object_or_404(CarOut, pk=carout_id)
     reservation = get_object_or_404(Reservation, id=reservation_id)
@@ -508,7 +672,7 @@ def update_carout(request, carout_id, reservation_id):
                 defaults={
                     'number_plate': carout.number_plate,
                     'client': carout.full_name,
-                    'amount': carout.amount,
+                    'amount': carout.deposit,
                 }
             )
             if not created:
@@ -527,6 +691,43 @@ def update_carout(request, carout_id, reservation_id):
     
     return render(request, 'reservations/update_carout.html', {'form': form, 'carout': carout})
 
+
+def edit_update_carout(request, carout_id):
+    carout = get_object_or_404(CarOut, pk=carout_id)
+
+    if request.method == 'POST':
+        form = CarOutUpdateForm(request.POST, instance=carout)
+        if form.is_valid():
+            # Get the car with the same number plate as the carout instance
+            car = Car.objects.get(number_plate=carout.number_plate)
+            
+            # Update the car's mileage with the new 'kms_out' value
+            car.mileage = form.cleaned_data['kms_out']
+            car.save()
+
+            # Save the updated CarOut instance
+            form.save()
+
+            messages.success(request, 'CarOut updated successfully')
+            return redirect('reservations:reservations')
+
+    else:
+        form = CarOutUpdateForm(instance=carout)
+
+    return render(request, 'reservations/update_carout.html', {'form': form, 'carout': carout})
+
+def delete_carout(request, carout_id):
+    # Get the CarOut instance to be deleted, or return a 404 page if it doesn't exist
+    carout = get_object_or_404(CarOut, id=carout_id)
+    carout.delete()
+        # Optionally, you can add a success message if needed
+        # messages.success(request, 'CarOut deleted successfully')
+    
+    # Redirect to a specific URL after deletion (e.g., the reservations page)
+    return redirect('main:contracts')  # Replace with your desired URL
+
+
+
 def checkin(request):
     # Retrieve CarOut instances that need to be checked in
     cars_to_checkin = CarOut.objects.filter(checked_in=False, end_date__lt=timezone.now())
@@ -541,14 +742,30 @@ def carout_detail(request, carout_id):
         if form.is_valid():
             # Update the mileage field in the associated Car instance
             car = Car.objects.get(number_plate=carout.number_plate)
-            car.mileage = form.cleaned_data['kms_in']
+            kms_in = form.cleaned_data['kms_in']
+
+            # Check if kms_in is less than kms_out
+            if kms_in < carout.kms_out:
+                messages.error(request, 'Kilometers in cannot be less than kilometers out. Update with the correct value')
+                return render(request, 'reservations/carout_detail.html', {'carout': carout, 'form': form})
+
+            car.mileage = kms_in
             car.save(update_fields=['mileage'])
 
             # Save the form data
             form.save()
 
+            # Update the corresponding Income instance if it exists
+            try:
+                income = Income.objects.get(number_plate=carout.number_plate)
+                income.amount += carout.balance  # Update the income amount by adding the carout balance
+                income.save()
+            except Income.DoesNotExist:
+                # If no Income instance exists, you can create one here if needed
+                pass
+
             # Add a success message
-            messages.success(request, 'Mileage and form data updated')
+            messages.success(request, 'Vehicle Details updated succesfully')
 
             # Redirect to carin_inspection with the carout_id parameter
             return redirect('reservations:carin_inspection', carout_id=carout_id)
@@ -556,7 +773,6 @@ def carout_detail(request, carout_id):
         form = CarCheckInForm(instance=carout)
 
     return render(request, 'reservations/carout_detail.html', {'carout': carout, 'form': form})
-
 
 
 

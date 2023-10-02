@@ -20,6 +20,8 @@ class ReservationForm(forms.ModelForm):
             field.widget.attrs['class'] = 'form-control'
         self.fields['start_date'].widget.attrs['placeholder'] = 'YYYY-MM-DD HH:MM'
         self.fields['end_date'].widget.attrs['placeholder'] = 'YYYY-MM-DD HH:MM'
+
+        
 class CarOutForm(forms.ModelForm):
     class Meta:
         model = CarOut
@@ -126,7 +128,7 @@ class CarOutUpdateForm(forms.ModelForm):
             'o_drivers_dl_expiry': 'Other Driver\'s License Expiry Date',
         }
         widgets = {
-            'fuel_out': forms.Select(attrs={'class': 'form-control'}),
+            'fuel_out': forms.TextInput(attrs={'placeholder': 'Enter the level for fuel'}),
             'kms_out': forms.TextInput(attrs={'placeholder': 'Enter kilometers out'}),
             'o_drivers_name': forms.TextInput(attrs={'placeholder': 'Enter driver\'s name'}),
             'o_drivers_dl_no': forms.TextInput(attrs={'placeholder': 'Enter driver\'s license number'}),
@@ -138,10 +140,10 @@ class CarOutUpdateForm(forms.ModelForm):
 class CarCheckInForm(forms.ModelForm):
     class Meta:
         model = CarOut
-        fields = ['fuel_in','kms_in', 'damages_noted']
+        fields = ['fuel_in', 'kms_in', 'damages_noted', 'balance']
         widgets = {
-            'fuel_in': forms.Select(attrs={'class': 'form-control'}),
-            'kms_in': forms.NumberInput(attrs={'class': 'form-control'}),
-            'damages_noted': forms.Textarea(attrs={'class': 'form-control'}),
+            'fuel_in': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter fuel in'}),
+            'kms_in': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter kilometers in'}),
+            'balance': forms.TextInput(attrs={'class': 'form-control', 'readonly': True}),
+            'damages_noted': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Enter any noted damages/Car Performance'}),
         }
-
