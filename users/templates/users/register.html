@@ -33,7 +33,7 @@
   </style>
 </head>
 <body>
-  <div class="card border-0 shadow-sm">
+  <div class="card border-0 shadow-sm" style="background-color: #154545;">
     <div class="card-body">
       <div class="container mt-2">
         {% for message in messages %}
@@ -96,14 +96,14 @@
                   </div>
                 </div>
               </fieldset>
-              <div class="border-top pt-3">
-                <small class="text-muted form-text-center">
-                  Already Have An Account? <a class="ml-2" href="{% url 'users:index' %}">Sign In</a>
+              <div class="border-top pt-3 text-white">
+                <small class="text-muted form-text-center text-white">
+                  Use a password you can Remember like Password@2023
                 </small>
               </div>
               <div class="form-row">
                 <div class="form-group col-md-12 mb-2 form-text-center">
-                  <button type="submit" class="btn btn-primary">Register</button>
+                  <button type="submit" class="btn btn-primary" style="background-color: #edce77; border-color: #edce77;">Save Staff</button>
                 </div>
               </div>
             </form>

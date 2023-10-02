@@ -51,13 +51,13 @@
     {% endif %}
   </div>
 
-  <div class="container card border-0 shadow-sm">
+  <div class="container card border-0 shadow-sm" style="background-color: #154545;">
     <div class="card-body">
       <div class="row">
         <div class="col-md-12">
           <!-- Logo goes here -->
           <div class="logo-container">
-            <img src="{% static 'main/images/logo.jpg' %}" alt="Logo" width="100%" style="max-width: 150px;">
+            <img src="{% static 'main/images/logo2.png' %}" alt="Logo" width="100%" style="max-width: 150px;">
           </div>
         </div>
       </div>
@@ -66,11 +66,12 @@
           <form method="POST">
             {% csrf_token %}
             <fieldset class="form-group">
-              <legend class="border-bottom mb-4 text-center">Log In</legend>
+              <legend class="border-bottom mb-4 text-center text-white">Log In</legend>
               {{ form }}
             </fieldset>
             <div class="form-group text-center">
-              <button class="btn btn-primary btn-lg" type="submit">Login</button>
+              <button class="btn btn-primary btn-lg" type="submit" style="background-color: #edce77; border-color: #edce77;">Login</button>
+
             </div>
           </form>
         </div>
