@@ -14,7 +14,6 @@ from .decorators import user_not_authenticated
 
 # Create your views here.
 def index(request):
-
     return render(request, 'users/index.html')
 
 from functools import wraps
@@ -52,7 +51,7 @@ def register(request):
         template_name="users/register.html",
         context={"form": form}
     )
-@user_not_authenticated
+# @user_not_authenticated
 def custom_login(request):
     if request.method == "POST":
         form = UserLoginForm(request=request, data=request.POST)
