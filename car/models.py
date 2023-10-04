@@ -58,7 +58,7 @@ class CarService(models.Model):
     cost = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     current_kms = models.PositiveIntegerField(null=True)
     quantity = models.PositiveIntegerField(null=True)
-    next_service = models.CharField(max_length=255, null=True, blank=True)
+    next_service = models.DateTimeField(null=True)
     service_by = models.CharField(max_length=255, null=True)
     service_provider_contacts = models.TextField(null=True)
 

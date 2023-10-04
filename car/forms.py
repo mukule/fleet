@@ -104,7 +104,7 @@ class CarServiceForm(forms.ModelForm):
             'service_report': forms.Textarea(attrs={'class': 'form-control'}),
             'cost': forms.NumberInput(attrs={'class': 'form-control'}),
             'quantity': forms.NumberInput(attrs={'class': 'form-control'}),
-            'next_service': forms.TextInput(attrs={'class': 'form-control'}),
+            'next_service': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'service_by': forms.TextInput(attrs={'class': 'form-control'}),
             'service_provider_contacts': forms.Textarea(attrs={'class': 'form-control'}),
         }
