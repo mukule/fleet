@@ -1,0 +1,71 @@
+{% extends 'main/base.html' %}
+{% block content %}
+<!-- Begin page -->
+<div id="layout-wrapper">
+    <div class="main-content">
+        <div class="page-content">
+            <div class="container-fluid">
+                <!-- end row -->
+                <div class="row">
+                    <div class="col-xl-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Car Service Form</h4>
+                                <form method="post" class="mt-4">
+                                    {% csrf_token %}
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            {{ form.car.label_tag }}
+                                            {{ form.car }}
+                                        </div>
+                                        <div class="col-md-4">
+                                            {{ form.service_date.label_tag }}
+                                            {{ form.service_date }}
+                                        </div>
+                                        <div class="col-md-4">
+                                            {{ form.service_by.label_tag }}
+                                            {{ form.service_by }}
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            {{ form.service_report.label_tag }}
+                                            {{ form.service_report }}
+                                        </div>
+                                        <div class="col-md-6">
+                                            {{ form.service_provider_contacts.label_tag }}
+                                            {{ form.service_provider_contacts }}
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-4">
+                                            {{ form.cost.label_tag }}
+                                            {{ form.cost }}
+                                        </div>
+                                        <div class="col-md-4">
+                                            {{ form.quantity.label_tag }}
+                                            {{ form.quantity }}
+                                        </div>
+                                        <div class="col-md-4">
+                                            {{ form.next_service.label_tag }}
+                                            {{ form.next_service }}
+                                        </div>
+                                    </div>
+                                  
+                                    <div class="row justify-content-center">
+                                       <div class="col-md-6 text-center">
+                                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                                       </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div> <!-- end card-->
+                    </div> <!-- end col -->
+                </div>
+            </div> <!-- container-fluid -->
+        </div>
+    </div>
+    <!-- end main content-->
+</div>
+    
+{% endblock content %}

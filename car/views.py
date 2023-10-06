@@ -179,7 +179,7 @@ def edit_car_service(request, service_id):
         if form.is_valid():
             form.save()
             messages.success(request, 'Car service record updated successfully.')
-            return redirect('car_service_detail', service_id=service_id)
+            return redirect('car:car_services')
         else:
             messages.error(request, 'Error: Please correct the errors below.')
     else:

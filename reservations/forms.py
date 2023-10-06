@@ -5,10 +5,11 @@ class ReservationForm(forms.ModelForm):
     apply_normal_rates = forms.BooleanField(required=False, initial=False)
     add_VAT = forms.BooleanField(required=False, initial=False)
     daily_rates = forms.DecimalField(max_digits=8, decimal_places=2, required=False)
+    standard_rate = forms.DecimalField(max_digits=8, decimal_places=2, required=False)
 
     class Meta:
         model = Reservation
-        fields = ['car', 'client', 'start_date', 'end_date', 'apply_normal_rates', 'add_VAT', 'daily_rates']
+        fields = ['car', 'client', 'start_date', 'end_date', 'apply_normal_rates', 'add_VAT', 'daily_rates', 'standard_rate']
         widgets = {
             'start_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),
             'end_date': forms.DateTimeInput(attrs={'type': 'datetime-local'}),

@@ -36,6 +36,7 @@ class Reservation(models.Model):
     created_at = models.DateTimeField(default=timezone.now)
     days = models.PositiveIntegerField(default=0, null=True)
     daily_rates = models.DecimalField(max_digits=8, decimal_places=2, default=0, null=True)
+    standard_rate = models.DecimalField(max_digits=8, decimal_places=2, null=True)
     apply_normal_rates = models.BooleanField(default=False)  # Checkbox for using custom rates
     add_VAT = models.BooleanField(default=False)          # Checkbox for adding tax
     total_amount = models.DecimalField(max_digits=8, decimal_places=2, null=True)  # Set to null=True
@@ -122,13 +123,21 @@ class CarOut(models.Model):
 
     def __str__(self):
         return f"{self.make} {self.model} - {self.number_plate}"
-    
+  
 class Income(models.Model):
     number_plate = models.CharField(max_length=20, null=True, blank=True)
     invoice_number = models.CharField(max_length=20)
     client = models.CharField(max_length=150)
     date = models.DateTimeField(default=timezone.now)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
+
+    # Add fields for VAT and net amount with default values of 0
+    vat = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    net_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+
+    # Set the default transaction month to the current month
+    current_month = timezone.now()
+    transaction_month = models.DateField(default=current_month)
 
     def __str__(self):
         return f"Income: {self.invoice_number}"

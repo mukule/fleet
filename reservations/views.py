@@ -143,11 +143,8 @@ def create_reservation(request, car_id):
             start_date = form.cleaned_data['start_date']
             end_date = form.cleaned_data['end_date']
 
-            # Check if the start date is less than the current date
-            if start_date < timezone.now():
-                messages.error(request, "Start date cannot be in the past.")
             # Check if the end date is less than the start date
-            elif end_date < start_date:
+            if end_date < start_date:
                 messages.error(request, "End date cannot be before the start date.")
             else:
                 # Check if the car is already reserved for any overlapping period
@@ -175,45 +172,68 @@ def create_reservation(request, car_id):
                     # Save the unique reservation number
                     reservation.reservation_number = unique_number
 
-                    # Calculate the duration in days
-                    duration_days = (end_date - start_date).days + 1
+                    if form.cleaned_data['standard_rate'] is not None:
+                        # When standard rate is provided and not None
+                        reservation.total_amount = form.cleaned_data['standard_rate']
 
-                    if form.cleaned_data['apply_normal_rates']:
-                        # Using normal rates
-                        if duration_days < 7:
-                            rate_before_discount = car.daily_rate
-                        elif duration_days >= 7 and duration_days < 30:
-                            rate_before_discount = car.weekly_rate
-                        else:
-                            rate_before_discount = car.monthly_rate
+                        # Calculate the duration in days
+                        duration_days = (end_date - start_date).days + 1
 
-                        # Save the rates before applying the discount in the daily_rates field
-                        reservation.daily_rates = rate_before_discount
+                        # Calculate daily rates from the standard rate and duration
+                        reservation.daily_rates = reservation.total_amount / Decimal(str(duration_days))
+
+                        # Apply VAT if selected
+                        if form.cleaned_data['add_VAT']:
+                            vat_rate = 0.16  # You can adjust this rate accordingly
+                            reservation.vat = reservation.total_amount * Decimal(str(vat_rate))
                     else:
-                        # Using custom rates
-                        rate_before_discount = form.cleaned_data['daily_rates']
+                        # Calculate the duration in days
+                        duration_days = (end_date - start_date).days + 1
 
-                        # Check if daily rates are provided when normal rates are not used
-                        if not rate_before_discount:
-                            messages.error(request, "Please enter the daily rates.")
-                            return render(request, 'reservations/reservation_form.html', {'form': form, 'car': car})
+                        if form.cleaned_data['apply_normal_rates']:
+                            # Using normal rates
+                            if duration_days < 7:
+                                rate_before_discount = car.daily_rate
+                            elif 7 <= duration_days < 30:
+                                rate_before_discount = car.weekly_rate
+                            else:
+                                rate_before_discount = car.monthly_rate
 
-                    # Convert the rate_before_discount to Decimal before performing calculations
-                    rate_before_discount = Decimal(str(rate_before_discount))
+                            # Save the rates before applying the discount in the daily_rates field
+                            reservation.daily_rates = rate_before_discount
 
-                    # Calculate the total amount before VAT
-                    reservation.rate = rate_before_discount * duration_days
+                            # Calculate the total amount before VAT
+                            reservation.total_amount = rate_before_discount * duration_days
 
-                    # Apply VAT if selected
-                    if form.cleaned_data['add_VAT']:
-                        vat_rate = 0.16  # You can adjust this rate accordingly
-                        reservation.vat = reservation.rate * Decimal(str(vat_rate))
+                            # Apply VAT if selected
+                            if form.cleaned_data['add_VAT']:
+                                vat_rate = 0.16  # You can adjust this rate accordingly
+                                reservation.vat = reservation.total_amount * Decimal(str(vat_rate))
+                        else:
+                            # Using custom rates
+                            rate_before_discount = form.cleaned_data['daily_rates']
 
-                    # Calculate the total amount (excluding VAT) and assign to total_amount field
-                    reservation.total_amount = reservation.rate
+                            # Check if daily rates are provided when normal rates are not used
+                            if rate_before_discount is None:
+                                messages.error(request, "Please enter the daily rates.")
+                                return render(request, 'reservations/reservation_form.html', {'form': form, 'car': car})
+
+                            # Convert the rate_before_discount to Decimal before performing calculations
+                            rate_before_discount = Decimal(str(rate_before_discount))
+
+                            # Calculate the total amount before VAT
+                            reservation.rate = rate_before_discount * duration_days
+
+                            # Apply VAT if selected
+                            if form.cleaned_data['add_VAT']:
+                                vat_rate = 0.16  # You can adjust this rate accordingly
+                                reservation.vat = reservation.rate * Decimal(str(vat_rate))
+
+                            # Calculate the total amount (excluding VAT) and assign to total_amount field
+                            reservation.total_amount = reservation.rate
 
                     # Calculate the total amount including VAT (if applicable) and assign to total_amount_vat field
-                    reservation.total_amount_vat = reservation.rate + reservation.vat
+                    reservation.total_amount_vat = reservation.total_amount + reservation.vat
 
                     # Assign the car, client, and staff, then save the reservation
                     reservation.car = car
@@ -222,8 +242,8 @@ def create_reservation(request, car_id):
                     reservation.days = duration_days  # Save the duration in days
                     reservation.save()
 
-                    # messages.success(request, 'Reservation created successfully.')
-                    return redirect('reservations:confirm_make_contract', reservation_id=reservation.id)  # Replace 'reservations' with the URL name for the reservations list page
+                    messages.success(request, 'Reservation created successfully.')
+                    return redirect('reservations:confirm_make_contract', reservation_id=reservation.id)
 
         # If the form is not valid or there are errors, render the form again
         else:
@@ -235,8 +255,6 @@ def create_reservation(request, car_id):
     return render(request, 'reservations/reservation_form.html', {'form': form, 'car': car})
 
 
-from decimal import Decimal
-
 def update_reservation(request, reservation_id):
     reservation = get_object_or_404(Reservation, id=reservation_id)
 
@@ -246,11 +264,8 @@ def update_reservation(request, reservation_id):
             start_date = form.cleaned_data['start_date']
             end_date = form.cleaned_data['end_date']
 
-            # Check if the start date is less than the current date
-            if start_date < reservation.created_at:
-                messages.error(request, "Start date cannot be in the past.")
             # Check if the end date is less than the start date
-            elif end_date < start_date:
+            if end_date < start_date:
                 messages.error(request, "End date cannot be before the start date.")
             else:
                 # Check if the car is already reserved for any overlapping period
@@ -273,45 +288,57 @@ def update_reservation(request, reservation_id):
                     # Calculate the duration in days
                     duration_days = (end_date - start_date).days + 1
 
-                    if form.cleaned_data['apply_normal_rates']:
-                        # Using normal rates
-                        if duration_days < 7:
-                            rate_before_discount = reservation.car.daily_rate
-                        elif duration_days >= 7 and duration_days < 30:
-                            rate_before_discount = reservation.car.weekly_rate
+                    if form.cleaned_data['standard_rate'] is not None:
+                        # When standard rate is provided and not None
+                        updated_reservation.total_amount = form.cleaned_data['standard_rate']
+
+                        # Calculate daily rates from the standard rate and duration
+                        updated_reservation.daily_rates = updated_reservation.total_amount / Decimal(str(duration_days))
+
+                        # Apply VAT if selected
+                        if form.cleaned_data['add_VAT']:
+                            vat_rate = 0.16  # You can adjust this rate accordingly
+                            updated_reservation.vat = updated_reservation.total_amount * Decimal(str(vat_rate))
+                    else:
+                        if form.cleaned_data['apply_normal_rates']:
+                            # Using normal rates
+                            if duration_days < 7:
+                                rate_before_discount = reservation.car.daily_rate
+                            elif duration_days >= 7 and duration_days < 30:
+                                rate_before_discount = reservation.car.weekly_rate
+                            else:
+                                rate_before_discount = reservation.car.monthly_rate
+
+                            # Save the rates before applying the discount in the daily_rates field
+                            updated_reservation.daily_rates = rate_before_discount * duration_days
                         else:
-                            rate_before_discount = reservation.car.monthly_rate
+                            # Using custom rates
+                            rate_before_discount = form.cleaned_data['daily_rates']
 
-                        # Save the rates before applying the discount in the daily_rates field
-                        updated_reservation.daily_rates = rate_before_discount
-                    else:
-                        # Using custom rates
-                        rate_before_discount = form.cleaned_data['daily_rates']
+                            # Check if daily rates are provided when normal rates are not used
+                            if not rate_before_discount:
+                                messages.error(request, "Please enter the daily rates.")
+                                return render(request, 'reservations/reservation_update_form.html', {'form': form, 'reservation': reservation})
 
-                        # Check if daily rates are provided when normal rates are not used
-                        if not rate_before_discount:
-                            messages.error(request, "Please enter the daily rates.")
-                            return render(request, 'reservations/reservation_update_form.html', {'form': form, 'reservation': reservation})
+                            # Convert the rate_before_discount to Decimal before performing calculations
+                            rate_before_discount = Decimal(str(rate_before_discount))
 
-                    # Convert the rate_before_discount to Decimal before performing calculations
-                    rate_before_discount = Decimal(str(rate_before_discount))
+                            # Calculate the total amount before VAT
+                            updated_reservation.rate = rate_before_discount * duration_days
 
-                    # Calculate the total amount before VAT
-                    updated_reservation.rate = rate_before_discount * duration_days
+                            # Apply VAT if selected
+                            if form.cleaned_data['add_VAT']:
+                                vat_rate = 0.16  # You can adjust this rate accordingly
+                                updated_reservation.vat = updated_reservation.rate * Decimal(str(vat_rate))
+                            else:
+                                # If "add VAT" checkbox is unchecked, set VAT to 0.00
+                                updated_reservation.vat = Decimal('0.00')
 
-                    # Apply VAT if selected
-                    if form.cleaned_data['add_VAT']:
-                        vat_rate = 0.16  # You can adjust this rate accordingly
-                        updated_reservation.vat = updated_reservation.rate * Decimal(str(vat_rate))
-                    else:
-                        # If "add VAT" checkbox is unchecked, set VAT to 0.00
-                        updated_reservation.vat = Decimal('0.00')
-
-                    # Calculate the total amount (excluding VAT) and assign to total_amount field
-                    updated_reservation.total_amount = updated_reservation.rate
+                            # Calculate the total amount (excluding VAT) and assign to total_amount field
+                            updated_reservation.total_amount = updated_reservation.rate
 
                     # Calculate the total amount including VAT (if applicable) and assign to total_amount_vat field
-                    updated_reservation.total_amount_vat = updated_reservation.rate + updated_reservation.vat
+                    updated_reservation.total_amount_vat = updated_reservation.total_amount + updated_reservation.vat
 
                     # Update the car, client, and other reservation details
                     updated_reservation.days = duration_days  # Save the duration in days
@@ -357,6 +384,8 @@ def update_reservation(request, reservation_id):
         form = ReservationForm(instance=reservation)  # Initialize the form with existing reservation data
 
     return render(request, 'invoices/update_invoice.html', {'form': form, 'reservation': reservation})
+
+
 
 
 def delete_invoice(request, reservation_id):
@@ -473,7 +502,7 @@ def make_contract(request, reservation_id):
             'model': car.model.name if car.model else None,
             'year': car.year,
             'color': car.color,
-            'daily_rate': car.daily_rate,
+            'daily_rate': reservation.daily_rates,
             'weekly_rate': car.weekly_rate,
             'monthly_rate': car.monthly_rate,
             'seating_capacity': car.seating_capacity,
@@ -678,8 +707,20 @@ def update_carout(request, carout_id, reservation_id):
             if not created:
                 income.number_plate = carout.number_plate
                 income.client = carout.full_name
-                income.amount = carout.amount
+                income.amount = carout.deposit
                 income.save()
+
+            # Calculate VAT if available in CarOut (assuming VAT is in CarOut model)
+            vat = carout.vat if hasattr(carout, 'vat') else 0
+
+            # Calculate net amount (amount minus VAT)
+            net_amount = carout.deposit - vat
+
+            # Update Income record with calculated VAT and net amount
+            income.vat = vat
+            income.net_amount = net_amount
+            income.transaction_month = timezone.now().date().replace(day=1)
+            income.save()
 
             # Redirect to a success page or perform other actions
             messages.success(request, 'Reservation made successfully')
@@ -708,6 +749,32 @@ def edit_update_carout(request, carout_id):
             # Save the updated CarOut instance
             form.save()
 
+            # Calculate VAT if available in CarOut (assuming VAT is in CarOut model)
+            vat = carout.vat if hasattr(carout, 'vat') else 0
+
+            # Calculate net amount (amount minus VAT)
+            net_amount = carout.deposit - vat
+
+            # Create or update Income record
+            income, created = Income.objects.get_or_create(
+                invoice_number=carout.invoice_number,
+                defaults={
+                    'number_plate': carout.number_plate,
+                    'client': carout.full_name,
+                    'amount': carout.deposit,
+                    'vat': vat,
+                }
+            )
+            if not created:
+                income.number_plate = carout.number_plate
+                income.client = carout.full_name
+                income.amount = carout.deposit
+                income.vat = vat
+                
+            income.net_amount = net_amount  # Update net_amount separately
+            income.transaction_month = timezone.now().date().replace(day=1)
+            income.save()
+
             messages.success(request, 'CarOut updated successfully')
             return redirect('reservations:reservations')
 
@@ -734,6 +801,7 @@ def checkin(request):
     
     return render(request, 'reservations/checkin.html', {'cars_to_checkin': cars_to_checkin})
 
+
 def carout_detail(request, carout_id):
     carout = get_object_or_404(CarOut, id=carout_id)
 
@@ -755,17 +823,24 @@ def carout_detail(request, carout_id):
             # Save the form data
             form.save()
 
+            # Calculate VAT if available in CarOut (assuming VAT is in CarOut model)
+            vat = carout.vat if hasattr(carout, 'vat') else 0
+
+            # Calculate the updated net amount (updated amount minus VAT)
+            updated_net_amount = carout.amount - vat
+
             # Update the corresponding Income instance if it exists
             try:
                 income = Income.objects.get(number_plate=carout.number_plate)
                 income.amount += carout.balance  # Update the income amount by adding the carout balance
+                income.net_amount = updated_net_amount  # Update the net amount
                 income.save()
             except Income.DoesNotExist:
                 # If no Income instance exists, you can create one here if needed
                 pass
 
             # Add a success message
-            messages.success(request, 'Vehicle Details updated succesfully')
+            messages.success(request, 'Vehicle Details updated successfully')
 
             # Redirect to carin_inspection with the carout_id parameter
             return redirect('reservations:carin_inspection', carout_id=carout_id)
