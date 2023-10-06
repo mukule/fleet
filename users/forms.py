@@ -44,6 +44,7 @@ class UserLoginForm(AuthenticationForm):
         label='')
     
 
+
 class ClientForm(forms.ModelForm):
     class Meta:
         model = Client
@@ -72,3 +73,20 @@ class ClientForm(forms.ModelForm):
             'office_telephone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Office Telephone'}),
             'residence_address': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Residence Address'}),
         }
+
+    # Override field definitions to make certain fields not required
+    age = forms.IntegerField(required=False)  # Make 'age' not required
+    email = forms.EmailField(required=False)  # Make 'email' not required
+    local_address = forms.CharField(required=False)  # Make 'local_address' not required
+    home_address = forms.CharField(required=False)  # Make 'home_address' not required
+    company = forms.CharField(required=False)  # Make 'company' not required
+    nationality = forms.CharField(required=False)  # Make 'nationality' not required
+    country_of_issue = forms.CharField(required=False)  # Make 'country_of_issue' not required
+    license_expiry = forms.DateField(required=False)  # Make 'license_expiry' not required
+    credit_card = forms.CharField(required=False)  # Make 'credit_card' not required
+    credit_card_number = forms.CharField(required=False)  # Make 'credit_card_number' not required
+    card_expiry = forms.DateField(required=False)  # Make 'card_expiry' not required
+    physical_address = forms.CharField(required=False)  # Make 'physical_address' not required
+    phone_number = forms.CharField(required=False)  # Make 'phone_number' not required
+    office_telephone = forms.CharField(required=False)  # Make 'office_telephone' not required
+    residence_address = forms.CharField(required=False)  # Make 'residence_address' not required
