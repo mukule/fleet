@@ -831,7 +831,7 @@ def carout_detail(request, carout_id):
 
             # Update the corresponding Income instance if it exists
             try:
-                income = Income.objects.get(number_plate=carout.number_plate)
+                income = Income.objects.get(number_plate=carout.number_plate, invoice_number=carout.invoice_number)
                 income.amount += carout.balance  # Update the income amount by adding the carout balance
                 income.net_amount = updated_net_amount  # Update the net amount
                 income.save()

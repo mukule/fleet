@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from reservations.models import *
 from datetime import datetime
 from django.db.models import Sum
-
+from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.db.models import Q
 
@@ -194,3 +194,46 @@ def reports(request):
     }
 
     return render(request, 'main/reports.html', context)
+
+
+def income(request):
+    # Retrieve all income records
+    incomes = Income.objects.all()
+
+    start_date_param = request.GET.get('start_date')
+    end_date_param = request.GET.get('end_date')
+
+    start_date = None
+    end_date = None
+
+    if start_date_param and end_date_param:
+        try:
+            # Convert start_date and end_date to datetime objects with time components
+            start_date = datetime.strptime(start_date_param, '%Y-%m-%d')
+            end_date = datetime.strptime(end_date_param + ' 23:59:59', '%Y-%m-%d %H:%M:%S')
+
+            # Convert the start and end dates to the timezone used in the Sale model
+            start_date = timezone.make_aware(start_date, timezone.get_current_timezone())
+            end_date = timezone.make_aware(end_date, timezone.get_current_timezone())
+
+            # Filter sales within the specified date range
+            incomes = incomes.filter(transaction_month__range=(start_date, end_date))
+        except ValueError:
+            # Handle invalid date format
+            messages.warning(request, 'Invalid date format. Please use YYYY-MM-DD format.')
+
+    # Calculate the total amounts
+    total_gross_income = incomes.aggregate(Sum('amount'))['amount__sum'] or 0
+    total_vat = incomes.aggregate(Sum('vat'))['vat__sum'] or 0
+    total_net_amount = incomes.aggregate(Sum('net_amount'))['net_amount__sum'] or 0
+
+    context = {
+        'incomes': incomes,
+        'total_gross_income': total_gross_income,
+        'total_vat': total_vat,
+        'total_net_amount': total_net_amount,
+        'start_date': start_date,
+        'end_date': end_date,
+    }
+
+    return render(request, 'main/income.html', context)

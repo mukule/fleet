@@ -1,0 +1,152 @@
+{% extends 'main/base.html' %}
+{% block content %}
+    <div id="layout-wrapper">
+        <div class="main-content">
+            <div class="page-content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box d-flex align-items-center justify-content-between">
+                                <h4 class="mb-0 font-size-18">Income contributions</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 col-xl-3">
+                            <a href="">
+                                <div class="card border-info">
+                                    <div class="card-body">
+                                        <div class="row d-flex align-items-center mb-4 text-center">
+                                            <div class="col-12 text-center">
+                                                <p class="d-flex align-items-center mb-0">
+                                                    {% if start_date and end_date %}
+                                                        Date Range: {{ start_date|date:'Y-m-d' }} to {{ end_date|date:'Y-m-d' }}
+                                                    {% else %}
+                                                        All
+                                                    {% endif %}
+                                                </p>                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-md-6 col-xl-3">
+                            <a href="">
+                                <div class="card border-info">
+                                    <div class="card-body">
+                                        <div class="row d-flex align-items-center mb-4 text-center">
+                                            <div class="col-12 text-center">
+                                                <p class="d-flex align-items-center mb-0">
+                                                    Gross Amount ( {{total_gross_income}} )
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-md-6 col-xl-3">
+                            <a href="">
+                                <div class="card border-info">
+                                    <div class="card-body">
+                                        <div class="row d-flex align-items-center mb-4 text-center">
+                                            <div class="col-12 text-center">
+                                                <p class="d-flex align-items-center mb-0">
+                                                    VAT ( {{total_vat}} )
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+
+                        <div class="col-md-6 col-xl-3">
+                            <a href="">
+                                <div class="card border-info">
+                                    <div class="card-body">
+                                        <div class="row d-flex align-items-center mb-4 text-center">
+                                            <div class="col-12 text-center">
+                                                <p class="d-flex align-items-center mb-0">
+                                                    Net Amount ( {{total_net_amount}} )
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mx-auto">
+                            <div class="card mb-4">
+                                <div class="card-body">
+                                    <h5 class="card-title text-center">Filter Income by Date Range</h5>
+                                    <form method="get">
+                                        <div class="row">
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label for="start_date">Start Date</label>
+                                                    <input type="date" class="form-control" id="start_date" name="start_date" value="{{ request.GET.start_date }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group">
+                                                    <label for="end_date">End Date</label>
+                                                    <input type="date" class="form-control" id="end_date" name="end_date" value="{{ request.GET.end_date }}">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <button type="submit" class="btn btn-primary mt-4">Apply Range</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+
+                    <div class="row">
+                        <table class="table table-centered table-hover table-xl mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="border-top-0">Date</th>
+                                    <th class="border-top-0">Invoice Number</th>
+                                    <th class="border-top-0">Number Plate</th>
+                                    <th class="border-top-0">Client</th>
+                                    <th class="border-top-0">Gross Amount</th>
+                                    <th class="border-top-0">VAT</th>
+                                    <th class="border-top-0">Net Amount</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for income in incomes %}
+                                    <tr>
+                                        <td>{{ income.transaction_month }}</td>
+                                        <td>{{ income.invoice_number }}</td>
+                                        <td>{{ income.number_plate }}</td>
+                                        <td>{{ income.client }}</td>
+                                        <td>{{ income.amount }}</td>
+                                        <td>{{ income.vat }}</td>
+                                        <td>{{ income.net_amount }}</td>
+                                        
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

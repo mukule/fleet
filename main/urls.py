@@ -11,5 +11,6 @@ urlpatterns = [
     path("contracts/", views.contracts, name="contracts"),
     path('contract/<int:carout_id>/', views.contract, name='contract'),
     path("reports/", views.reports, name="reports"),
+    path('incomes/', views.income, name='income'),
  
 ]
