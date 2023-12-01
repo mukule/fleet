@@ -75,6 +75,7 @@ class ClientForm(forms.ModelForm):
         }
 
     # Override field definitions to make certain fields not required
+    id_number = forms.IntegerField(required=False)  # Make 'age' not required
     age = forms.IntegerField(required=False)  # Make 'age' not required
     email = forms.EmailField(required=False)  # Make 'email' not required
     local_address = forms.CharField(required=False)  # Make 'local_address' not required
