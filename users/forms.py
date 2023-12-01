@@ -48,13 +48,12 @@ class UserLoginForm(AuthenticationForm):
 class ClientForm(forms.ModelForm):
     class Meta:
         model = Client
-        fields = ['first_name', 'last_name', 'email', 'id_number', 'local_address', 'home_address', 'company',
+        fields = ['first_name', 'email', 'id_number', 'local_address', 'home_address', 'company',
                   'nationality', 'age', 'drivers_license_number', 'country_of_issue', 'license_expiry',
                   'credit_card', 'credit_card_number', 'card_expiry', 'physical_address', 'phone_number',
                   'office_telephone', 'residence_address']
         widgets = {
-            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'First Name'}),
-            'last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Last Name'}),
+            'first_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Name'}),
             'email': forms.EmailInput(attrs={'class': 'form-control', 'placeholder': 'Email'}),
             'id_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'ID Number'}),
             'local_address': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Local Address'}),
@@ -73,8 +72,10 @@ class ClientForm(forms.ModelForm):
             'office_telephone': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Office Telephone'}),
             'residence_address': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Residence Address'}),
         }
+      
 
     # Override field definitions to make certain fields not required
+    first_name = forms.CharField(required=False)
     id_number = forms.IntegerField(required=False)  # Make 'age' not required
     age = forms.IntegerField(required=False)  # Make 'age' not required
     email = forms.EmailField(required=False)  # Make 'email' not required
@@ -91,3 +92,8 @@ class ClientForm(forms.ModelForm):
     phone_number = forms.CharField(required=False)  # Make 'phone_number' not required
     office_telephone = forms.CharField(required=False)  # Make 'office_telephone' not required
     residence_address = forms.CharField(required=False)  # Make 'residence_address' not required
+
+    labels = {
+            'first_name': 'Name',
+            # Other field labels remain unchanged
+        }
