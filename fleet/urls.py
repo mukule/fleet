@@ -25,6 +25,7 @@ urlpatterns = [
     path("car/", include('car.urls', namespace='car')),
     path("reservations", include('reservations.urls', namespace='reservations')),
     path("invoices/", include('invoices.urls', namespace='invoices')),
+     path("inspection/", include('inspection.urls', namespace='inspection')),
 ]
 
 if settings.DEBUG:

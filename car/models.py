@@ -91,3 +91,5 @@ class Insurance(models.Model):
 
     def __str__(self):
         return f"{self.car} - Insurance {self.policy_number}"
+    
+

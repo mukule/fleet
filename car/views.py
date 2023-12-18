@@ -5,6 +5,7 @@ from.models import *
 from dateutil.relativedelta import relativedelta
 from django.http import JsonResponse
 from django.db.models import Q
+from reservations.models import *
 
 def create_car(request):
     if request.method == 'POST':
@@ -300,3 +301,6 @@ def delete_vehicle_class(request, pk):
     return redirect('car:car_class')  
 
 
+def rented_cars(request):
+    carouts = CarOut.objects.all().order_by('-created_at')[:5]
+    return render(request, 'car/carouts.html', {'carouts': carouts})

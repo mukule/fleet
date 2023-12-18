@@ -1,0 +1,74 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+<!-- Begin page -->
+<div id="layout-wrapper">
+
+  <div class="main-content">
+
+      <div class="page-content">
+          <div class="container-fluid">
+              <!-- start page title -->
+              <div class="row">
+                  <div class="col-12">
+                      <div class="page-title-box d-flex align-items-center justify-content-between">
+                          <h4 class="mb-0 font-size-18">Latest Rentals</h4>
+                      </div>
+                  </div>
+              </div>     
+              <!-- end page title -->
+
+              <div class="row">
+                  <div class="col-xl-12">
+                      <div class="card">
+                          <div class="card-body">
+                            <h4 class="card-title">Latest Rentals</h4>
+                            <p class="card-subtitle mb-4">Below is a list of the latest car hires</p>
+
+                            <div class="table-responsive">
+                                {% if carouts %}
+                                <table class="table table-centered table-hover table-xl mb-0" id="latest-rentals">
+                                    <thead>
+                                        <tr>
+                                            <th class="border-top-0">Number Plate</th>
+                                            <th class="border-top-0">vehicle</th>
+                                            <th class="border-top-0">Hirer's Name</th>
+                                            <th class="border-top-0">Email</th>
+                                            <th class="border-top-0">Period</th>
+                                            <th class="border-top-0">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for car in carouts %}
+                                        <tr>
+                                            <td class="text-truncate">{{ car.number_plate }}</td>
+                                            <td class="text-truncate">{{car.make}} {{car.model}}</td>
+                                            <td class="text-truncate">{{ car.full_name }}</td>
+                                            <td class="text-truncate">{{ car.email }}</td>
+                                            <td class="text-truncate">{{ car.start_date|date:"F d, Y" }} - {{ car.end_date|date:"F d, Y" }}</td>
+                                            <td class="text-truncate">
+                                                <a href="" class="btn btn-primary">
+                                                   Live Track
+                                                </a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                {% else %}
+                                <p>No vehicles added yet.</p>
+                                {% endif %}
+                            </div>
+                          </div> <!-- end card-body-->
+                      </div> <!-- end card-->
+                  </div> <!-- end col -->
+              </div>
+            </div>
+          </div> <!-- container-fluid -->
+      </div>
+
+  </div>
+  <!-- end main content-->
+
+</div>
+{% endblock content %}
