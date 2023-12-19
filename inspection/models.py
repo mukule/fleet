@@ -2,6 +2,7 @@
 from django.db import models
 from django.core.validators import MaxValueValidator
 from jsignature.fields import JSignatureField
+from car.models import *
 
 
 # Create your models here.
@@ -16,7 +17,7 @@ class EmergencyEquipment(models.Model):
 
 class DamageImage(models.Model):
     inspection = models.ForeignKey('Inspection', on_delete=models.CASCADE, related_name='damage_images')
-    image = models.ImageField(upload_to='damage_images/')
+    d_image = models.ImageField(upload_to='damage_images/')
 
     def __str__(self):
         return f"Damage Image for Inspection {self.inspection} ({self.id})"
@@ -27,7 +28,6 @@ class Inspection(models.Model):
         (1, 'OK'),
         (2, 'Top Up'),
         (3, 'Check'),
-        
     ]
 
     YES_NO_CHOICES = [
@@ -36,7 +36,7 @@ class Inspection(models.Model):
     ]
 
     date = models.DateField()
-    car = models.ForeignKey('Car', on_delete=models.CASCADE)
+    car = models.ForeignKey(Car, on_delete=models.CASCADE)
     current_mileage = models.PositiveIntegerField(validators=[MaxValueValidator(999999)])
     service_tag = models.CharField(max_length=100)
     next_service_due = models.DateField()
@@ -64,16 +64,16 @@ class Inspection(models.Model):
     reverse_lights_working = models.BooleanField(choices=YES_NO_CHOICES)
     fog_lights_working = models.BooleanField(choices=YES_NO_CHOICES)
 
-    fr_brand = models.CharField(max_length=100)
-    fr_condition = models.CharField(max_length=100)
-    fl_brand = models.CharField(max_length=100)
-    fl_condition = models.CharField(max_length=100)
-    rr_brand = models.CharField(max_length=100)
-    rr = models.CharField(max_length=100)
-    rl_brand = models.CharField(max_length=100)
-    rl_condition = models.CharField(max_length=100)
-    spare_brand = models.CharField(max_length=100)
-    spare_condition = models.CharField(max_length=100)
+    fr_tire_brand = models.CharField(max_length=100)
+    fr_tire_condition = models.CharField(max_length=100)
+    fl_tire_brand = models.CharField(max_length=100)
+    fl_tire_condition = models.CharField(max_length=100)
+    rr_tire_brand = models.CharField(max_length=100)
+    rr_tire_condition = models.CharField(max_length=100)
+    rl_tire_brand = models.CharField(max_length=100)
+    rl_tire_condition = models.CharField(max_length=100)
+    spare_tire_brand = models.CharField(max_length=100)
+    spare_tire_condition = models.CharField(max_length=100)
     headlights_working = models.BooleanField(choices=YES_NO_CHOICES)
 
     warning_lights = models.BooleanField(choices=YES_NO_CHOICES)
@@ -85,7 +85,7 @@ class Inspection(models.Model):
     AUX = models.BooleanField(choices=YES_NO_CHOICES)
     FM_Expander = models.BooleanField(choices=YES_NO_CHOICES)
 
-    windscreen_condition = models.CharField(choices=YES_NO_CHOICES)
+    windscreen_condition = models.BooleanField(choices=YES_NO_CHOICES)
     wipers_working = models.BooleanField(choices=YES_NO_CHOICES)
     seat_belts_functioning = models.BooleanField(choices=YES_NO_CHOICES)
     electric_mirrors_functioning = models.BooleanField(choices=YES_NO_CHOICES)
@@ -100,10 +100,7 @@ class Inspection(models.Model):
     inspectors_signature = JSignatureField()
     additional_comments = models.TextField(blank=True) 
     dashboard_image = models.ImageField(upload_to='dashboard_images/', blank=True, null=True)
-    damage_images = models.ManyToManyField(DamageImage, blank=True)
-    
-    
-    
+    car_damage_images = models.ManyToManyField(DamageImage, blank=True, related_name='inspections')
 
     def __str__(self):
         return f"Inspection for {self.car} on {self.date}"

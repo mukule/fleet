@@ -22,4 +22,5 @@ urlpatterns = [
    path('edit-vehicle-class/<int:pk>/', views.edit_vehicle_class, name='edit_vehicle_class'),
    path('delete-vehicle-class/<int:pk>/', views.delete_vehicle_class, name='delete_vehicle_class'),
     path('car_outs/s', views.rented_cars, name='rented_cars'),
+    
 ]

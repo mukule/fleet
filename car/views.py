@@ -304,3 +304,4 @@ def delete_vehicle_class(request, pk):
 def rented_cars(request):
     carouts = CarOut.objects.all().order_by('-created_at')[:5]
     return render(request, 'car/carouts.html', {'carouts': carouts})
+

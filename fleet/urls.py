@@ -19,13 +19,13 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+   
     path('', include('users.urls', namespace='users')),
     path("main/", include('main.urls', namespace='main')),
     path("car/", include('car.urls', namespace='car')),
     path("reservations", include('reservations.urls', namespace='reservations')),
     path("invoices/", include('invoices.urls', namespace='invoices')),
-     path("inspection/", include('inspection.urls', namespace='inspection')),
+    path("inspection/", include('inspection.urls', namespace='inspection')),
 ]
 
 if settings.DEBUG:

@@ -1,0 +1,11 @@
+
+.container {
+    max-width: 60%;
+}
+.card {
+    background-color: #fff;
+}
+
+.card-form {
+    padding: 30px;
+}
