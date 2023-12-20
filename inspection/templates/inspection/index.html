@@ -36,6 +36,234 @@
                                   {{ form.date|as_crispy_field }}
                                 </div>
                               </div>
+
+                              <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                  Vehile
+                                </div>
+                                <div class="form-group col-md-6 mb-0">
+                                  {{ form.car|as_crispy_field }}
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                  Current Mileage
+                                </div>
+                                <div class="form-group col-md-6 mb-0">
+                                  {{ form.current_mileage|as_crispy_field }}
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                  Service Tag
+                                </div>
+                                <div class="form-group col-md-6 mb-0">
+                                  {{ form.service_tag|as_crispy_field }}
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                  Next Service Due
+                                </div>
+                                <div class="form-group col-md-6 mb-0">
+                                  {{ form.next_service_due|as_crispy_field }}
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                  Insurance Expiry
+                                </div>
+                                <div class="form-group col-md-6 mb-0">
+                                  {{ form.insurance_expiry|as_crispy_field }}
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                  Fuel Tank Level
+                                </div>
+                                <div class="form-group col-md-6 mb-0">
+                                  {{ form.fuel_tank_level|as_crispy_field }}
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                  Emergency Equipment
+                                </div>
+                                <div class="form-group col-md-6 mb-0">
+                                  {{ form.emergency_equipment|as_crispy_field }}
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-12 mb-0">
+                                  <hr>
+                                </div>
+                              </div>
+                              
+                              <h2>Essential Fluids</h2>
+                              <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                  Tyre Brand & Condition
+                                </div>
+                                <div class="form-group col-md-6 mb-0">
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    {{ form.fr_tire_brand|as_crispy_field }}
+                                  </div>
+                                  <div class="col-md-6">
+                                    {{ form.fr_tire_condition|as_crispy_field }}
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    {{ form.fl_tire_brand|as_crispy_field }}
+                                  </div>
+                                  <div class="col-md-6">
+                                    {{ form.fl_tire_condition|as_crispy_field }}
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    {{ form.rr_tire_brand|as_crispy_field }}
+                                  </div>
+                                  <div class="col-md-6">
+                                    {{ form.rr_tire_condition|as_crispy_field }}
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    {{ form.rl_tire_brand|as_crispy_field }}
+                                  </div>
+                                  <div class="col-md-6">
+                                    {{ form.rl_tire_condition|as_crispy_field }}
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    {{ form.spare_tire_brand|as_crispy_field }}
+                                  </div>
+                                  <div class="col-md-6">
+                                    {{ form.spare_tire_condition|as_crispy_field }}
+                                  </div>
+                                </div>
+                                
+                                </div>
+                              </div>
+                              <hr>
+                              <h2>Internal</h2>
+                              <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                  Warning Lights on Dashboard
+                                </div>
+                                <div class="form-group col-md-6 mb-0">
+                                  {{ form.warning_lights|as_crispy_field }}
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                  Air Conditioning Working
+                                </div>
+                                <div class="form-group col-md-6 mb-0">
+                                  {{ form.air_conditioning_working|as_crispy_field }}
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                  Radio Working
+                                </div>
+                                <div class="form-group col-md-6 mb-0">
+                                  {{ form.radio_working|as_crispy_field }}
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                  Radio Options
+                                </div>
+                                <div class="form-group col-md-6 mb-0">
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    {{ form.CD|as_crispy_field }}
+                                  </div>
+                                  <div class="col-md-6">
+                                    {{ form.USB|as_crispy_field }}
+                                  </div>
+                                </div>
+                                <div class="row">
+                                  <div class="col-md-6">
+                                    {{ form.AUX|as_crispy_field }}
+                                  </div>
+                                  <div class="col-md-6">
+                                    {{ form.FM_Expander|as_crispy_field }}
+                                  </div>
+                                </div>
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                  Windscreen (Any Chips or Cracks?)
+                                </div>
+                                <div class="form-group col-md-6 mb-0">
+                                  {{ form.windscreen_condition|as_crispy_field }}
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                  Wipers in Good Working Order
+                                </div>
+                                <div class="form-group col-md-6 mb-0">
+                                  {{ form.wipers_working|as_crispy_field }}
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                  Seat Belts All Functioning
+                                </div>
+                                <div class="form-group col-md-6 mb-0">
+                                  {{ form.seat_belts_functioning|as_crispy_field }}
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                  Electric Mirrors Functioning and No Cracks
+                                </div>
+                                <div class="form-group col-md-6 mb-0">
+                                  {{ form.electric_mirrors_functioning|as_crispy_field }}
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                  Electric Windows Functioning
+                                </div>
+                                <div class="form-group col-md-6 mb-0">
+                                  {{ form.electric_windows_functioning|as_crispy_field }}
+                                </div>
+                              </div>
+                              <hr>
+
+                              <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                  Driver Name
+                                </div>
+                                <div class="form-group col-md-6 mb-0">
+                                  <div class="row">
+                                    <div class="col-md-6">
+                                      {{ form.first_name|as_crispy_field }}
+                                    </div>
+                                    <div class="col-md-6">
+                                      {{ form.last_name|as_crispy_field }}
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-md-12">
+                                      {{ form.drivers_signature|as_crispy_field }}
+                                    </div>
+                                  
+                                  </div>
+                                </div>
+                              </div>
+
+                              
+                              
+
                            
                             <div class="form-row text-center">
                               <div class="form-group col-md-12">
