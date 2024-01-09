@@ -9,6 +9,7 @@
     <link rel="shortcut icon" href="https://topstarcarhire.co.ke/img/topstar.png" type="image/x-icon">
     <link rel="stylesheet" href="{% static 'dashboard/css/bootstrap.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'inspection/css/style.css' %}" type="text/css">
+   
 </head>
 <body>
     <div class="container">
@@ -28,6 +29,24 @@
                     <div class="form mt-2">
                         <form method="post" enctype="multipart/form-data" class="form-horizontal">
                             {% csrf_token %}
+                            <div class="fomr-row">
+                              {% if form.errors %}
+                                  <div class="alert alert-danger">
+                                      <strong>Error!</strong> Please correct the errors below.
+                                  </div>
+                              {% endif %}
+                             
+                              {% for field in form %}
+                                  {% if field.errors %}
+                                  <hr>
+                                      <div class="alert alert-danger">
+                                        {{ field.name|capfirst }}: {{ field.errors|striptags }}
+                                      </div>
+                                      <hr>
+                                  {% endif %}
+                              {% endfor %}
+                             
+                            </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6 mb-0">
                                   Date
@@ -82,7 +101,9 @@
                                   Fuel Tank Level
                                 </div>
                                 <div class="form-group col-md-6 mb-0">
+                                  <small><span id="fuelTankValue" class="mt-0 text-info">{{ form.initial.fuel_tank_level|default:50 }}</span></small>
                                   {{ form.fuel_tank_level|as_crispy_field }}
+                                  
                                 </div>
                               </div>
                               <div class="form-row">
@@ -90,8 +111,10 @@
                                   Emergency Equipment
                                 </div>
                                 <div class="form-group col-md-6 mb-0">
+                                 
                                   {{ form.emergency_equipment|as_crispy_field }}
                                 </div>
+                              
                               </div>
                               <div class="form-row">
                                 <div class="form-group col-md-12 mb-0">
@@ -100,6 +123,147 @@
                               </div>
                               
                               <h2>Essential Fluids</h2>
+                              <div class="form-row">
+                                <div class="form-group col-md-6">
+                                  Oil Level
+                                </div>
+                                <div class="form-group col-md-6">
+                                  {{ form.oil_level|as_crispy_field }}
+                                </div>
+                              </div>
+
+                              <div class="form-row">
+                                <div class="form-group col-md-6">
+                                  Brake Fluid
+                                </div>
+                                <div class="form-group col-md-6">
+                                  {{ form.brake_fluid|as_crispy_field }}
+                                </div>
+                              </div>
+
+                              <div class="form-row">
+                                <div class="form-group col-md-6">
+                                  Power Steering Fluid
+                                </div>
+                                <div class="form-group col-md-6">
+                                  {{ form.power_steering_fluid|as_crispy_field }}
+                                </div>
+                              </div>
+
+                              <div class="form-row">
+                                <div class="form-group col-md-6">
+                                  Clutch Fluid
+                                </div>
+                                <div class="form-group col-md-6">
+                                  {{ form.clutch_fluid|as_crispy_field }}
+                                </div>
+                              </div>
+
+                              <div class="form-row">
+                                <div class="form-group col-md-6">
+                                  Auto Transmission Fluid
+                                </div>
+                                <div class="form-group col-md-6">
+                                  {{ form.auto_transmission_fluid|as_crispy_field }}
+                                </div>
+                              </div>
+
+                              <div class="form-row">
+                                <div class="form-group col-md-6">
+                                  Radiator Fluid Level
+                                </div>
+                                <div class="form-group col-md-6">
+                                  {{ form.radiator_fluid_level|as_crispy_field }}
+                                </div>
+                              </div>
+
+                              <div class="form-row">
+                                <div class="form-group col-md-6">
+                                  Windshield Washer Level
+                                </div>
+                                <div class="form-group col-md-6">
+                                  {{ form.windshield_washer_level|as_crispy_field }}
+                                </div>
+                              </div>
+                              <hr>
+                              <h2>Battery conditions</h2>
+                              <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                Voltage Recorded
+                                </div>
+                                <div class="form-group col-md-6 mb-2">
+                                  {{ form.voltage_recorded|as_crispy_field }}
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                  Terminals Checked and Tightened
+                                </div>
+                                <div class="form-group col-md-6 mb-2">
+                                  {{ form.terminals_checked_and_tightened|as_crispy_field }}
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                  Battery Fluid
+                                </div>
+                                <div class="form-group col-md-6 mb-2">
+                                  {{ form.battery_fluid|as_crispy_field }}
+                                </div>
+                              </div>
+                              <hr>
+                              <h2>Vehicle Electrics</h2>
+                              <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                  Headlights Working
+                                </div>
+                                <div class="form-group col-md-6 mb-2">
+                                  {{ form.headlights_working|as_crispy_field }}
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                  High Beam Working
+                                </div>
+                                <div class="form-group col-md-6 mb-2">
+                                  {{ form.high_beam_working|as_crispy_field }}
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                  Break Lights Working
+                                </div>
+                                <div class="form-group col-md-6 mb-2">
+                                  {{ form.brake_lights_working|as_crispy_field }}
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                  Indicators Working
+                                </div>
+                                <div class="form-group col-md-6 mb-2">
+                                  {{ form.indicators_working|as_crispy_field }}
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                  Reverse Lights Working
+                                </div>
+                                <div class="form-group col-md-6 mb-2">
+                                  {{ form.reverse_lights_working|as_crispy_field }}
+                                </div>
+                              </div>
+                              <div class="form-row">
+                                <div class="form-group col-md-6 mb-0">
+                                  Fog Lights Working
+                                </div>
+                                <div class="form-group col-md-6 mb-2">
+                                  {{ form.fog_lights_working|as_crispy_field }}
+                                </div>
+                              </div>
+                              <hr>
+                              <h2>Tyres Conditions</h2>
+
                               <div class="form-row">
                                 <div class="form-group col-md-6 mb-0">
                                   Tyre Brand & Condition
@@ -148,13 +312,14 @@
                                 
                                 </div>
                               </div>
+                            
                               <hr>
                               <h2>Internal</h2>
                               <div class="form-row">
                                 <div class="form-group col-md-6 mb-0">
                                   Warning Lights on Dashboard
                                 </div>
-                                <div class="form-group col-md-6 mb-0">
+                                <div class="form-group col-md-6 mb-2">
                                   {{ form.warning_lights|as_crispy_field }}
                                 </div>
                               </div>
@@ -181,18 +346,46 @@
                                 <div class="form-group col-md-6 mb-0">
                                 <div class="row">
                                   <div class="col-md-6">
-                                    {{ form.CD|as_crispy_field }}
+                                    <div class="row">
+                                      <div class="col-md-6">
+                                        CD
+                                      </div>
+                                      <div class="col-md-6">
+                                        {{ form.CD|as_crispy_field }}
+                                      </div>
+                                    </div>
                                   </div>
                                   <div class="col-md-6">
-                                    {{ form.USB|as_crispy_field }}
+                                    <div class="row">
+                                      <div class="col-md-6">
+                                        USB
+                                      </div>
+                                      <div class="col-md-6">
+                                        {{ form.USB|as_crispy_field }}
+                                      </div>
+                                    </div>
                                   </div>
                                 </div>
                                 <div class="row">
                                   <div class="col-md-6">
-                                    {{ form.AUX|as_crispy_field }}
+                                    <div class="row">
+                                      <div class="col-md-6">
+                                        AUX
+                                      </div>
+                                      <div class="col-md-6">
+                                        {{ form.AUX|as_crispy_field }}
+                                      </div>
+                                    </div>
                                   </div>
                                   <div class="col-md-6">
-                                    {{ form.FM_Expander|as_crispy_field }}
+                                    <div class="row">
+                                      <div class="col-md-6">
+                                        FM Expander
+                                      </div>
+                                      <div class="col-md-6">
+                                        {{ form.FM_Expander|as_crispy_field }}
+                                      </div>
+                                    </div>
                                   </div>
                                 </div>
                                 </div>
@@ -241,7 +434,7 @@
 
                               <div class="form-row">
                                 <div class="form-group col-md-6 mb-0">
-                                  Driver Name
+                                  Driver
                                 </div>
                                 <div class="form-group col-md-6 mb-0">
                                   <div class="row">
@@ -252,14 +445,55 @@
                                       {{ form.last_name|as_crispy_field }}
                                     </div>
                                   </div>
-                                  <div class="row">
-                                    <div class="col-md-12">
-                                      {{ form.drivers_signature|as_crispy_field }}
-                                    </div>
+                                 
                                   
                                   </div>
                                 </div>
+                                <hr>
+                                <div class="form-row">
+                                  <div class="form-group col-md-6 mb-0">
+                                    Inspector
+                                  </div>
+                                  <div class="form-group col-md-6 mb-0">
+                                    <div class="row">
+                                      <div class="col-md-6">
+                                        {{ form.inspectors_first_name|as_crispy_field }}
+                                      </div>
+                                      <div class="col-md-6">
+                                        {{ form.inspectors_last_name|as_crispy_field }}
+                                      </div>
+                                    </div> 
+                                    </div>
+                                  </div>
+                                  <div class="form-row">
+                                    <div class="form-group col-md-6 mb-0">
+                                      Additional Comments
+                                    </div>
+                                    <div class="form-group col-md-6 mb-0">
+                                      {{ form.additional_comments|as_crispy_field }}
+                                      </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                      <div class="form-group col-md-6 mb-0">
+                                        Dashboard Image (Fuel & Mileage)
+                                      </div>
+                                      <div class="form-group col-md-6 mb-0">
+                                        {{ form.dashboard_image|as_crispy_field }}
+                                        </div>
+                                      </div>
+
+                                      <div class="form-row">
+                                        <div class="form-group col-md-6 mb-0">
+                                          Car Damage Images
+                                        </div>
+                                        <div class="form-group col-md-6 mb-0">
+                                          {{ form.car_damage_images|as_crispy_field }}
+                                          </div>
+                                        </div>
+
                               </div>
+                              <hr>
 
                               
                               
@@ -277,6 +511,19 @@
             </div>
         </div>
     </div>
+    
+    <script>
+      // Get the range input and the span
+      var fuelTankSlider = document.getElementById('fuelTankSlider');
+      var fuelTankValue = document.getElementById('fuelTankValue');
+  
+      // Add an input event listener to update the span
+      if (fuelTankSlider) {
+          fuelTankSlider.addEventListener('input', function() {
+              fuelTankValue.innerText = this.value;
+          });
+      }
+  </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
 </html>

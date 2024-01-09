@@ -9,3 +9,17 @@
 .card-form {
     padding: 50px;
 }
+
+.custom-checkbox input[type="checkbox"] {
+    /* Adjust the dimensions as needed */
+    width: 16px;
+    height: 16px;
+    
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+        max-width: 100%;
+        padding-left: 40px;
+    }
+}

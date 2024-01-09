@@ -138,8 +138,22 @@ DATABASES = {
         'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '3306',
-        
+
     }
 }
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+
+# Email settins
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'pop.kenyaweb.com'
+EMAIL_FROM = 'nelson@kenyaweb.co.ke'
+EMAIL_HOST_USER = 'nelson@kenyaweb.co.ke'
+EMAIL_HOST_PASSWORD = '@NLS2023'
+EMAIL_PORT = 465
+EMAIL_USE_SSL = True
+DEFAULT_FROM_EMAIL = 'nelson@kenyaweb.co.ke'
+
+ADMIN_EMAIL = 'nelson@kenyaweb.co.ke'
+PASSWORD_RESET_TIMEOUT = 14400  # 4 hrs

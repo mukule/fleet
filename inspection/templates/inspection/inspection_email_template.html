@@ -1,0 +1,391 @@
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 28px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        h3 {
+            text-align: center;
+            font-size: 18px;
+        }
+
+        h4 {
+            margin-top: 15px;
+            margin-bottom: 5px;
+            color: #333; /* Darken the color for better readability */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 12px;
+        }
+
+        th {
+            background-color: #ffffff; /* Add a light background color to header cells */
+        }
+
+        td {
+            background-color: #ffffff; /* Add a white background color to content cells */
+        }
+    </style>
+</head>
+<body>
+    <h1>Vehicle Inspection Report</h1>
+    <h3>{{ inspection_instance.car }} by {{ inspection_instance.first_name }} {{ inspection_instance.last_name }} on {{ inspection_instance.date }}</h3>
+    <table>
+        <tr>
+            <th colspan="2">Inspection Date</th>
+            <td colspan="2">{{ inspection_instance.date }}</td>
+        </tr>
+        <tr>
+            <th colspan="2">Vehicle</th>
+            <td colspan="2">{{ inspection_instance.car }}</td>
+        </tr>
+        <tr>
+            <th colspan="2">Vehicle Mileage</th>
+            <td colspan="2">{{ inspection_instance.current_mileage }}</td>
+        </tr>
+        <tr>
+            <th colspan="2">Service Tag</th>
+            <td colspan="2">{{ inspection_instance.service_tag }}</td>
+        </tr>
+        <tr>
+            <th colspan="2">Next Service Due</th>
+            <td colspan="2">{{ inspection_instance.next_service_due }}</td>
+        </tr>
+        <tr>
+            <th colspan="2">Insurance Expiry</th>
+            <td colspan="2">{{ inspection_instance.insurance_expiry }}</td>
+        </tr>
+        <tr>
+            <th colspan="2">Fuel Tank Level</th>
+            <td colspan="2">{{ inspection_instance.fuel_tank_level }}</td>
+        </tr>
+        <tr>
+            <th colspan="2">Emergency Equipments</th>
+            <td colspan="2">
+                {% for i in inspection_instance.emergency_equipment.all %}
+                {{i}},
+                {% endfor %}
+            </td>
+        </tr>
+       
+        <tr>
+            <th colspan="4"><h3>Essential Fluids</h3></th>
+        </tr>
+        <tr>
+            <th colspan="2">Oil Level</th>
+            <td colspan="2">
+                {% for i in inspection_instance.oil_level.all %}
+                {{i}},
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">Brake Fluid</th>
+            <td colspan="2">
+                {% for i in inspection_instance.brake_fluid.all %}
+                {{i}},
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">Power Steering Fluid</th>
+            <td colspan="2">
+                {% for i in inspection_instance.power_steering_fluid.all %}
+                {{i}},
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">Clutch Fluid</th>
+            <td colspan="2">
+                {% for i in inspection_instance.clutch_fluid.all %}
+                {{i}},
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">Auto Transmission Fluid</th>
+            <td colspan="2">
+                {% for i in inspection_instance.auto_transmission_fluid.all %}
+                {{i}},
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">Radiator Fluid Level</th>
+            <td colspan="2">
+                {% for i in inspection_instance.radiator_fluid_level.all %}
+                {{i}},
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">Windshield Washer Level</th>
+            <td colspan="2">
+                {% for i in inspection_instance.windshield_washer_level.all %}
+                {{i}},
+                {% endfor %}
+            </td>
+        </tr>
+      
+        <tr>
+            <th colspan="4"><h3>Battery conditions</h3></th>
+        </tr>
+        <tr>
+            <th colspan="2">Voltage Recorded</th>
+            <td colspan="2">{{ inspection_instance.voltage_recorded }}</td>
+        </tr>
+        <tr>
+            <th colspan="2">Terminals Checked & Tightened</th>
+            <td colspan="2">
+                {% for choice in inspection_instance.terminals_checked_and_tightened.all %}
+                {{ choice }},
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">Battery Fluid</th>
+            <td colspan="2">
+                {% for choice in inspection_instance.battery_fluid.all %}
+                {{ choice }},
+                {% endfor %}
+            </td>
+        </tr>
+       
+        <tr>
+            <th colspan="4"><h3>Vehicle Electrics</h3></th>
+        </tr>
+        <tr>
+            <th colspan="2">Headlights Working</th>
+            <td colspan="2">
+                {% for choice in inspection_instance.headlights_working.all %}
+                {{ choice }},
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">High Beam Working</th>
+            <td colspan="2">
+                {% for choice in inspection_instance.high_beam_working.all %}
+                {{ choice }},
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">Brake Lights Working</th>
+            <td colspan="2">
+                {% for choice in inspection_instance.brake_lights_working.all %}
+                {{ choice }},
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">Indicators Working</th>
+            <td colspan="2">
+                {% for choice in inspection_instance.indicators_working.all %}
+                {{ choice }},
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">Reverse Lights Working</th>
+            <td colspan="2">
+                {% for choice in inspection_instance.reverse_lights_working.all %}
+                {{ choice }},
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">Fog Lights Working</th>
+            <td colspan="2">
+                {% for choice in inspection_instance.fog_lights_working.all %}
+                {{ choice }},
+                {% endfor %}
+            </td>
+        </tr>
+       
+        <tr>
+            <th colspan="4"><h3>Tyres Conditions</h3></th>
+        </tr>
+        <tr>
+            <th colspan="2">Tire Brand</th>
+            <th colspan="2">Tire Condition</th>
+        </tr>
+        <tr>
+            <td colspan="2">Front Right</td>
+            <td colspan="2">{{ inspection_instance.fr_tire_brand }} - {{ inspection_instance.fr_tire_condition }}</td>
+        </tr>
+        <tr>
+            <td colspan="2">Front Left</td>
+            <td colspan="2">{{ inspection_instance.fl_tire_brand }} - {{ inspection_instance.fl_tire_condition }}</td>
+        </tr>
+        <tr>
+            <td colspan="2">Rear Right</td>
+            <td colspan="2">{{ inspection_instance.rr_tire_brand }} - {{ inspection_instance.rr_tire_condition }}</td>
+        </tr>
+        <tr>
+            <td colspan="2">Rear Left</td>
+            <td colspan="2">{{ inspection_instance.rl_tire_brand }} - {{ inspection_instance.rl_tire_condition }}</td>
+        </tr>
+        <tr>
+            <td colspan="2">Spare</td>
+            <td colspan="2">{{ inspection_instance.spare_tire_brand }} - {{ inspection_instance.spare_tire_condition }}</td>
+        </tr>
+        
+       
+        <tr>
+            <th colspan="4"><h3>Internal</h3></th>
+        </tr>
+        <tr>
+            <th colspan="2">Warning Lights</th>
+            <td colspan="2">
+                {% for choice in inspection_instance.warning_lights.all %}
+                {{ choice }},
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">Air Conditioning Working</th>
+            <td colspan="2">
+                {% for choice in inspection_instance.air_conditioning_working.all %}
+                {{ choice }},
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">Radio Working</th>
+            <td colspan="2">
+                {% for choice in inspection_instance.radio_working.all %}
+                {{ choice }},
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">CD</th>
+            <td colspan="2">
+                {% for choice in inspection_instance.CD.all %}
+                {{ choice }},
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">USB</th>
+            <td colspan="2">
+                {% for choice in inspection_instance.USB.all %}
+                {{ choice }},
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">AUX</th>
+            <td colspan="2">
+                {% for choice in inspection_instance.AUX.all %}
+                {{ choice }},
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">FM Expander</th>
+            <td colspan="2">
+                {% for choice in inspection_instance.FM_Expander.all %}
+                {{ choice }},
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">Windscreen Condition</th>
+            <td colspan="2">
+                {% for choice in inspection_instance.windscreen_condition.all %}
+                {{ choice }},
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">Wipers Working</th>
+            <td colspan="2">
+                {% for choice in inspection_instance.wipers_working.all %}
+                {{ choice }},
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">Seat Belts Functioning</th>
+            <td colspan="2">
+                {% for choice in inspection_instance.seat_belts_functioning.all %}
+                {{ choice }},
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">Electric Mirrors Functioning</th>
+            <td colspan="2">
+                {% for choice in inspection_instance.electric_mirrors_functioning.all %}
+                {{ choice }},
+                {% endfor %}
+            </td>
+        </tr>
+        <tr>
+            <th colspan="2">Electric Windows Functioning</th>
+            <td colspan="2">
+                {% for choice in inspection_instance.electric_windows_functioning.all %}
+                {{ choice }},
+                {% endfor %}
+            </td>
+        </tr>
+       
+        <tr>
+            <th colspan="4"><h3>Drivers Details</h3></th>
+        </tr>
+        <tr>
+            <th colspan="2">First Name</th>
+            <td colspan="2">{{ inspection_instance.first_name }}</td>
+        </tr>
+        <tr>
+            <th colspan="2">Last Name</th>
+            <td colspan="2">{{ inspection_instance.last_name }}</td>
+        </tr>
+       
+        <tr>
+            <th colspan="4"><h3>Inspectors Details</h3></th>
+        </tr>
+        <tr>
+            <th colspan="2">Inspector's First Name</th>
+            <td colspan="2">{{ inspection_instance.inspectors_first_name }}</td>
+        </tr>
+        <tr>
+            <th colspan="2">Inspector's Last Name</th>
+            <td colspan="2">{{ inspection_instance.inspectors_last_name }}</td>
+        </tr>
+        <tr>
+            <th colspan="4"><h3>Additional Comments</h3></th>
+        </tr>
+        <tr>
+            <td colspan="4">{{ inspection_instance.additional_comments }}</td>
+        </tr>
+        <tr>
+            <td colspan="2"><img src="{{ inspection_instance.dashboard_image_url }}" alt="Dashboard Image" style="max-width: 100%; height: auto; margin-bottom: 20px;"></td>
+           <td colspan="2"> <img src="{{ inspection_instance.car_damage_images_url }}" alt="Car Damage Images" style="max-width: 100%; height: auto; margin-bottom: 20px;"></td>
+
+        </tr>
+        <tr>
+            <td colspan="4"><h3>Topstar Car Hire</h3></td>
+        </tr>
+    </table>
+</body>
+</html>

@@ -13,10 +13,25 @@ class EmergencyEquipment(models.Model):
 
     def __str__(self):
         return self.name
-    
+
+
+class FluidStatusChoice(models.Model):
+    name = models.CharField(max_length=100, blank=True)
+
+    def __str__(self):
+        return self.name
+
+
+class YesNoChoice(models.Model):
+    name = models.CharField(max_length=100, blank=True)
+
+    def __str__(self):
+        return self.name
+
 
 class DamageImage(models.Model):
-    inspection = models.ForeignKey('Inspection', on_delete=models.CASCADE, related_name='damage_images')
+    inspection = models.ForeignKey(
+        'Inspection', on_delete=models.CASCADE, related_name='damage_images')
     d_image = models.ImageField(upload_to='damage_images/')
 
     def __str__(self):
@@ -24,45 +39,51 @@ class DamageImage(models.Model):
 
 
 class Inspection(models.Model):
-    FLUID_STATUS_CHOICES = [
-        (1, 'OK'),
-        (2, 'Top Up'),
-        (3, 'Check'),
-    ]
-
-    YES_NO_CHOICES = [
-        (True, 'Yes'),
-        (False, 'No'),
-    ]
-
     date = models.DateField()
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
-    current_mileage = models.PositiveIntegerField(validators=[MaxValueValidator(999999)])
+    current_mileage = models.PositiveIntegerField(
+        validators=[MaxValueValidator(999999)])
     service_tag = models.CharField(max_length=100)
     next_service_due = models.DateField()
     insurance_expiry = models.DateField()
     fuel_tank_level = models.DecimalField(max_digits=5, decimal_places=2)
-    emergency_equipment = models.ManyToManyField('EmergencyEquipment', blank=True)
+    emergency_equipment = models.ManyToManyField(
+        EmergencyEquipment, blank=True)
 
-    # Choice fields for fluid levels
-    oil_level = models.IntegerField(choices=FLUID_STATUS_CHOICES)
-    brake_fluid = models.IntegerField(choices=FLUID_STATUS_CHOICES)
-    power_steering_fluid = models.IntegerField(choices=FLUID_STATUS_CHOICES)
-    clutch_fluid = models.IntegerField(choices=FLUID_STATUS_CHOICES)
-    auto_transmission_fluid = models.IntegerField(choices=FLUID_STATUS_CHOICES)
-    radiator_fluid_level = models.IntegerField(choices=FLUID_STATUS_CHOICES)
-    windshield_washer_level = models.IntegerField(choices=FLUID_STATUS_CHOICES)
+    # ManyToManyField for fluid status choices
+    oil_level = models.ManyToManyField(
+        FluidStatusChoice, related_name='oil_level_inspections')
+    brake_fluid = models.ManyToManyField(
+        FluidStatusChoice, related_name='brake_fluid_inspections')
+    power_steering_fluid = models.ManyToManyField(
+        FluidStatusChoice, related_name='power_steering_fluid_inspections')
+    clutch_fluid = models.ManyToManyField(
+        FluidStatusChoice, related_name='clutch_fluid_inspections')
+    auto_transmission_fluid = models.ManyToManyField(
+        FluidStatusChoice, related_name='auto_transmission_fluid_inspections')
+    radiator_fluid_level = models.ManyToManyField(
+        FluidStatusChoice, related_name='radiator_fluid_level_inspections')
+    windshield_washer_level = models.ManyToManyField(
+        FluidStatusChoice, related_name='windshield_washer_level_inspections')
 
     voltage_recorded = models.DecimalField(max_digits=5, decimal_places=2)
-    terminals_checked_and_tightened = models.BooleanField(choices=YES_NO_CHOICES)
-    battery_fluid = models.BooleanField(choices=YES_NO_CHOICES)
+    terminals_checked_and_tightened = models.ManyToManyField(
+        YesNoChoice, related_name='terminals_checked_and_tightened_inspections')
+    battery_fluid = models.ManyToManyField(
+        YesNoChoice, related_name='battery_fluid_inspections')
 
-    headlights_working = models.BooleanField(choices=YES_NO_CHOICES)
-    high_beam_working = models.BooleanField(choices=YES_NO_CHOICES)
-    brake_lights_working = models.BooleanField(choices=YES_NO_CHOICES)
-    indicators_working = models.BooleanField(choices=YES_NO_CHOICES)
-    reverse_lights_working = models.BooleanField(choices=YES_NO_CHOICES)
-    fog_lights_working = models.BooleanField(choices=YES_NO_CHOICES)
+    headlights_working = models.ManyToManyField(
+        YesNoChoice, related_name='headlights_working_inspections')
+    high_beam_working = models.ManyToManyField(
+        YesNoChoice, related_name='high_beam_working_inspections')
+    brake_lights_working = models.ManyToManyField(
+        YesNoChoice, related_name='brake_lights_working_inspections')
+    indicators_working = models.ManyToManyField(
+        YesNoChoice, related_name='indicators_working_inspections')
+    reverse_lights_working = models.ManyToManyField(
+        YesNoChoice, related_name='reverse_lights_working_inspections')
+    fog_lights_working = models.ManyToManyField(
+        YesNoChoice, related_name='fog_lights_working_inspections')
 
     fr_tire_brand = models.CharField(max_length=100)
     fr_tire_condition = models.CharField(max_length=100)
@@ -74,33 +95,43 @@ class Inspection(models.Model):
     rl_tire_condition = models.CharField(max_length=100)
     spare_tire_brand = models.CharField(max_length=100)
     spare_tire_condition = models.CharField(max_length=100)
-    headlights_working = models.BooleanField(choices=YES_NO_CHOICES)
+    headlights_working = models.ManyToManyField(
+        YesNoChoice, related_name='headlights_working_inspections')
 
-    warning_lights = models.BooleanField(choices=YES_NO_CHOICES)
-    air_conditioning_working = models.BooleanField(choices=YES_NO_CHOICES)
-    radio_working = models.BooleanField(choices=YES_NO_CHOICES)
+    warning_lights = models.ManyToManyField(
+        YesNoChoice, related_name='warning_lights_inspections')
+    air_conditioning_working = models.ManyToManyField(
+        YesNoChoice, related_name='air_conditioning_working_inspections')
+    radio_working = models.ManyToManyField(
+        YesNoChoice, related_name='radio_working_inspections')
 
-    CD = models.BooleanField(choices=YES_NO_CHOICES)
-    USB = models.BooleanField(choices=YES_NO_CHOICES)
-    AUX = models.BooleanField(choices=YES_NO_CHOICES)
-    FM_Expander = models.BooleanField(choices=YES_NO_CHOICES)
+    CD = models.ManyToManyField(YesNoChoice, related_name='CD_inspections')
+    USB = models.ManyToManyField(YesNoChoice, related_name='USB_inspections')
+    AUX = models.ManyToManyField(YesNoChoice, related_name='AUX_inspections')
+    FM_Expander = models.ManyToManyField(
+        YesNoChoice, related_name='FM_Expander_inspections')
 
-    windscreen_condition = models.BooleanField(choices=YES_NO_CHOICES)
-    wipers_working = models.BooleanField(choices=YES_NO_CHOICES)
-    seat_belts_functioning = models.BooleanField(choices=YES_NO_CHOICES)
-    electric_mirrors_functioning = models.BooleanField(choices=YES_NO_CHOICES)
-    electric_windows_functioning = models.BooleanField(choices=YES_NO_CHOICES)
+    windscreen_condition = models.ManyToManyField(
+        YesNoChoice, related_name='windscreen_condition_inspections')
+    wipers_working = models.ManyToManyField(
+        YesNoChoice, related_name='wipers_working_inspections')
+    seat_belts_functioning = models.ManyToManyField(
+        YesNoChoice, related_name='seat_belts_functioning_inspections')
+    electric_mirrors_functioning = models.ManyToManyField(
+        YesNoChoice, related_name='electric_mirrors_functioning_inspections')
+    electric_windows_functioning = models.ManyToManyField(
+        YesNoChoice, related_name='electric_windows_functioning_inspections')
 
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
-    drivers_signature = JSignatureField()
 
     inspectors_first_name = models.CharField(max_length=50)
     inspectors_last_name = models.CharField(max_length=50)
-    inspectors_signature = JSignatureField()
-    additional_comments = models.TextField(blank=True) 
-    dashboard_image = models.ImageField(upload_to='dashboard_images/', blank=True, null=True)
-    car_damage_images = models.ManyToManyField(DamageImage, blank=True, related_name='inspections')
+    additional_comments = models.TextField(blank=True)
+    dashboard_image = models.ImageField(
+        upload_to='dashboard_images/', blank=True, null=True)
+    car_damage_images = models.ImageField(
+        upload_to='car_damage_images/', blank=True, null=True)
 
     def __str__(self):
         return f"Inspection for {self.car} on {self.date}"
