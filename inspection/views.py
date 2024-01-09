@@ -46,13 +46,11 @@ def inspection(request):
             pdf_context = {'inspection_instance': inspection_instance}
             pdf_attachment = render_to_pdf(pdf_template_path, pdf_context)
 
-            # Prepare email content using a template
-            subject = 'New Inspection Form Submission'
-            email_template_name = 'inspection/inspection_email_template.html'
-            context = {'form': form}
-            message = render_to_string(email_template_name, context)
+            # Prepare email content
+            subject = f'New Vehicle Inspection for {car_instance}'
+            message = 'Please find the inspection report attached.'
 
-            # Send email with form details and PDF attachment
+            # Send email with PDF attachment
             from_email = settings.EMAIL_FROM
             recipient_list = ['info@topstarcarhire.co.ke']
 
