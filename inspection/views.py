@@ -2,26 +2,16 @@ from django.shortcuts import render, redirect
 from .models import Inspection
 from car.models import Car
 from .forms import InspectionForm
-from django.core.mail import *
+from django.core.mail import EmailMessage
 from django.conf import settings
-from django.template.loader import render_to_string
 from django.http import HttpResponse
-from django.template.loader import get_template
-from xhtml2pdf import pisa
+from django.template.loader import render_to_string
 from django.shortcuts import get_object_or_404
+from reportlab.pdfgen import canvas
+from io import BytesIO
+from .report import generate_pdf
 
 
-def render_to_pdf(template_path, context_dict):
-    template = get_template(template_path)
-    html = template.render(context_dict)
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="inspection_report.pdf"'
-
-    pisa_status = pisa.CreatePDF(html, dest=response)
-
-    if pisa_status.err:
-        return HttpResponse('We had some errors <pre>' + html + '</pre>')
-    return response
 
 
 def inspection(request):
@@ -32,8 +22,7 @@ def inspection(request):
             inspection_instance = form.save()
 
             # Obtain the related Car instance
-            car_instance = get_object_or_404(
-                Car, id=inspection_instance.car.id)
+            car_instance = get_object_or_404(Car, id=inspection_instance.car.id)
 
             # Update the car's mileage
             car_instance.mileage = form.cleaned_data['current_mileage']
@@ -42,9 +31,7 @@ def inspection(request):
             car_instance.save()
 
             # Create a PDF using ReportLab
-            pdf_template_path = 'inspection/inspection_email_template.html'
-            pdf_context = {'inspection_instance': inspection_instance}
-            pdf_attachment = render_to_pdf(pdf_template_path, pdf_context)
+            pdf_attachment = generate_pdf(inspection_instance)
 
             # Prepare email content
             subject = f'New Vehicle Inspection for {car_instance}'
@@ -52,11 +39,10 @@ def inspection(request):
 
             # Send email with PDF attachment
             from_email = settings.EMAIL_FROM
-            recipient_list = ['info@topstarcarhire.co.ke']
+            recipient_list = ['nelsonmasibo6@gmail.com']
 
             email = EmailMessage(subject, message, from_email, recipient_list)
-            email.attach('inspection_report.pdf',
-                         pdf_attachment.content, 'application/pdf')
+            email.attach('inspection_report.pdf', pdf_attachment, 'application/pdf')
             email.send()
 
             # Redirect or render success page
@@ -65,7 +51,6 @@ def inspection(request):
         form = InspectionForm()
 
     return render(request, 'inspection/index.html', {'form': form})
-
 
 def inspections(request):
     inspections = Inspection.objects.all()
