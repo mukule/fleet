@@ -59,7 +59,7 @@ class InspectionForm(forms.ModelForm):
             'inspectors_last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Inspector\'s last name'}),
             'additional_comments': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Enter additional comments'}),
             'dashboard_image': forms.FileInput(attrs={'class': 'form-control'}),
-            'car_damage_images': forms.FileInput(attrs={'class': 'form-control'}),
+            'car_damage_images': forms.FileInput(attrs={'class': 'form-control', 'id': 'damage_images'}),
         }
 
         labels = {

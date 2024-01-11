@@ -331,9 +331,22 @@ def generate_pdf(inspection_instance):
         dashboard_image.drawOn(pdf, 60, 150)  # Adjusted position
 
     # Check if 'car_damage_images' is not empty before attempting to draw
-    if inspection_instance.car_damage_images:
-        car_damage_images = Image(inspection_instance.car_damage_images.path, width=150, height=100)
-        car_damage_images.drawOn(pdf, 210, 150)  # Adjusted position
+   # Check if 'car_damage_images' is not empty before attempting to draw
+    if inspection_instance.car_damage_images.exists():
+        start_x = 60  # Adjust the starting position as needed
+        y_position = 100  # Adjust the vertical position as needed
+        image_width = 150
+        image_height = 100
+        spacing = 10  # Adjust the spacing between images as needed
+
+        for i, damage_image in enumerate(inspection_instance.car_damage_images.all()):
+            image_path = damage_image.d_image.path
+            img = Image(image_path, width=image_width, height=image_height)
+            
+            # Calculate the x-position for the current image
+            x_position = start_x + i * (image_width + spacing)
+            
+            pdf.drawInlineImage(img, x_position, y_position, width=image_width, height=image_height)
 
 
     # Save the PDF to the BytesIO buffer.

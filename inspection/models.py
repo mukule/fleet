@@ -130,8 +130,9 @@ class Inspection(models.Model):
     additional_comments = models.TextField(blank=True)
     dashboard_image = models.ImageField(
         upload_to='dashboard_images/', blank=True, null=True)
-    car_damage_images = models.ImageField(
-        upload_to='car_damage_images/', blank=True, null=True)
+    car_damage_images = models.ManyToManyField(DamageImage, blank=True, related_name='inspections_damage_images')
+
+
 
     def __str__(self):
         return f"Inspection for {self.car} on {self.date}"
