@@ -487,19 +487,18 @@
                                         <div class="form-group col-md-6 mb-0">
                                           Car Damage Images
                                         </div>
-                                        <div class="form-group col-md-6 mb-0">
+                                        <div class="form-group col-md-6 mb-0" id="fileInputsContainer">
                                           {{ form.car_damage_images|as_crispy_field }}
-                                          <button type="button" class="btn btn-light" id="addImageBtn" style="display: none;">Add Another Image</button>
                                           </div>
                                         </div>
+                                        <div class="form-row text-center">
+                                          <div class="form-group col-md-12">
+                                              <button type="button" class="btn btn-primary btn-lg" onclick="addFileInput()">Add File</button>
+                                          </div>
+                                      </div>
 
                               </div>
                               <hr>
-
-                              
-                              
-
-                           
                             <div class="form-row text-center">
                               <div class="form-group col-md-12">
                                 <button class="btn btn-primary btn-lg" type="submit">Submit </button>
@@ -526,31 +525,22 @@
       }
   </script>
 
-
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const fileInput = document.querySelector('#damage_images');
-    const addImageBtn = document.querySelector('#addImageBtn');
-    let imageCounter = 1;
+  function addFileInput() {
+      var container = document.getElementById('fileInputsContainer');
+      var input = document.createElement('input');
+      input.type = 'file';
+      input.name = 'car_damage_images';  
+      input.className = 'form-control';
+      input.multiple = true;
 
-    // Set the 'multiple' attribute for the file input
-    fileInput.setAttribute('multiple', 'multiple');
+      var br = document.createElement('br');
 
-    fileInput.addEventListener('change', function() {
-        // Show the button when the user selects the first image
-        addImageBtn.style.display = 'inline-block';
-    });
-
-    addImageBtn.addEventListener('click', function() {
-        const newInput = fileInput.cloneNode(true);
-        newInput.id = 'damage_images_' + imageCounter;
-        imageCounter++;
-
-        fileInput.parentNode.insertBefore(newInput, fileInput.nextSibling);
-    });
-});
-
+      container.appendChild(input);
+      container.appendChild(br);
+  }
 </script>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>

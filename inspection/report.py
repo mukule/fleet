@@ -316,38 +316,61 @@ def generate_pdf(inspection_instance):
     eighth_table.wrapOn(pdf, eighth_table_width, 680)
     eighth_table.drawOn(pdf, 60, 250)  # Adjusted position
 
-# Draw the eleventh table with Additional Comments and Images side by side
-    # Draw 'Additional Comments'
-    pdf.setFont("Helvetica-Bold", 16)
-    pdf.drawString(60, 200, 'Additional Comments')
 
-    # Draw the actual comments below
-    pdf.setFont("Helvetica", 12)
-    pdf.drawString(60, 180, inspection_instance.additional_comments)
+   # Draw the seventh table with Additional Comments and Dashboard Image side by side
+    nineth_table_data = [
+        ['Additional Comments', 'Dashboard Image'],
+        [inspection_instance.additional_comments, ''],  # Leave the second column empty for the image
+    ]
 
-    # Check if 'dashboard_image' is not empty before attempting to draw
+    # Define style for the seventh table with reduced padding
+    nineth_table_style = TableStyle([
+        ('LEFTPADDING', (0, 0), (-1, -1), 6),  # Reduced left padding
+        ('RIGHTPADDING', (0, 0), (-1, -1), 1),  # Reduced right padding
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+    ])
+
+    # Calculate the available width for the seventh table
+    nineth_table_width = letter[0] - 2 * 60  # Reduce left and right padding
+
+    nineth_table = Table(nineth_table_data, colWidths=[nineth_table_width * 0.5, nineth_table_width * 0.5], style=nineth_table_style)
+
+    # Draw the seventh table on the canvas
+    nineth_table.wrapOn(pdf, nineth_table_width, 680)
+    nineth_table.drawOn(pdf, 60, 200)  # Adjusted position
+
+    # Draw the eighth table with the dashboard image
     if inspection_instance.dashboard_image:
-        dashboard_image = Image(inspection_instance.dashboard_image.path, width=150, height=100)
-        dashboard_image.drawOn(pdf, 60, 150)  # Adjusted position
+        dashboard_image = Image(inspection_instance.dashboard_image.path, width=150, height=80)
+        dashboard_image.drawOn(pdf, 360, 130)  # Adjusted position for the image
 
-    # Check if 'car_damage_images' is not empty before attempting to draw
-   # Check if 'car_damage_images' is not empty before attempting to draw
-    if inspection_instance.car_damage_images.exists():
-        start_x = 60  # Adjust the starting position as needed
-        y_position = 100  # Adjust the vertical position as needed
-        image_width = 150
-        image_height = 100
-        spacing = 10  # Adjust the spacing between images as needed
 
-        for i, damage_image in enumerate(inspection_instance.car_damage_images.all()):
-            image_path = damage_image.d_image.path
-            img = Image(image_path, width=image_width, height=image_height)
-            
-            # Calculate the x-position for the current image
-            x_position = start_x + i * (image_width + spacing)
-            
-            pdf.drawInlineImage(img, x_position, y_position, width=image_width, height=image_height)
+    if inspection_instance.car_damage_images:
+        damage_images = inspection_instance.damage_images.all()[:4]
 
+        total_images = len(damage_images)
+        if total_images > 0:
+            image_width = 150
+            image_spacing = 10
+
+            # Calculate the total width needed for all images and spacing
+            total_width = total_images * image_width + (total_images - 1) * image_spacing
+
+            # Starting x-coordinate to center the images
+            x_start = (pdf._pagesize[0] - total_width) / 2
+
+            # Fixed y-coordinate
+            y_coordinate = 30
+
+            # Loop through each damage image and draw on the PDF
+            for damage_image in damage_images:
+                car_damage_images = Image(damage_image.d_image.path, width=image_width, height=100)
+                car_damage_images.drawOn(pdf, x_start, y_coordinate)
+
+                # Move to the next x-coordinate for the next image
+                x_start += image_width + image_spacing
+
+   
 
     # Save the PDF to the BytesIO buffer.
     pdf.showPage()  # Start a new page for additional content (if any)

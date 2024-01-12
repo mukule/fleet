@@ -1,6 +1,17 @@
 from django import forms
-from .models import Inspection
+from .models import *
+from django.forms import inlineformset_factory
 
+
+
+class DamageImageForm(forms.ModelForm):
+    class Meta:
+        model = DamageImage
+        fields = ['d_image']
+
+InspectionDamageImageFormSet = inlineformset_factory(
+    Inspection, DamageImage, form=DamageImageForm, extra=1
+)
 
 class InspectionForm(forms.ModelForm):
     class Meta:
@@ -59,7 +70,8 @@ class InspectionForm(forms.ModelForm):
             'inspectors_last_name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Inspector\'s last name'}),
             'additional_comments': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Enter additional comments'}),
             'dashboard_image': forms.FileInput(attrs={'class': 'form-control'}),
-            'car_damage_images': forms.FileInput(attrs={'class': 'form-control', 'id': 'damage_images'}),
+            'car_damage_images': forms.FileInput(attrs={'class': 'form-control', 'id': 'carDamageImages'}),
+
         }
 
         labels = {
@@ -123,3 +135,4 @@ class InspectionForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(InspectionForm, self).__init__(*args, **kwargs)
         self.fields['car'].empty_label = 'Select car'
+      

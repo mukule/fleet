@@ -31,12 +31,14 @@ def inspection(request):
             # Save the inspection instance to get an ID for the many-to-many relationship
             inspection_instance.save()
 
-            # Obtain the DamageImage instances from the form
-            damage_images = form.cleaned_data['car_damage_images']
-            print(damage_images)
+            # Save the first car damage image to the inspection instance
+            if request.FILES.getlist('car_damage_images'):
+                first_damage_image = DamageImage(inspection=inspection_instance, d_image=request.FILES.getlist('car_damage_images')[0])
+                first_damage_image.save()
 
-            # Associate DamageImage instances with the inspection instance
-            inspection_instance.car_damage_images.set(damage_images)
+            # Save all uploaded images to DamageImage model
+            for image_file in request.FILES.getlist('car_damage_images')[1:]:
+                DamageImage.objects.create(inspection=inspection_instance, d_image=image_file)
 
             # Create a PDF using ReportLab
             pdf_attachment = generate_pdf(inspection_instance)
@@ -47,7 +49,7 @@ def inspection(request):
 
             # Send email with PDF attachment
             from_email = settings.EMAIL_FROM
-            recipient_list = ['nelsonmasibo6@gmail.com']
+            recipient_list = ['info@topstarcarhire.co.ke']
 
             email = EmailMessage(subject, message, from_email, recipient_list)
             email.attach('inspection_report.pdf', pdf_attachment, 'application/pdf')
@@ -59,8 +61,6 @@ def inspection(request):
         form = InspectionForm()
 
     return render(request, 'inspection/index.html', {'form': form})
-
-
 
 def inspections(request):
     inspections = Inspection.objects.all()
