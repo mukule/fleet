@@ -17,10 +17,10 @@ def generate_pdf(inspection_instance):
     # Set font and size for the title
     pdf.setFont("Helvetica-Bold", 16)
 
-    logo_path = 'https://topstarcarhire.co.ke/logo_2d.jpg'
-    logo = Image(logo_path, width=100, height=100)
-    logo_x = (letter[0] - logo.drawWidth) / 2
-    logo.drawOn(pdf, logo_x, 700)  # Adjusted position
+    # logo_path = 'https://topstarcarhire.co.ke/logo_2d.jpg'
+    # logo = Image(logo_path, width=100, height=100)
+    # logo_x = (letter[0] - logo.drawWidth) / 2
+    # logo.drawOn(pdf, logo_x, 700)  # Adjusted position
 
     # Calculate the width of the title for centering
     title_text = 'Topstar Car Hire Vehicle Inspection'

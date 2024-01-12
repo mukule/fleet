@@ -44,7 +44,7 @@ class Inspection(models.Model):
     current_mileage = models.PositiveIntegerField(
         validators=[MaxValueValidator(999999)])
     service_tag = models.CharField(max_length=100)
-    next_service_due = models.DateField()
+    next_service_due = models.CharField(max_length=100)
     insurance_expiry = models.DateField()
     fuel_tank_level = models.DecimalField(max_digits=5, decimal_places=2)
     emergency_equipment = models.ManyToManyField(

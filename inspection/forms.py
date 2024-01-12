@@ -20,9 +20,9 @@ class InspectionForm(forms.ModelForm):
         widgets = {
             'date': forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'placeholder': 'Inspection Date', 'required': False}),
             'car': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Select car'}),
-            'current_mileage': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter current mileage'}),
-            'service_tag': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter service tag'}),
-            'next_service_due': forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'placeholder': 'Insurance exoiry', 'required': False}),
+            'current_mileage': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Mileage EX.23', 'id': 'current_mileage'}),
+            'service_tag': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Service Tag EX. 23', 'id': 'service_tag'}),
+            'next_service_due': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Service Due EX. 23', 'id': 'next_service_due'}),
             'insurance_expiry': forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'placeholder': 'Inspection Date', 'required': False}),
             'fuel_tank_level': forms.TextInput(attrs={'class': 'form-control', 'type': 'range', 'min': 0, 'max': 100, 'step': 1,  'id': 'fuelTankSlider', }),
             'emergency_equipment': forms.CheckboxSelectMultiple(attrs={'class': 'form-control'}),
@@ -134,5 +134,5 @@ class InspectionForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(InspectionForm, self).__init__(*args, **kwargs)
-        self.fields['car'].empty_label = 'Select car'
+        self.fields['car'].empty_label = 'Select Vehicle'
       

@@ -49,16 +49,21 @@ def inspection(request):
 
             # Send email with PDF attachment
             from_email = settings.EMAIL_FROM
-            recipient_list = ['info@topstarcarhire.co.ke']
+            recipient_list = ['nelsonmasibo6@gmail.com']
 
             email = EmailMessage(subject, message, from_email, recipient_list)
             email.attach('inspection_report.pdf', pdf_attachment, 'application/pdf')
             email.send()
+           
+
 
             # Redirect or render success page
             return redirect('inspection:success')
     else:
         form = InspectionForm()
+
+   
+
 
     return render(request, 'inspection/index.html', {'form': form})
 

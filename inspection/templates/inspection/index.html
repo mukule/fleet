@@ -541,6 +541,41 @@
   }
 </script>
 
+<!-- Add this script after the Bootstrap script -->
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      // Get the Service Tag and Current Mileage input elements
+      var serviceTagInput = document.getElementById('service_tag');
+      var currentMileageInput = document.getElementById('current_mileage');
+      var nextServiceDueInput = document.getElementById('next_service_due');
+
+      // Add input event listeners to trigger the calculation
+      if (serviceTagInput && currentMileageInput && nextServiceDueInput) {
+          serviceTagInput.addEventListener('input', calculateNextServiceDue);
+          currentMileageInput.addEventListener('input', calculateNextServiceDue);
+      }
+
+      // Function to calculate and update Next Service Due
+      function calculateNextServiceDue() {
+          var serviceTagValue = parseFloat(serviceTagInput.value) || 0;
+          var currentMileageValue = parseFloat(currentMileageInput.value) || 0;
+
+          // Perform the calculation (you can customize this logic)
+          var nextServiceDueValue = serviceTagValue - currentMileageValue;
+
+          // Log values to the console for debugging
+          console.log('Service Tag:', serviceTagValue);
+          console.log('Current Mileage:', currentMileageValue);
+          console.log('Next Service Due:', nextServiceDueValue);
+
+          // Update the Next Service Due input field
+          nextServiceDueInput.value = nextServiceDueValue.toFixed(2); // Adjust decimal places as needed
+      }
+  });
+</script>
+
+
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
