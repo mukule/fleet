@@ -17,10 +17,10 @@ def generate_pdf(inspection_instance):
     # Set font and size for the title
     pdf.setFont("Helvetica-Bold", 16)
 
-    # logo_path = 'https://topstarcarhire.co.ke/logo_2d.jpg'
-    # logo = Image(logo_path, width=100, height=100)
-    # logo_x = (letter[0] - logo.drawWidth) / 2
-    # logo.drawOn(pdf, logo_x, 700)  # Adjusted position
+    logo_path = 'https://topstarcarhire.co.ke/logo_2d.jpg'
+    logo = Image(logo_path, width=100, height=100)
+    logo_x = (letter[0] - logo.drawWidth) / 2
+    logo.drawOn(pdf, logo_x, 700)  # Adjusted position
 
     # Calculate the width of the title for centering
     title_text = 'Topstar Car Hire Vehicle Inspection'
@@ -42,16 +42,17 @@ def generate_pdf(inspection_instance):
     pdf.drawString(car_date_x, 650, car_date_text)
 
     # Move down to make space for the table
-   
 
     # Draw the table slightly above to provide space
     table_data = [
-        ['Vehicle Mileage:', str(inspection_instance.current_mileage) + ' miles'],
+        ['Vehicle Mileage:', str(
+            inspection_instance.current_mileage) + ' miles'],
         ['Service Tag:', inspection_instance.service_tag],
         ['Next Service Due:', str(inspection_instance.next_service_due)],
         ['Insurance Expiry:', str(inspection_instance.insurance_expiry)],
         ['Fuel Tank Level:', str(inspection_instance.fuel_tank_level)],
-        ['Emergency Equipments:', ', '.join(str(equipment) for equipment in inspection_instance.emergency_equipment.all())],
+        ['Emergency Equipments:', ', '.join(
+            str(equipment) for equipment in inspection_instance.emergency_equipment.all())],
     ]
 
     # Define style for the table with reduced padding
@@ -65,31 +66,37 @@ def generate_pdf(inspection_instance):
     # Calculate the available width for the table
     table_width = letter[0] - 2 * 60  # Reduce left and right padding
 
-    table = Table(table_data, colWidths=[table_width * 0.4, table_width * 0.6], style=table_style)
+    table = Table(table_data, colWidths=[
+                  table_width * 0.4, table_width * 0.6], style=table_style)
 
     # Draw the table on the canvas
     table.wrapOn(pdf, table_width, 200)
     table.drawOn(pdf, 60, 530)  # Adjusted position
 
-  
-
     first_heading_text = 'Essential Fluid Check'
-    first_heading_width = pdf.stringWidth(first_heading_text, "Helvetica-Bold", 16)
+    first_heading_width = pdf.stringWidth(
+        first_heading_text, "Helvetica-Bold", 16)
     first_heading_x = (letter[0] - first_heading_width) / 2  # Centered
 
     pdf.setFont("Helvetica-Bold", 16)
     pdf.drawString(first_heading_x, 500, first_heading_text)
 
-
     # Draw the second table
     second_table_data = [
-        ['Oil Level Check:', ', '.join(str(oil_check) for oil_check in inspection_instance.oil_level.all())],
-        ['Brake Fluid:', ', '.join(str(fluid) for fluid in inspection_instance.brake_fluid.all())],
-        ['Power Steering:', ', '.join(str(fluid) for fluid in inspection_instance.power_steering_fluid.all())],
-        ['Clutch Fluid:', ', '.join(str(fluid) for fluid in inspection_instance.clutch_fluid.all())],
-        ['Auto Transmission Fluid:', ', '.join(str(fluid) for fluid in inspection_instance.auto_transmission_fluid.all())],
-        ['Radiator Fluid Level:', ', '.join(str(fluid) for fluid in inspection_instance.radiator_fluid_level.all())],
-        ['Windshield Washer Level:', ', '.join(str(fluid) for fluid in inspection_instance.windshield_washer_level.all())],
+        ['Oil Level Check:', ', '.join(
+            str(oil_check) for oil_check in inspection_instance.oil_level.all())],
+        ['Brake Fluid:', ', '.join(
+            str(fluid) for fluid in inspection_instance.brake_fluid.all())],
+        ['Power Steering:', ', '.join(
+            str(fluid) for fluid in inspection_instance.power_steering_fluid.all())],
+        ['Clutch Fluid:', ', '.join(
+            str(fluid) for fluid in inspection_instance.clutch_fluid.all())],
+        ['Auto Transmission Fluid:', ', '.join(
+            str(fluid) for fluid in inspection_instance.auto_transmission_fluid.all())],
+        ['Radiator Fluid Level:', ', '.join(
+            str(fluid) for fluid in inspection_instance.radiator_fluid_level.all())],
+        ['Windshield Washer Level:', ', '.join(
+            str(fluid) for fluid in inspection_instance.windshield_washer_level.all())],
     ]
 
     # Define style for the second table with reduced padding
@@ -103,15 +110,16 @@ def generate_pdf(inspection_instance):
     # Calculate the available width for the second table
     second_table_width = letter[0] - 2 * 60  # Reduce left and right padding
 
-    second_table = Table(second_table_data, colWidths=[table_width * 0.4, table_width * 0.6], style=table_style)
+    second_table = Table(second_table_data, colWidths=[
+                         table_width * 0.4, table_width * 0.6], style=table_style)
 
     # Draw the second table on the canvas
     second_table.wrapOn(pdf, second_table_width, 200)
     second_table.drawOn(pdf, 60, 350)
 
-  
     second_heading_text = 'Battery Condition'
-    second_heading_width = pdf.stringWidth(second_heading_text, "Helvetica-Bold", 16)
+    second_heading_width = pdf.stringWidth(
+        second_heading_text, "Helvetica-Bold", 16)
     second_heading_x = (letter[0] - second_heading_width) / 2  # Centered
 
     pdf.setFont("Helvetica-Bold", 16)
@@ -120,8 +128,10 @@ def generate_pdf(inspection_instance):
     # Draw the third table
     third_table_data = [
         ['Voltage Recorded:', inspection_instance.voltage_recorded],
-        ['Terminals Checked & Tightened:', ', '.join(str(terminal) for terminal in inspection_instance.terminals_checked_and_tightened.all())],
-        ['Battery Fluid:', ', '.join(str(fluid) for fluid in inspection_instance.battery_fluid.all())],
+        ['Terminals Checked & Tightened:', ', '.join(str(
+            terminal) for terminal in inspection_instance.terminals_checked_and_tightened.all())],
+        ['Battery Fluid:', ', '.join(
+            str(fluid) for fluid in inspection_instance.battery_fluid.all())],
     ]
 
     # Define style for the third table with reduced padding
@@ -135,17 +145,16 @@ def generate_pdf(inspection_instance):
     # Calculate the available width for the third table
     third_table_width = letter[0] - 2 * 60  # Reduce left and right padding
 
-    third_table = Table(third_table_data, colWidths=[third_table_width * 0.4, third_table_width * 0.6], style=third_table_style)
+    third_table = Table(third_table_data, colWidths=[
+                        third_table_width * 0.4, third_table_width * 0.6], style=third_table_style)
 
-  
     # Draw the third table on the canvas
     third_table.wrapOn(pdf, third_table_width, 200)
     third_table.drawOn(pdf, 60, 250)  # Adjusted position
 
-    
-
     third_heading_text = 'Vehicle Electronics'
-    third_heading_width = pdf.stringWidth(third_heading_text, "Helvetica-Bold", 16)
+    third_heading_width = pdf.stringWidth(
+        third_heading_text, "Helvetica-Bold", 16)
     third_heading_x = (letter[0] - third_heading_width) / 2  # Centered
 
     pdf.setFont("Helvetica-Bold", 16)
@@ -153,12 +162,18 @@ def generate_pdf(inspection_instance):
 
     # Draw the fourth table
     fourth_table_data = [
-        ['Headlights Working:', ', '.join(str(fluid) for fluid in inspection_instance.headlights_working.all())],
-        ['High Beam Working:', ', '.join(str(fluid) for fluid in inspection_instance.high_beam_working.all())],
-        ['Brake Lights Working:', ', '.join(str(fluid) for fluid in inspection_instance.brake_lights_working.all())],
-        ['Indicators Working:', ', '.join(str(fluid) for fluid in inspection_instance.indicators_working.all())],
-        ['Reverse Lights Working:', ', '.join(str(fluid) for fluid in inspection_instance.reverse_lights_working.all())],
-        ['Fog Lights Working:', ', '.join(str(fluid) for fluid in inspection_instance.fog_lights_working.all())],
+        ['Headlights Working:', ', '.join(
+            str(fluid) for fluid in inspection_instance.headlights_working.all())],
+        ['High Beam Working:', ', '.join(
+            str(fluid) for fluid in inspection_instance.high_beam_working.all())],
+        ['Brake Lights Working:', ', '.join(
+            str(fluid) for fluid in inspection_instance.brake_lights_working.all())],
+        ['Indicators Working:', ', '.join(
+            str(fluid) for fluid in inspection_instance.indicators_working.all())],
+        ['Reverse Lights Working:', ', '.join(
+            str(fluid) for fluid in inspection_instance.reverse_lights_working.all())],
+        ['Fog Lights Working:', ', '.join(
+            str(fluid) for fluid in inspection_instance.fog_lights_working.all())],
     ]
 
     # Define style for the fourth table with reduced padding
@@ -172,7 +187,8 @@ def generate_pdf(inspection_instance):
     # Calculate the available width for the fourth table
     fourth_table_width = letter[0] - 2 * 60  # Reduce left and right padding
 
-    fourth_table = Table(fourth_table_data, colWidths=[fourth_table_width * 0.4, fourth_table_width * 0.6], style=fourth_table_style)
+    fourth_table = Table(fourth_table_data, colWidths=[
+                         fourth_table_width * 0.4, fourth_table_width * 0.6], style=fourth_table_style)
 
     # Draw the fourth table on the canvas
     fourth_table.wrapOn(pdf, fourth_table_width, 340)
@@ -181,7 +197,8 @@ def generate_pdf(inspection_instance):
     pdf.showPage()
 
     fifth_heading_text = 'Tyre Conditions'
-    fifth_heading_width = pdf.stringWidth(fifth_heading_text, "Helvetica-Bold", 16)
+    fifth_heading_width = pdf.stringWidth(
+        fifth_heading_text, "Helvetica-Bold", 16)
     fifth_heading_x = (letter[0] - fifth_heading_width) / 2  # Centered
 
     pdf.setFont("Helvetica-Bold", 16)
@@ -190,11 +207,16 @@ def generate_pdf(inspection_instance):
     # Draw the fifth table with three columns
     fifth_table_data = [
         ['Tyre', 'Tire Brand', 'Tire Condition'],
-        ['Front Right:', inspection_instance.fr_tire_brand, inspection_instance.fr_tire_condition],
-        ['Front Left:', inspection_instance.fl_tire_brand, inspection_instance.fl_tire_condition],
-        ['Rear Right:', inspection_instance.rr_tire_brand, inspection_instance.rr_tire_condition],
-        ['Rear Left:', inspection_instance.rl_tire_brand, inspection_instance.rl_tire_condition],
-        ['Spare:', inspection_instance.spare_tire_brand, inspection_instance.spare_tire_condition],
+        ['Front Right:', inspection_instance.fr_tire_brand,
+            inspection_instance.fr_tire_condition],
+        ['Front Left:', inspection_instance.fl_tire_brand,
+            inspection_instance.fl_tire_condition],
+        ['Rear Right:', inspection_instance.rr_tire_brand,
+            inspection_instance.rr_tire_condition],
+        ['Rear Left:', inspection_instance.rl_tire_brand,
+            inspection_instance.rl_tire_condition],
+        ['Spare:', inspection_instance.spare_tire_brand,
+            inspection_instance.spare_tire_condition],
     ]
 
     # Define style for the fifth table with reduced padding
@@ -208,7 +230,8 @@ def generate_pdf(inspection_instance):
     # Calculate the available width for the fifth table
     fifth_table_width = letter[0] - 2 * 60  # Reduce left and right padding
 
-    fifth_table = Table(fifth_table_data, colWidths=[fifth_table_width * 0.3, fifth_table_width * 0.4, fifth_table_width * 0.3], style=fifth_table_style)
+    fifth_table = Table(fifth_table_data, colWidths=[
+                        fifth_table_width * 0.3, fifth_table_width * 0.4, fifth_table_width * 0.3], style=fifth_table_style)
 
     # Draw the fifth table on the canvas
     fifth_table.wrapOn(pdf, fifth_table_width, 680)
@@ -216,7 +239,8 @@ def generate_pdf(inspection_instance):
 
     # Draw the sixth table
     sixth_heading_text = 'Internal'
-    sixth_heading_width = pdf.stringWidth(sixth_heading_text, "Helvetica-Bold", 16)
+    sixth_heading_width = pdf.stringWidth(
+        sixth_heading_text, "Helvetica-Bold", 16)
     sixth_heading_x = (letter[0] - sixth_heading_width) / 2  # Centered
 
     pdf.setFont("Helvetica-Bold", 16)
@@ -224,17 +248,28 @@ def generate_pdf(inspection_instance):
 
     # Draw the sixth table with three columns
     sixth_table_data = [
-        ['Air Conditioning Working:', ', '.join(str(choice) for choice in inspection_instance.air_conditioning_working.all())],
-        ['Radio Working:', ', '.join(str(choice) for choice in inspection_instance.radio_working.all())],
-        ['CD:', ', '.join(str(choice) for choice in inspection_instance.CD.all())],
-        ['USB:', ', '.join(str(choice) for choice in inspection_instance.USB.all())],
-        ['AUX:', ', '.join(str(choice) for choice in inspection_instance.AUX.all())],
-        ['FM Expander:', ', '.join(str(choice) for choice in inspection_instance.FM_Expander.all())],
-        ['Windscreen Condition:', ', '.join(str(choice) for choice in inspection_instance.windscreen_condition.all())],
-        ['Wipers Working:', ', '.join(str(choice) for choice in inspection_instance.wipers_working.all())],
-        ['Seat Belts Functioning:', ', '.join(str(choice) for choice in inspection_instance.seat_belts_functioning.all())],
-        ['Electric Mirrors Functioning:', ', '.join(str(choice) for choice in inspection_instance.electric_mirrors_functioning.all())],
-        ['Electric Windows Functioning:', ', '.join(str(choice) for choice in inspection_instance.electric_windows_functioning.all())],
+        ['Air Conditioning Working:', ', '.join(
+            str(choice) for choice in inspection_instance.air_conditioning_working.all())],
+        ['Radio Working:', ', '.join(
+            str(choice) for choice in inspection_instance.radio_working.all())],
+        ['CD:', ', '.join(str(choice)
+                          for choice in inspection_instance.CD.all())],
+        ['USB:', ', '.join(str(choice)
+                           for choice in inspection_instance.USB.all())],
+        ['AUX:', ', '.join(str(choice)
+                           for choice in inspection_instance.AUX.all())],
+        ['FM Expander:', ', '.join(
+            str(choice) for choice in inspection_instance.FM_Expander.all())],
+        ['Windscreen Condition:', ', '.join(
+            str(choice) for choice in inspection_instance.windscreen_condition.all())],
+        ['Wipers Working:', ', '.join(
+            str(choice) for choice in inspection_instance.wipers_working.all())],
+        ['Seat Belts Functioning:', ', '.join(
+            str(choice) for choice in inspection_instance.seat_belts_functioning.all())],
+        ['Electric Mirrors Functioning:', ', '.join(str(
+            choice) for choice in inspection_instance.electric_mirrors_functioning.all())],
+        ['Electric Windows Functioning:', ', '.join(str(
+            choice) for choice in inspection_instance.electric_windows_functioning.all())],
     ]
 
     # Define style for the sixth table with reduced padding
@@ -248,7 +283,8 @@ def generate_pdf(inspection_instance):
     # Calculate the available width for the sixth table
     sixth_table_width = letter[0] - 2 * 60  # Reduce left and right padding
 
-    sixth_table = Table(sixth_table_data, colWidths=[sixth_table_width * 0.5, sixth_table_width * 0.5], style=sixth_table_style)
+    sixth_table = Table(sixth_table_data, colWidths=[
+                        sixth_table_width * 0.5, sixth_table_width * 0.5], style=sixth_table_style)
 
     # Draw the sixth table on the canvas
     sixth_table.wrapOn(pdf, sixth_table_width, 680)
@@ -256,7 +292,8 @@ def generate_pdf(inspection_instance):
 
     # Draw the seventh table
     seventh_heading_text = "Driver's Details"
-    seventh_heading_width = pdf.stringWidth(seventh_heading_text, "Helvetica-Bold", 16)
+    seventh_heading_width = pdf.stringWidth(
+        seventh_heading_text, "Helvetica-Bold", 16)
     seventh_heading_x = (letter[0] - seventh_heading_width) / 2  # Centered
 
     pdf.setFont("Helvetica-Bold", 16)
@@ -279,7 +316,8 @@ def generate_pdf(inspection_instance):
     # Calculate the available width for the seventh table
     seventh_table_width = letter[0] - 2 * 60  # Reduce left and right padding
 
-    seventh_table = Table(seventh_table_data, colWidths=[seventh_table_width * 0.5, seventh_table_width * 0.5], style=seventh_table_style)
+    seventh_table = Table(seventh_table_data, colWidths=[
+                          seventh_table_width * 0.5, seventh_table_width * 0.5], style=seventh_table_style)
 
     # Draw the seventh table on the canvas
     seventh_table.wrapOn(pdf, seventh_table_width, 680)
@@ -287,7 +325,8 @@ def generate_pdf(inspection_instance):
 
     # Draw the eighth table
     eighth_heading_text = "Inspector's Details"
-    eighth_heading_width = pdf.stringWidth(eighth_heading_text, "Helvetica-Bold", 16)
+    eighth_heading_width = pdf.stringWidth(
+        eighth_heading_text, "Helvetica-Bold", 16)
     eighth_heading_x = (letter[0] - eighth_heading_width) / 2  # Centered
 
     pdf.setFont("Helvetica-Bold", 16)
@@ -296,7 +335,8 @@ def generate_pdf(inspection_instance):
     # Draw the eighth table with two columns
     eighth_table_data = [
         ['First Name', 'Last Name'],
-        [inspection_instance.inspectors_first_name, inspection_instance.inspectors_last_name],
+        [inspection_instance.inspectors_first_name,
+            inspection_instance.inspectors_last_name],
     ]
 
     # Define style for the eighth table with reduced padding
@@ -310,17 +350,18 @@ def generate_pdf(inspection_instance):
     # Calculate the available width for the eighth table
     eighth_table_width = letter[0] - 2 * 60  # Reduce left and right padding
 
-    eighth_table = Table(eighth_table_data, colWidths=[eighth_table_width * 0.5, eighth_table_width * 0.5], style=eighth_table_style)
+    eighth_table = Table(eighth_table_data, colWidths=[
+                         eighth_table_width * 0.5, eighth_table_width * 0.5], style=eighth_table_style)
 
     # Draw the eighth table on the canvas
     eighth_table.wrapOn(pdf, eighth_table_width, 680)
     eighth_table.drawOn(pdf, 60, 250)  # Adjusted position
 
-
    # Draw the seventh table with Additional Comments and Dashboard Image side by side
     nineth_table_data = [
         ['Additional Comments', 'Dashboard Image'],
-        [inspection_instance.additional_comments, ''],  # Leave the second column empty for the image
+        # Leave the second column empty for the image
+        [inspection_instance.additional_comments, ''],
     ]
 
     # Define style for the seventh table with reduced padding
@@ -333,7 +374,8 @@ def generate_pdf(inspection_instance):
     # Calculate the available width for the seventh table
     nineth_table_width = letter[0] - 2 * 60  # Reduce left and right padding
 
-    nineth_table = Table(nineth_table_data, colWidths=[nineth_table_width * 0.5, nineth_table_width * 0.5], style=nineth_table_style)
+    nineth_table = Table(nineth_table_data, colWidths=[
+                         nineth_table_width * 0.5, nineth_table_width * 0.5], style=nineth_table_style)
 
     # Draw the seventh table on the canvas
     nineth_table.wrapOn(pdf, nineth_table_width, 680)
@@ -341,9 +383,10 @@ def generate_pdf(inspection_instance):
 
     # Draw the eighth table with the dashboard image
     if inspection_instance.dashboard_image:
-        dashboard_image = Image(inspection_instance.dashboard_image.path, width=150, height=80)
-        dashboard_image.drawOn(pdf, 360, 130)  # Adjusted position for the image
-
+        dashboard_image = Image(
+            inspection_instance.dashboard_image.path, width=150, height=80)
+        # Adjusted position for the image
+        dashboard_image.drawOn(pdf, 360, 130)
 
     if inspection_instance.car_damage_images:
         damage_images = inspection_instance.damage_images.all()[:4]
@@ -354,23 +397,23 @@ def generate_pdf(inspection_instance):
             image_spacing = 10
 
             # Calculate the total width needed for all images and spacing
-            total_width = total_images * image_width + (total_images - 1) * image_spacing
+            total_width = total_images * image_width + \
+                (total_images - 1) * image_spacing
 
             # Starting x-coordinate to center the images
             x_start = (pdf._pagesize[0] - total_width) / 2
 
             # Fixed y-coordinate
-            y_coordinate = 30
+            y_coordinate = 20
 
             # Loop through each damage image and draw on the PDF
             for damage_image in damage_images:
-                car_damage_images = Image(damage_image.d_image.path, width=image_width, height=100)
+                car_damage_images = Image(
+                    damage_image.d_image.path, width=image_width, height=100)
                 car_damage_images.drawOn(pdf, x_start, y_coordinate)
 
                 # Move to the next x-coordinate for the next image
                 x_start += image_width + image_spacing
-
-   
 
     # Save the PDF to the BytesIO buffer.
     pdf.showPage()  # Start a new page for additional content (if any)

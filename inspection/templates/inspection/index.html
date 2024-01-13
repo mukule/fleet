@@ -499,9 +499,16 @@
 
                               </div>
                               <hr>
+                              <div id="loader" class="text-center mt-3" style="display: none;">
+                                <div class="spinner-border" role="status">
+                                  <span class="visually-hidden">Submitting, Please Wait...</span>
+                                </div>
+                                <p></p>
+                              </div>
+                              
                             <div class="form-row text-center">
                               <div class="form-group col-md-12">
-                                <button class="btn btn-primary btn-lg" type="submit">Submit </button>
+                                <button class="btn btn-primary btn-lg" type="submit" onclick="submitForm()">Submit </button>
                               </div>
                             </div>
                           </form>
@@ -563,15 +570,25 @@
           // Perform the calculation (you can customize this logic)
           var nextServiceDueValue = serviceTagValue - currentMileageValue;
 
-          // Log values to the console for debugging
-          console.log('Service Tag:', serviceTagValue);
-          console.log('Current Mileage:', currentMileageValue);
-          console.log('Next Service Due:', nextServiceDueValue);
-
           // Update the Next Service Due input field
           nextServiceDueInput.value = nextServiceDueValue.toFixed(2); // Adjust decimal places as needed
       }
   });
+</script>
+
+<script>
+  function submitForm() {
+    console.log('Submit button clicked');
+    // Show the loader
+    document.getElementById('loader').style.display = 'block';
+
+    // Disable the submit button to prevent multiple submissions
+    document.querySelector('button[type="button"]').disabled = true;
+
+    // Submit the form
+    document.forms[0].submit();
+}
+
 </script>
 
 
