@@ -98,7 +98,7 @@ def inspection(request):
 
             # Send email with PDF attachment
             from_email = settings.EMAIL_FROM
-            recipient_list = ['nelsonmasibo6@gmail.com']
+            recipient_list = ['info@topstarcarhire.co.ke']
 
             email = EmailMessage(subject, message, from_email, recipient_list)
             email.attach('inspection_report.pdf',

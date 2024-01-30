@@ -3,15 +3,16 @@ from .models import *
 from django.forms import inlineformset_factory
 
 
-
 class DamageImageForm(forms.ModelForm):
     class Meta:
         model = DamageImage
         fields = ['d_image']
 
+
 InspectionDamageImageFormSet = inlineformset_factory(
     Inspection, DamageImage, form=DamageImageForm, extra=1
 )
+
 
 class InspectionForm(forms.ModelForm):
     class Meta:
@@ -135,4 +136,3 @@ class InspectionForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(InspectionForm, self).__init__(*args, **kwargs)
         self.fields['car'].empty_label = 'Select Vehicle'
-      
