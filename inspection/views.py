@@ -10,6 +10,7 @@ from django.shortcuts import get_object_or_404
 from reportlab.pdfgen import canvas
 from io import BytesIO
 from .report import generate_pdf
+from django.core.exceptions import ValidationError
 
 
 def inspection(request):
@@ -78,17 +79,24 @@ def inspection(request):
             inspection_instance.electric_windows_functioning.set(
                 form.cleaned_data['electric_windows_functioning'])
 
-            # Save the first car damage image to the inspection instance
             if request.FILES.getlist('car_damage_images'):
-                first_damage_image = DamageImage(
-                    inspection=inspection_instance, d_image=request.FILES.getlist('car_damage_images')[0])
-                first_damage_image.save()
+                try:
+                    first_damage_image = DamageImage(
+                        inspection=inspection_instance, d_image=request.FILES.getlist('car_damage_images')[0])
+                    first_damage_image.save()
+                except ValidationError as e:
+
+                    pass
 
             # Save all uploaded images to DamageImage model
             for image_file in request.FILES.getlist('car_damage_images')[1:]:
-                DamageImage.objects.create(
-                    inspection=inspection_instance, d_image=image_file)
-
+                try:
+                    DamageImage.objects.create(
+                        inspection=inspection_instance,
+                        d_image=image_file
+                    )
+                except ValidationError as e:
+                    pass
             # Create a PDF using ReportLab
             pdf_attachment = generate_pdf(inspection_instance)
 
@@ -100,11 +108,16 @@ def inspection(request):
             from_email = settings.EMAIL_FROM
             recipient_list = ['info@topstarcarhire.co.ke']
 
-            email = EmailMessage(subject, message, from_email, recipient_list)
-            email.attach('inspection_report.pdf',
-                         pdf_attachment, 'application/pdf')
-            email.send()
-
+            try:
+                email = EmailMessage(
+                    subject, message, from_email, recipient_list)
+                email.attach('inspection_report.pdf',
+                             pdf_attachment, 'application/pdf')
+                email.send()
+            except Exception as e:
+                # Handle email sending error
+                # Log the error or take appropriate action
+                pass
             # Redirect or render success page
             return redirect('inspection:success')
     else:
