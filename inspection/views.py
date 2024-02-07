@@ -81,11 +81,24 @@ def inspection(request):
 
             if request.FILES.getlist('car_damage_images'):
                 try:
-                    first_damage_image = DamageImage(
-                        inspection=inspection_instance, d_image=request.FILES.getlist('car_damage_images')[0])
-                    first_damage_image.save()
+                    last_damage_image = DamageImage(
+                        inspection=inspection_instance,
+                        d_image=request.FILES.getlist('car_damage_images')[-1]
+                    )
+                    last_damage_image.save()
                 except ValidationError as e:
-
+                    # Handle the validation error here, if needed
+                    pass
+            elif request.FILES:
+                try:
+                    # Save any image if the list is not empty
+                    any_damage_image = DamageImage(
+                        inspection=inspection_instance,
+                        d_image=list(request.FILES.values())[0]
+                    )
+                    any_damage_image.save()
+                except ValidationError as e:
+                    # Handle the validation error here, if needed
                     pass
 
             # Save all uploaded images to DamageImage model
