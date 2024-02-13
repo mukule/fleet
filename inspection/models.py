@@ -36,6 +36,8 @@ class DamageImage(models.Model):
 
     def __str__(self):
         return f"Damage Image for Inspection {self.inspection} ({self.id})"
+    
+
 
 
 class Inspection(models.Model):

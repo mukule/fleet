@@ -489,13 +489,9 @@
                                         </div>
                                         <div class="form-group col-md-6 mb-0" id="fileInputsContainer">
                                           {{ form.car_damage_images|as_crispy_field }}
+                                          <small class="form-text text-muted">Hold down "Control" or "Command" on a Mac to select multiple images.</small>
                                           </div>
                                         </div>
-                                        <div class="form-row text-center">
-                                          <div class="form-group col-md-12">
-                                              <button type="button" class="btn btn-primary btn-lg" onclick="addFileInput()">Add Other Damage Image</button>
-                                          </div>
-                                      </div>
 
                               </div>
                               <hr>
@@ -531,22 +527,29 @@
           });
       }
   </script>
-
 <script>
-  function addFileInput() {
-      var container = document.getElementById('fileInputsContainer');
-      var input = document.createElement('input');
-      input.type = 'file';
-      input.name = 'car_damage_images';  
-      input.className = 'form-control';
-      input.multiple = true;
+  // Add JavaScript code here to enhance file input for multiple selections
+  const fileInput = document.querySelector('#carDamageImages'); // Replace 'id_file' with the actual field ID
+  fileInput.setAttribute('multiple', 'multiple');
 
-      var br = document.createElement('br');
+  // Add an event listener to the file input to log selected files
+  fileInput.addEventListener('change', function (event) {
+    const selectedFiles = Array.from(event.target.files);
+    
+    // Log selected files
+    console.log('Selected Files:', selectedFiles);
+  });
 
-      container.appendChild(input);
-      container.appendChild(br);
-  }
+  // Optionally, log files that will be submitted when the form is submitted
+  const form = document.querySelector('#carDamageImages'); // Replace 'form' with your form ID or appropriate selector
+  form.addEventListener('submit', function (event) {
+    const filesToSubmit = Array.from(fileInput.files);
+    
+    // Log files that will be submitted
+    console.log('Files to be Submitted:', filesToSubmit);
+  });
 </script>
+
 
 <!-- Add this script after the Bootstrap script -->
 <script>
