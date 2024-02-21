@@ -1,0 +1,296 @@
+{% extends 'main/base.html' %}
+{% block content %}
+    <!-- Begin page -->
+    <div id="layout-wrapper">
+
+        <div class="main-content">
+
+            <div class="page-content">
+                <div class="container-fluid">
+                    <!-- start page title -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="page-title-box d-flex align-items-center justify-content-between">
+                                <h4 class="mb-0 font-size-18">{{ inspection.car }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end page title -->
+                    <!-- end row -->
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <h5 class="card-title">Inspection Details</h5>
+                                            <p><strong>Date:</strong> {{ inspection.date }}</p>
+                                            <p><strong>Current Mileage:</strong> {{ inspection.current_mileage }}</p>
+                                            <p><strong>Service Tag:</strong> {{ inspection.service_tag }}</p>
+                                            <p><strong>Next Service Due:</strong> {{ inspection.next_service_due }}</p>
+                                            <p><strong>Insurance Expiry:</strong> {{ inspection.insurance_expiry }}</p>
+                                            <p><strong>Fuel Tank Level:</strong> {{ inspection.fuel_tank_level }}</p>
+                                            <p><strong>Emergency Equipment:</strong>
+                                                {% for equipment in inspection.emergency_equipment.all %}
+                                                    {{ equipment }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                            <!-- Add more inspection details as needed -->
+                                        </div>
+                                        <div class="col-md-6">
+                                            <h5 class="card-title">Essential Fluids</h5>
+                                            <p><strong>Oil Level:</strong>
+                                                {% for choice in inspection.oil_level.all %}
+                                                    {{ choice }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                            <p><strong>Brake Fluid:</strong>
+                                                {% for choice in inspection.brake_fluid.all %}
+                                                    {{ choice }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                            <p><strong>Power Steering Fluid:</strong>
+                                                {% for choice in inspection.power_steering_fluid.all %}
+                                                    {{ choice }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                            <p><strong>Clutch Fluid:</strong>
+                                                {% for choice in inspection.clutch_fluid.all %}
+                                                    {{ choice }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                            <p><strong>Auto Transmission Fluid:</strong>
+                                                {% for choice in inspection.auto_transmission_fluid.all %}
+                                                    {{ choice }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                            <p><strong>Radiator Fluid Level:</strong>
+                                                {% for choice in inspection.radiator_fluid_level.all %}
+                                                    {{ choice }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                            <p><strong>Windshield Washer Level:</strong>
+                                                {% for choice in inspection.windshield_washer_level.all %}
+                                                    {{ choice }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                        </div>
+                                        
+                                    </div>
+
+                                    <hr>
+                                    
+                                    <div class="row">
+                                        <!-- Battery Section -->
+                                        <div class="col-md-6">
+                                            <h5 class="card-title">Battery</h5>
+                                            <p><strong>Voltage Recorded:</strong> {{ inspection.voltage_recorded }}</p>
+                                            <p><strong>Terminals Checked and Tightened:</strong>
+                                                {% for choice in inspection.terminals_checked_and_tightened.all %}
+                                                    {{ choice }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                            <p><strong>Battery Fluid:</strong>
+                                                {% for choice in inspection.battery_fluid.all %}
+                                                    {{ choice }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                            <!-- Add more battery details as needed -->
+                                        </div>
+                                    
+                                        <!-- Electronics Section -->
+                                        <div class="col-md-6">
+                                            <h5 class="card-title">Electronics</h5>
+                                            <p><strong>Headlights Working:</strong>
+                                                {% for choice in inspection.headlights_working.all %}
+                                                    {{ choice }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                            <p><strong>High Beam Working:</strong>
+                                                {% for choice in inspection.high_beam_working.all %}
+                                                    {{ choice }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                            <p><strong>Brake Lights Working:</strong>
+                                                {% for choice in inspection.brake_lights_working.all %}
+                                                    {{ choice }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                            <p><strong>Indicators Working:</strong>
+                                                {% for choice in inspection.indicators_working.all %}
+                                                    {{ choice }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                            <p><strong>Reverse Lights Working:</strong>
+                                                {% for choice in inspection.reverse_lights_working.all %}
+                                                    {{ choice }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                            <p><strong>Fog Lights Working:</strong>
+                                                {% for choice in inspection.fog_lights_working.all %}
+                                                    {{ choice }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                            <!-- Add more electronics details as needed -->
+                                        </div>
+                                    </div>
+                                    
+                                    <hr>
+                                    <div class="row">
+                                        <!-- Tyres Section -->
+                                        <div class="col-md-6">
+                                            <h5 class="card-title">Tyres</h5>
+                                            <p><strong>Front Right Tyre Brand:</strong> {{ inspection.fr_tire_brand }}</p>
+                                            <p><strong>Front Right Tyre Condition:</strong> {{ inspection.fr_tire_condition }}</p>
+                                            <p><strong>Front Left Tyre Brand:</strong> {{ inspection.fl_tire_brand }}</p>
+                                            <p><strong>Front Left Tyre Condition:</strong> {{ inspection.fl_tire_condition }}</p>
+                                            <p><strong>Rear Right Tyre Brand:</strong> {{ inspection.rr_tire_brand }}</p>
+                                            <p><strong>Rear Right Tyre Condition:</strong> {{ inspection.rr_tire_condition }}</p>
+                                            <p><strong>Rear Left Tyre Brand:</strong> {{ inspection.rl_tire_brand }}</p>
+                                            <p><strong>Rear Left Tyre Condition:</strong> {{ inspection.rl_tire_condition }}</p>
+                                            <p><strong>Spare Tyre Brand:</strong> {{ inspection.spare_tire_brand }}</p>
+                                            <p><strong>Spare Tyre Condition:</strong> {{ inspection.spare_tire_condition }}</p>
+                                            <!-- Add more tyre details as needed -->
+                                        </div>
+                                    
+                                        <!-- Internal Section -->
+                                        <div class="col-md-6">
+                                            <h5 class="card-title">Internal</h5>
+                                            <p><strong>Warning Lights:</strong>
+                                                {% for choice in inspection.warning_lights.all %}
+                                                    {{ choice }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                            <p><strong>Air Conditioning Working:</strong>
+                                                {% for choice in inspection.air_conditioning_working.all %}
+                                                    {{ choice }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                            <p><strong>Radio Working:</strong>
+                                                {% for choice in inspection.radio_working.all %}
+                                                    {{ choice }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                            <p><strong>CD Player:</strong>
+                                                {% for choice in inspection.CD.all %}
+                                                    {{ choice }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                            <p><strong>USB:</strong>
+                                                {% for choice in inspection.USB.all %}
+                                                    {{ choice }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                            <p><strong>AUX:</strong>
+                                                {% for choice in inspection.AUX.all %}
+                                                    {{ choice }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                            <p><strong>FM Expander:</strong>
+                                                {% for choice in inspection.FM_Expander.all %}
+                                                    {{ choice }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                            <p><strong>Windscreen Condition:</strong>
+                                                {% for choice in inspection.windscreen_condition.all %}
+                                                    {{ choice }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                            <p><strong>Wipers Working:</strong>
+                                                {% for choice in inspection.wipers_working.all %}
+                                                    {{ choice }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                            <p><strong>Seat Belts Functioning:</strong>
+                                                {% for choice in inspection.seat_belts_functioning.all %}
+                                                    {{ choice }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                            <p><strong>Electric Mirrors Functioning:</strong>
+                                                {% for choice in inspection.electric_mirrors_functioning.all %}
+                                                    {{ choice }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                            <p><strong>Electric Windows Functioning:</strong>
+                                                {% for choice in inspection.electric_windows_functioning.all %}
+                                                    {{ choice }}{% if not forloop.last %}, {% endif %}
+                                                {% endfor %}
+                                            </p>
+                                            <!-- Add more internal details as needed -->
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <!-- Drivers Details Section -->
+                                        <div class="col-md-6">
+                                            <h5 class="card-title">Drivers Details</h5>
+                                            <p><strong>First Name:</strong> {{ inspection.first_name }}</p>
+                                            <p><strong>Last Name:</strong> {{ inspection.last_name }}</p>
+                                            <!-- Add more driver details as needed -->
+                                        </div>
+                                    
+                                        <!-- Inspector Details Section -->
+                                        <div class="col-md-6">
+                                            <h5 class="card-title">Inspector Details</h5>
+                                            <p><strong>Inspector's First Name:</strong> {{ inspection.inspectors_first_name }}</p>
+                                            <p><strong>Inspector's Last Name:</strong> {{ inspection.inspectors_last_name }}</p>
+                                            <!-- Add more inspector details as needed -->
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <!-- Additional Comments Section -->
+                                        <div class="col-md-6">
+                                            <h5 class="card-title">Additional Comments</h5>
+                                            <p>{{ inspection.additional_comments }}</p>
+                                        </div>
+                                    
+                                        <!-- Dashboard and Damage Images Section -->
+                                       
+                                            <div class="col-md-6">
+                                                {% if inspection.dashboard_image %}
+                                                    <p><strong>Dashboard Image:</strong></p>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <img src="{{ inspection.dashboard_image.url }}" alt="Dashboard Image" class="img-fluid">
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                      
+                                        
+                                        
+                                        </p>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                {% if inspection.damage_images.all %}
+                                                    <p><strong>Car Damage Images:</strong></p>
+                                                    <div class="row">
+                                                        {% for damage_image in inspection.damage_images.all %}
+                                                            <div class="col-md-4">
+                                                                <img src="{{ damage_image.d_image.url }}" alt="Car Damage Image" class="img-fluid">
+                                                            </div>
+                                                        {% endfor %}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        
+                                        
+                                    
+
+                                   
+                                </div> <!-- end card-body-->
+                            </div> <!-- end card-->
+                        </div> <!-- end col -->
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- end main content-->
+
+    </div>
+{% endblock content %}

@@ -79,7 +79,7 @@ class Insurance(models.Model):
     end_date = models.DateField()
     insurance_amount = models.DecimalField(max_digits=10, decimal_places=2)
     renew = models.BooleanField(default=False)
-    duration = models.CharField(max_length=2, choices=DURATION_CHOICES, null=True)  # New duration field
+    duration = models.CharField(max_length=2, choices=DURATION_CHOICES, null=True) 
 
     def is_active(self):
         """

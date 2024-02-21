@@ -46,7 +46,7 @@ def generate_and_send_email(inspection_instance, car_instance):
 
     # Send email with PDF attachment
     from_email = settings.EMAIL_FROM
-    recipient_list = ['nelsonmasibo6@gmail.com']
+    recipient_list = ['info@topstarcarhire.co.ke']
 
     try:
         email = EmailMessage(
@@ -55,7 +55,7 @@ def generate_and_send_email(inspection_instance, car_instance):
                      pdf_attachment, 'application/pdf')
         email.send()
     except Exception as e:
-        # Log or handle unexpected errors
+      
         logger.error(f"Unexpected error: {e}")
 
 def inspection(request):
@@ -64,20 +64,20 @@ def inspection(request):
         if form.is_valid():
             inspection_instance = form.save(commit=False)
             
-            # Get car instance and update mileage
+           
             car_instance = get_object_or_404(Car, id=inspection_instance.car.id)
             car_instance.mileage = form.cleaned_data['current_mileage']
             car_instance.save()
 
-            # Save the inspection instance to get an ID for the many-to-many relationships
+           
             inspection_instance.save()
 
-            # Call the helper functions
+          
             handle_many_to_many_fields(inspection_instance, form)
             handle_file_uploads(request, inspection_instance)
             generate_and_send_email(inspection_instance, car_instance)
 
-            # Redirect or render success page
+           
             return redirect('inspection:success')
     else:
         form = InspectionForm()
@@ -91,6 +91,21 @@ def inspections(request):
         'inspections': inspections
     }
     return render(request, 'inspection/inspections.html', context)
+
+def inspection_detail(request, pk):
+    inspection = get_object_or_404(Inspection, id=pk)
+
+    context = {
+        'inspection': inspection,
+    }
+    return render(request, 'inspection/inspection_detail.html', context)
+
+def delete_inspection(request, pk):
+    inspection = get_object_or_404(Inspection, id=pk)
+
+  
+    inspection.delete()
+    return redirect('inspection:inspections') 
 
 
 def success(request):

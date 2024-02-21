@@ -41,6 +41,7 @@ class DamageImage(models.Model):
 
 
 class Inspection(models.Model):
+    #inspection details
     date = models.DateField()
     car = models.ForeignKey(Car, on_delete=models.CASCADE)
     current_mileage = models.PositiveIntegerField(
@@ -52,7 +53,7 @@ class Inspection(models.Model):
     emergency_equipment = models.ManyToManyField(
         EmergencyEquipment, blank=True)
 
-    # ManyToManyField for fluid status choices
+    # Essential fluids
     oil_level = models.ManyToManyField(
         FluidStatusChoice, related_name='oil_level_inspections')
     brake_fluid = models.ManyToManyField(
@@ -68,12 +69,15 @@ class Inspection(models.Model):
     windshield_washer_level = models.ManyToManyField(
         FluidStatusChoice, related_name='windshield_washer_level_inspections')
 
+    #battery
     voltage_recorded = models.DecimalField(max_digits=5, decimal_places=2)
     terminals_checked_and_tightened = models.ManyToManyField(
         YesNoChoice, related_name='terminals_checked_and_tightened_inspections')
     battery_fluid = models.ManyToManyField(
         YesNoChoice, related_name='battery_fluid_inspections')
+    
 
+    #Electronics
     headlights_working = models.ManyToManyField(
         YesNoChoice, related_name='headlights_working_inspections')
     high_beam_working = models.ManyToManyField(
@@ -87,6 +91,7 @@ class Inspection(models.Model):
     fog_lights_working = models.ManyToManyField(
         YesNoChoice, related_name='fog_lights_working_inspections')
 
+    #Tyres
     fr_tire_brand = models.CharField(max_length=100)
     fr_tire_condition = models.CharField(max_length=100)
     fl_tire_brand = models.CharField(max_length=100)
@@ -99,7 +104,8 @@ class Inspection(models.Model):
     spare_tire_condition = models.CharField(max_length=100)
     headlights_working = models.ManyToManyField(
         YesNoChoice, related_name='headlights_working_inspections')
-
+    
+    #Internal
     warning_lights = models.ManyToManyField(
         YesNoChoice, related_name='warning_lights_inspections')
     air_conditioning_working = models.ManyToManyField(
@@ -124,11 +130,15 @@ class Inspection(models.Model):
     electric_windows_functioning = models.ManyToManyField(
         YesNoChoice, related_name='electric_windows_functioning_inspections')
 
+    #Drivers Details
     first_name = models.CharField(max_length=50)
     last_name = models.CharField(max_length=50)
 
+    #inspector details
     inspectors_first_name = models.CharField(max_length=50)
     inspectors_last_name = models.CharField(max_length=50)
+
+    #extra Details
     additional_comments = models.TextField(blank=True)
     dashboard_image = models.ImageField(
         upload_to='dashboard_images/', blank=True, null=True)
